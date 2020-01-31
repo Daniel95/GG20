@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shaping : MonoBehaviour
+public class Sword : MonoBehaviour
 {
     [SerializeField] private float shapingXScaleIncrement = 0.3f;
 
@@ -37,7 +37,7 @@ public class Shaping : MonoBehaviour
         {
             width++;
             float newXScale = transform.localScale.x + shapingXScaleIncrement;
-            transform.localScale = new Vector3(newXScale, transform.localScale.y, transform.localScale.y);
+            transform.localScale = new Vector3(newXScale, transform.localScale.y, transform.localScale.z);
         }
     }
 }
