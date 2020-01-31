@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+[RequireComponent(typeof(JobLibrary))]
 public class TaskManager : MonoBehaviour
 {
     private static TaskManager instance;
@@ -30,6 +32,19 @@ public class TaskManager : MonoBehaviour
     [SerializeField] [Range(1, 10)] private int MinTargetSharpness;
     [SerializeField] [Range(1, 10)] private int MaxTargetSharpness;
 
+    private JobLibrary _jobLibrary;
+
+    private void Awake()
+    {
+        _jobLibrary = GetComponent<JobLibrary>();
+    }
+
+    /*
+    public Job ChooseJob()
+    {
+
+    }
+     */
     public static void CreateTask(out ShapingTask shapingTask)
     {
         shapingTask = new ShapingTask();
@@ -42,12 +57,14 @@ public class TaskManager : MonoBehaviour
         sharpeningTask.TargetSharpness = Random.Range(Instance.MinTargetSharpness, Instance.MaxTargetSharpness);
     }
 
-    public struct ShapingTask
+    public class Task { }
+
+    public class ShapingTask : Task
     {
         public int TargetWidth;
     }
 
-    public struct SharpeningTask
+    public class SharpeningTask
     {
         public int TargetSharpness;
     }
