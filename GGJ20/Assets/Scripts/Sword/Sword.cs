@@ -2,10 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Sword : MonoBehaviour
 {
     [SerializeField] private float shapingXScaleIncrement = 0.3f;
+
+    [SerializeField]
+    private Text resultText;
 
     private TaskManager.ShapingTask shapingTask;
 
@@ -19,10 +23,12 @@ public class Sword : MonoBehaviour
         if (shapingTask.TargetWidth > 5)
         {
             Debug.Log("I want a broad sword!");
+            resultText.text = "I want a broad sword!";
         }
         else
         {
             Debug.Log("I want a thin sword!");
+            resultText.text = "I want a thin sword!";
         }
     }
 
@@ -30,7 +36,9 @@ public class Sword : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            Debug.Log("Width offset: " + Mathf.Abs(shapingTask.TargetWidth - width));
+            //Debug.Log("Width offset: " + Mathf.Abs(shapingTask.TargetWidth - width));
+            //resultText.text = "Width offset: " + Mathf.Abs(shapingTask.TargetWidth - width);
+            FinishWeapon();
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -39,5 +47,12 @@ public class Sword : MonoBehaviour
             float newXScale = transform.localScale.x + shapingXScaleIncrement;
             transform.localScale = new Vector3(newXScale, transform.localScale.y, transform.localScale.z);
         }
+    }
+
+
+    public void FinishWeapon()
+    {
+        Debug.Log("Width offset: " + (shapingTask.TargetWidth - width));
+        resultText.text = "Width offset: " + (shapingTask.TargetWidth - width);
     }
 }
