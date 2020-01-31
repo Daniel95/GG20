@@ -364,11 +364,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Jobs:
-  - Time: 0
+  - Time: 99
+    Description: Please make my sword thicc pretty please
     tasks:
-    - {fileID: 11400000, guid: 36e991de4969e474187a85ef1f700529, type: 2}
-  - Time: 0
-    tasks: []
+    - {fileID: 11400000, guid: a4c190f01e21a434c909d458770fd91b, type: 2}
+  - Time: 69
+    Description: I WANT THIN BUT HOT OK
+    tasks:
+    - {fileID: 11400000, guid: 4ce3ac1eca7117742b5ceabf3632a317, type: 2}
+    - {fileID: 11400000, guid: a4c190f01e21a434c909d458770fd91b, type: 2}
 --- !u!1 &632315279
 GameObject:
   m_ObjectHideFlags: 0

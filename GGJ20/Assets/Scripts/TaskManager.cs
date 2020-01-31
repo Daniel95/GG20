@@ -6,7 +6,6 @@ using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(JobLibrary))]
 public class TaskManager : MonoBehaviour
 {
     private static TaskManager instance;
@@ -24,27 +23,28 @@ public class TaskManager : MonoBehaviour
         }
     }
 
-    [Category("Shaping")]
-    [SerializeField] [Range(1, 10)] private int MinTargetWidth;
-    [SerializeField] [Range(1, 10)] private int MaxTargetWidth;
+    [SerializeField] private JobLibraryScriptableObject jobLibrary;
 
-    [Category("Sharpening")]
-    [SerializeField] [Range(1, 10)] private int MinTargetSharpness;
-    [SerializeField] [Range(1, 10)] private int MaxTargetSharpness;
-
-    private JobLibrary _jobLibrary;
-
-    private void Awake()
+    public Job ChooseJob()
     {
-        _jobLibrary = GetComponent<JobLibrary>();
+        int randomIndex = UnityEngine.Random.Range(0, jobLibrary.Jobs.Count);
+        Job job = jobLibrary.Jobs[randomIndex];
+
+        Debug.Log(job.Description);
+        Debug.Log(job.Time);
+
+        return job;
+    }
+
+    [Serializable]
+    public struct Job
+    {
+        public int Time;
+        public string Description;
+        public List<ScriptableObject> Tasks;
     }
 
     /*
-    public Job ChooseJob()
-    {
-
-    }
-     */
     public static void CreateTask(out ShapingTask shapingTask)
     {
         shapingTask = new ShapingTask();
@@ -68,4 +68,5 @@ public class TaskManager : MonoBehaviour
     {
         public int TargetSharpness;
     }
+     */
 }

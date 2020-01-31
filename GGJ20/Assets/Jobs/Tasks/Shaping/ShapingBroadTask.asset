@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b7b5104e682f874bb3d211cec7729c6, type: 3}
-  m_Name: ShapingThinTask
+  m_Name: ShapingBroadTask
   m_EditorClassIdentifier: 
-  TargetWidth: 0
+  TargetWidth: 9

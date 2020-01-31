@@ -11,13 +11,14 @@ public class Sword : MonoBehaviour
     [SerializeField]
     private Text resultText;
 
-    private TaskManager.ShapingTask shapingTask;
+    //private TaskManager.ShapingTask shapingTask;
 
     private int width;
 
     // Start is called before the first frame update
     void Start()
     {
+        /*
         TaskManager.CreateTask(out shapingTask);
 
         if (shapingTask.TargetWidth > 5)
@@ -30,6 +31,7 @@ public class Sword : MonoBehaviour
             Debug.Log("I want a thin sword!");
             resultText.text = "I want a thin sword!";
         }
+         */
     }
 
     private void Update()
@@ -52,7 +54,7 @@ public class Sword : MonoBehaviour
 
     public void FinishWeapon()
     {
-        Debug.Log("Width offset: " + (shapingTask.TargetWidth - width));
-        resultText.text = "Width offset: " + (shapingTask.TargetWidth - width);
+        //Debug.Log("Width offset: " + (shapingTask.TargetWidth - width));
+        //resultText.text = "Width offset: " + (shapingTask.TargetWidth - width);
     }
 }
