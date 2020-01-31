@@ -313,6 +313,7 @@ GameObject:
   m_Component:
   - component: {fileID: 544947145}
   - component: {fileID: 544947144}
+  - component: {fileID: 544947146}
   m_Layer: 0
   m_Name: TaskManager
   m_TagString: Untagged
@@ -332,10 +333,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f1df2981628fd14c8a34a935d530201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinTargetWidth: 0
-  MaxTargetWidth: 0
-  MinTargetSharpness: 0
-  MaxTargetSharpness: 0
+  MinTargetWidth: 1
+  MaxTargetWidth: 1
+  MinTargetSharpness: 1
+  MaxTargetSharpness: 1
 --- !u!4 &544947145
 Transform:
   m_ObjectHideFlags: 0
@@ -350,6 +351,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &544947146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544947143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 497d43df68e7f8e4db32b2abf8c5cf79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Jobs:
+  - Time: 0
+    tasks:
+    - {fileID: 11400000, guid: 36e991de4969e474187a85ef1f700529, type: 2}
+  - Time: 0
+    tasks: []
 --- !u!1 &632315279
 GameObject:
   m_ObjectHideFlags: 0

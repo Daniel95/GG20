@@ -11,6 +11,7 @@ public class JobLibrary : MonoBehaviour
     public struct Job
     {
         public int Time;
+        public string Description;
         public List<ScriptableObject> tasks;
     }
 }
