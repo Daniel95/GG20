@@ -17,9 +17,9 @@ public class DescriptionTextScript : MonoBehaviour
         Player.StartJobEvent += OnStartJob;
     }
 
-    private void OnStartJob(string desc, int time)
+    private void OnStartJob(WorkManager.Job job)
     {
-        text.text = desc;
+        text.text = job.Description;
     }
 
     private void OnDisable()

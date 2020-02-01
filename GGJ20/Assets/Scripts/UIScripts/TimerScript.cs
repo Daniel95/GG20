@@ -16,7 +16,7 @@ public class TimerScript : MonoBehaviour
         Player.StartJobEvent += OnStartJob;
     }
 
-    private void OnStartJob(string desc, int time)
+    private void OnStartJob(WorkManager.Job job)
     {
     }
 

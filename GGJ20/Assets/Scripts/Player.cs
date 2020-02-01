@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Params: Description, Time
     /// </summary>
-    public static Action<string, int>StartJobEvent;
+    public static Action<WorkManager.Job> StartJobEvent;
     /// <summary>
     /// Params: WorkManager.TaskType
     /// </summary>
@@ -54,6 +54,21 @@ public class Player : MonoBehaviour
         
 
         taskManagers = FindObjectsOfType<TaskManagerBase>().ToList();
+    }
+
+    public void OnNextButton()
+    {
+        if (isWorking)
+        {
+            if (NextTask())
+            {
+
+            }
+            else
+            {
+                isWorking = false;
+            }
+        }
     }
 
     void Update()
@@ -96,13 +111,15 @@ public class Player : MonoBehaviour
         fp = 0.1f;
     }
 
-    public  WorkManager.Job StartJob()
+    public void StartJob()
     {
         isWorking = true;
         job = WorkManager.Instance.ChooseJob();
 
         if (StartJobEvent != null)
-            StartJobEvent(job.Description, job.Time);
+        {
+            StartJobEvent(job);
+        }
 
         print(job.Description);
         print(job.Time);
@@ -110,21 +127,19 @@ public class Player : MonoBehaviour
         taskIndex = 0;
 
         StartTask(0);
-
-        return job;
     }
 
-    public void NextTask()
+    public bool NextTask()
     {
         if(taskIndex >= job.Tasks.Count)
         {
             isWorking = false;
-            return;
+            return false;
         }
 
         taskIndex++;
         StartTask(taskIndex);
-
+        return true;
     }
 
     private void StartTask(int taskIndex)

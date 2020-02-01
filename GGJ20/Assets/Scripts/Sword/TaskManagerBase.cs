@@ -45,7 +45,6 @@ public abstract class TaskManagerBase : MonoBehaviour
         isActivated = false;
     }
 
-
     IEnumerator LerpWeapon()
     {
         float fp = 1;
