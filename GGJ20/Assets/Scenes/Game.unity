@@ -442,10 +442,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraHooks:
-  - {fileID: 632315279}
   - {fileID: 1861331122}
-  - {fileID: 566738481}
+  - {fileID: 632315279}
   - {fileID: 221263106}
+  - {fileID: 566738481}
   isWorking: 0
 --- !u!4 &482423695
 Transform:
