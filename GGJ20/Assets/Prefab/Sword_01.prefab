@@ -321,6 +321,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1752977810448385672}
+  - component: {fileID: 5782536344346304329}
   m_Layer: 0
   m_Name: Sword_01
   m_TagString: Sword
@@ -343,6 +344,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5782536344346304329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752977810448385673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f98e01fc6ae0d438efa59534bcc653, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blade: {fileID: 6713003136873399375}
 --- !u!1 &3613240401731046340
 GameObject:
   m_ObjectHideFlags: 0
