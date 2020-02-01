@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
     private Coroutine cameraSlerpCoroutine;
     private Coroutine swordSlerpCoroutine;
 
+    private bool startedJob;
+
     public bool IsWorking() { return currentTaskType != WorkManager.TaskType.None; }
     public bool IsAtCounter() { return currentTaskType == WorkManager.TaskType.None; }
 
@@ -41,7 +43,6 @@ public class Player : MonoBehaviour
         GetLerpPoints();
 
         //stuff for camera slerping
-        mainCam = GameObject.FindWithTag("MainCamera");
         mainCam = GameObject.FindWithTag("MainCamera");
 
         //njeh
@@ -58,18 +59,20 @@ public class Player : MonoBehaviour
 
     public void OnNextButton()
     {
-        if (IsWorking())
+        if (startedJob)
         {
             bool startedTask = NextTask();
 
             if (!startedTask)
             {
+                startedJob = false;
                 GoToCounter();
             }
         }
         else 
         {
             StartJob();
+            startedJob = true;
         }
     }
 
@@ -99,20 +102,19 @@ public class Player : MonoBehaviour
         sword = GameObject.FindGameObjectWithTag("Sword");
 
         taskIndex = 0;
-
-        StartTask(0);
     }
 
     public bool NextTask()
     {
-        taskIndex++;
 
         if(taskIndex >= job.Tasks.Count)
         {
             return false;
         }
 
+
         StartTask(taskIndex);
+        taskIndex++;
         return true;
     }
 
