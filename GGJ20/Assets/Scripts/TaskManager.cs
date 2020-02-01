@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -22,14 +23,28 @@ public class TaskManager : MonoBehaviour
         }
     }
 
-    [Category("Shaping")]
-    [SerializeField] [Range(1, 10)] private int MinTargetWidth;
-    [SerializeField] [Range(1, 10)] private int MaxTargetWidth;
+    [SerializeField] private JobLibraryScriptableObject jobLibrary;
 
-    [Category("Sharpening")]
-    [SerializeField] [Range(1, 10)] private int MinTargetSharpness;
-    [SerializeField] [Range(1, 10)] private int MaxTargetSharpness;
+    public Job ChooseJob()
+    {
+        int randomIndex = UnityEngine.Random.Range(0, jobLibrary.Jobs.Count);
+        Job job = jobLibrary.Jobs[randomIndex];
 
+        Debug.Log(job.Description);
+        Debug.Log(job.Time);
+
+        return job;
+    }
+
+    [Serializable]
+    public struct Job
+    {
+        public int Time;
+        public string Description;
+        public List<ScriptableObject> Tasks;
+    }
+
+    /*
     public static void CreateTask(out ShapingTask shapingTask)
     {
         shapingTask = new ShapingTask();
@@ -42,13 +57,16 @@ public class TaskManager : MonoBehaviour
         sharpeningTask.TargetSharpness = Random.Range(Instance.MinTargetSharpness, Instance.MaxTargetSharpness);
     }
 
-    public struct ShapingTask
+    public class Task { }
+
+    public class ShapingTask : Task
     {
         public int TargetWidth;
     }
 
-    public struct SharpeningTask
+    public class SharpeningTask
     {
         public int TargetSharpness;
     }
+     */
 }
