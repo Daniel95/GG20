@@ -14,29 +14,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Jobs:
   - Time: 30
+    CustomerName: Harold
+    CustomerModel: {fileID: 1971335604615350813, guid: 976c9fa6803270049ae6a85cc5c9f094,
+      type: 3}
     Description: I need my sword to be able to slash trough ice!
     Tasks:
     - {fileID: 11400000, guid: 4ce3ac1eca7117742b5ceabf3632a317, type: 2}
   - Time: 35
+    CustomerName: Gert
+    CustomerModel: {fileID: 1971335604615350813, guid: 976c9fa6803270049ae6a85cc5c9f094,
+      type: 3}
     Description: My sword is so thin it keeps breaking!
     Tasks:
     - {fileID: 11400000, guid: 36e991de4969e474187a85ef1f700529, type: 2}
   - Time: 10
+    CustomerName: Samson
+    CustomerModel: {fileID: 1971335604615350813, guid: 976c9fa6803270049ae6a85cc5c9f094,
+      type: 3}
     Description: Quick!! I need a cold sword...NOW!!
     Tasks:
     - {fileID: 11400000, guid: a1c291135e1c9124799a49fdbd4c8a28, type: 2}
   - Time: 40
+    CustomerName: Axel
+    CustomerModel: {fileID: 1971335604615350813, guid: 976c9fa6803270049ae6a85cc5c9f094,
+      type: 3}
     Description: My sword needs to be thin and able to boil water...for making coffee!
     Tasks:
     - {fileID: 11400000, guid: a4c190f01e21a434c909d458770fd91b, type: 2}
     - {fileID: 11400000, guid: 4ce3ac1eca7117742b5ceabf3632a317, type: 2}
   - Time: 45
+    CustomerName: Zero
+    CustomerModel: {fileID: 1971335604615350813, guid: 976c9fa6803270049ae6a85cc5c9f094,
+      type: 3}
     Description: My sword needs to be thick like a popsicle, but not hot please.
       It hurts when I lick it.
     Tasks:
     - {fileID: 11400000, guid: 36e991de4969e474187a85ef1f700529, type: 2}
     - {fileID: 11400000, guid: 4ce3ac1eca7117742b5ceabf3632a317, type: 2}
   - Time: 35
+    CustomerName: Holyshock
+    CustomerModel: {fileID: 1971335604615350813, guid: 976c9fa6803270049ae6a85cc5c9f094,
+      type: 3}
     Description: 'My sword needs to be hotter then the sun! '
     Tasks:
     - {fileID: 11400000, guid: fb5a342b441c70546909737551628c58, type: 2}

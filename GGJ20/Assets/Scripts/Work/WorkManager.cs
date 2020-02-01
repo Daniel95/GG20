@@ -11,15 +11,19 @@ public class WorkManager : MonoBehaviour
 {
     public enum TaskType
     {
+        None = -1,
         Shaping,
         Sharpening,
-        Heating
+        Heating,
+        UnBumping
     }
 
     [Serializable]
     public struct Job
     {
         public int Time;
+        public string CustomerName;
+        public GameObject CustomerModel;
         public string Description;
         [ReorderableList]
         public List<TaskScriptableObject> Tasks;
@@ -52,30 +56,4 @@ public class WorkManager : MonoBehaviour
 
         return job;
     }
-
-    /*
-    public static void CreateTask(out ShapingTask shapingTask)
-    {
-        shapingTask = new ShapingTask();
-        shapingTask.TargetWidth = Random.Range(Instance.MinTargetWidth, Instance.MaxTargetWidth);
-    }
-
-    public static void CreateTask(out SharpeningTask sharpeningTask)
-    {
-        sharpeningTask = new SharpeningTask();
-        sharpeningTask.TargetSharpness = Random.Range(Instance.MinTargetSharpness, Instance.MaxTargetSharpness);
-    }
-
-    public class Task { }
-
-    public class ShapingTask : Task
-    {
-        public int TargetWidth;
-    }
-
-    public class SharpeningTask
-    {
-        public int TargetSharpness;
-    }
-     */
 }

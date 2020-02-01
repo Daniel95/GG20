@@ -28,7 +28,7 @@ public class HeatingTaskManager : TaskManagerBase
 
     private void Update()
     {
-        if(!active) { return; }
+        if(!isActivated) { return; }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -46,6 +46,12 @@ public class HeatingTaskManager : TaskManagerBase
     public override WorkManager.TaskType GetTaskType()
     {
         return WorkManager.TaskType.Heating;
+    }
+
+    public override void SetTaskObject(TaskScriptableObject a_taskScriptableObject)
+    {
+        var task = a_taskScriptableObject as HeatingTaskScriptableObject;
+        targetHeat = task.TargetHeat;
     }
 }
 
