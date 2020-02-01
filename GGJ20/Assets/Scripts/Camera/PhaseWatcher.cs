@@ -16,6 +16,7 @@ public class PhaseWatcher : MonoBehaviour
     private void Start()
     {
         currHookIndx = 0;
+        prevHookIndx = cameraHooks.Count;
         if (cameraHooks.Count <= 0)
         {
             Debug.LogError("define camera hooks, you buffoon");
@@ -41,18 +42,17 @@ public class PhaseWatcher : MonoBehaviour
 
     public void NextPhase()
     {
+        Debug.Log("Next Phase");
         if((currHookIndx + 1) < cameraHooks.Count)
         {
             //safe
-            prevHookIndx = currHookIndx;
-            currHookIndx++;
+            GoToPhase(currHookIndx+1);
             fp = 0.1f;
         }
         else
         {
             //wrap to first phase
-            prevHookIndx = currHookIndx;
-            currHookIndx = 0;
+            GoToPhase(0);
             fp = 0.1f;
         }
     }
@@ -61,5 +61,8 @@ public class PhaseWatcher : MonoBehaviour
     {
         prevHookIndx = currHookIndx;
         currHookIndx = phaseIndex;
+
+        cameraHooks[prevHookIndx].GetComponentInParent<Task>().EndTask();
+        cameraHooks[currHookIndx].GetComponentInParent<Task>().StartTask();
     }
 }
