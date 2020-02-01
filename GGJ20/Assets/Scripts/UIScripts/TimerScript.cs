@@ -11,9 +11,11 @@ public class TimerScript : MonoBehaviour
     private float fl = 0.1f;
     private float quarterMark = 0f;
     private Vector3 clockScale;
+    private bool working;
 
     private void Start()
     {
+        working = false;
         Player.StartJobEvent += OnStartJob;
         clockImage = GetComponent<Image>();
         clockScale = transform.localScale;
@@ -22,6 +24,9 @@ public class TimerScript : MonoBehaviour
 
     private void Update()
     {
+        if (!working)
+            return; 
+
         if(timeLeft >= 0)
         {
             //Debug.Log("clock is ticking");
@@ -53,6 +58,7 @@ public class TimerScript : MonoBehaviour
         timeLeft = timeLimit;
         quarterMark = timeLimit * 0.25f;    //get 25% of time
         Debug.Log("Do it in " + job.Time + " seconds");
+        working = true;
     }
 
     //private void OnEnable()
