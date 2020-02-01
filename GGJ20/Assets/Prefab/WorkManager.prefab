@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sword: {fileID: 0}
+  swordDetails: {fileID: 0}
   shapingXScaleIncrement: 0.3
   heatPoint: {fileID: 0}
 --- !u!114 &7584844526480015934
@@ -75,6 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sword: {fileID: 0}
+  swordDetails: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -93,4 +95,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sword: {fileID: 0}
-  deformSharpingAmount: 0.1
+  swordDetails: {fileID: 0}
+  deformSharpingAmount: 1
