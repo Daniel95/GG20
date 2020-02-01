@@ -8,14 +8,7 @@ using NaughtyAttributes;
 
 public class Player : MonoBehaviour
 {
-    [Serializable]
-    public struct TaskPair
-    {
-        public WorkManager.TaskType TaskType;
-        public TaskManager TaskObject;
-    }
-
-    [SerializeField] [ReorderableList] private List<TaskPair> taskManagerPairs;
+    private List<TaskManagerBase> taskManagers;
 
     /// <summary>
     /// Params: Description, Time
@@ -31,6 +24,11 @@ public class Player : MonoBehaviour
 
     [HideInInspector]
     public bool isWorking;
+
+    private void Awake()
+    {
+        taskManagers = FindObjectsOfType<TaskManagerBase>().ToList();
+    }
 
     public  WorkManager.Job StartJob()
     {
@@ -71,15 +69,14 @@ public class Player : MonoBehaviour
         if(StartTaskEvent != null)
             StartTaskEvent(taskType);
 
-        if (!taskManagerPairs.Exists(x => x.TaskType == taskType))
+        if (!taskManagers.Exists(x => x.GetTaskType() == taskType))
         {
             Debug.LogError("VERY BAD");
             return;
         }
 
-        TaskPair taskTypeTaskObjectPair = taskManagerPairs.Find(x => x.TaskType == taskType);
-        TaskManager taskObject = taskTypeTaskObjectPair.TaskObject;
-        taskObject.Activate();
+        TaskManagerBase taskManagerBase = taskManagers.Find(x => x.GetTaskType() == taskType);
+        taskManagerBase.Activate();
 
         switch (taskType)
         {
@@ -91,7 +88,7 @@ public class Player : MonoBehaviour
 
                 break;
             case WorkManager.TaskType.Heating:
-                HeatingTaskManager heatingTaskMan = (HeatingTaskManager) taskObject;
+                HeatingTaskManager heatingTaskMan = (HeatingTaskManager)taskManagerBase;
                 HeatingTaskScriptableObject heatingTaskScriptableObject = (HeatingTaskScriptableObject)taskScriptableObject;
                 heatingTaskMan.SetTargetHeat(heatingTaskScriptableObject.TargetHeat);
 
