@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using NaughtyAttributes;
 
 [CreateAssetMenu(fileName = "SharpeningTask", menuName = "ScriptableObjects/SharpeningTask", order = 1)]
 public class SharpeningTaskScriptableObject : TaskScriptableObject
 {
-    public int TargetSharpness;
+    [InfoBox("0 = sharp, negative is getting noise again, positive is noise.")]
+    public float targetSharpness = 0.0f;
 
     public override WorkManager.TaskType GetTaskType()
     {

@@ -321,6 +321,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1752977810448385672}
+  - component: {fileID: 5782536344346304329}
   m_Layer: 0
   m_Name: Sword_01
   m_TagString: Sword
@@ -343,6 +344,72 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5782536344346304329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752977810448385673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f98e01fc6ae0d438efa59534bcc653, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blade: {fileID: 6713003136873399375}
+--- !u!1 &3613240401731046340
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2211955112131062643}
+  - component: {fileID: 7595029442422053642}
+  m_Layer: 0
+  m_Name: Perlin Noise
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2211955112131062643
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3613240401731046340}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4.2653008, y: 4.2653008, z: 4.2653017}
+  m_Children: []
+  m_Father: {fileID: 3839247246959728503}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7595029442422053642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3613240401731046340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf7c8b14c36b67d41b7c0ca8bb4c9d25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  update: 1
+  mode: 0
+  magnitudeScalar: 0.25
+  magnitudeVector: {x: 0, y: 0, z: 1}
+  frequencyScalar: 10
+  frequencyVector: {x: 1, y: 1, z: 1}
+  offsetVector: {x: 0, y: 0, z: 0, w: 0}
+  offsetSpeedScalar: 1
+  offsetSpeedVector: {x: 0, y: 0, z: 0, w: 0}
+  axis: {fileID: 2211955112131062643}
 --- !u!1 &3955215747196711861
 GameObject:
   m_ObjectHideFlags: 0
@@ -2535,8 +2602,10 @@ MonoBehaviour:
   - component: {fileID: 1752977810304896931}
     active: 1
   - component: {fileID: 1752977809412076195}
-    active: 1
+    active: 0
   - component: {fileID: 2310513479369352488}
+    active: 1
+  - component: {fileID: 7595029442422053642}
     active: 1
   customBounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -2680,9 +2749,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1752977809543114581}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4286991156841157569 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2534866581884222612, guid: d75d4dfa5d61d6949a0eba41b2535c7f,
+--- !u!33 &4541738989579305892 stripped
+MeshFilter:
+  m_CorrespondingSourceObject: {fileID: 2834078683115760881, guid: d75d4dfa5d61d6949a0eba41b2535c7f,
     type: 3}
   m_PrefabInstance: {fileID: 1752977809543114581}
   m_PrefabAsset: {fileID: 0}
@@ -2692,9 +2761,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1752977809543114581}
   m_PrefabAsset: {fileID: 0}
---- !u!33 &4541738989579305892 stripped
-MeshFilter:
-  m_CorrespondingSourceObject: {fileID: 2834078683115760881, guid: d75d4dfa5d61d6949a0eba41b2535c7f,
+--- !u!1 &4286991156841157569 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2534866581884222612, guid: d75d4dfa5d61d6949a0eba41b2535c7f,
     type: 3}
   m_PrefabInstance: {fileID: 1752977809543114581}
   m_PrefabAsset: {fileID: 0}

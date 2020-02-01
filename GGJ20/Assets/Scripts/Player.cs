@@ -14,11 +14,16 @@ public class Player : MonoBehaviour
     private GameObject sword = null;
 
     private List<TaskManagerBase> taskManagers;
+    private Dictionary<WorkManager.TaskType, float> weaponResultOffsets = new Dictionary<WorkManager.TaskType, float>();
 
     /// <summary>
-    /// Params: Description, Time
+    /// Params: Job
     /// </summary>
     public static Action<WorkManager.Job> StartJobEvent;
+    /// <summary>
+    /// Params: Job
+    /// </summary>
+    public static Action<Dictionary<WorkManager.TaskType, float>> EndJobEvent;
     /// <summary>
     /// Params: WorkManager.TaskType
     /// </summary>
@@ -83,10 +88,16 @@ public class Player : MonoBehaviour
         Transform counterSwordTransform = cameraHooks.Find(x => x.taskType == WorkManager.TaskType.None).transform;
 
         SlerpCameraAndSword(counterCameraTransform, counterSwordTransform);
+
+        //task type.getoffset
+
+        EndJobEvent?.Invoke(weaponResultOffsets);   //wow
+
     }
 
     public void StartJob()
     {
+
         Debug.Log("Start the job, lazybum");
         job = WorkManager.Instance.ChooseJob();
 
@@ -94,6 +105,8 @@ public class Player : MonoBehaviour
         {
             StartJobEvent(job);
         }
+        
+        weaponResultOffsets.Clear();
 
         print(job.Description);
         print(job.Time);
@@ -107,6 +120,8 @@ public class Player : MonoBehaviour
     {
         if (taskManagerBase != null)
         {
+            //store offset
+            StoreTaskOffset(taskManagerBase, weaponResultOffsets);
             taskManagerBase.Deactivate();
         }
 
@@ -220,6 +235,22 @@ public class Player : MonoBehaviour
         if (OnCompleted != null)
         {
             OnCompleted();
+        }
+    }
+
+    private void StoreTaskOffset(TaskManagerBase task, Dictionary<WorkManager.TaskType, float> container)
+    {
+        if (!container.ContainsKey(task.GetTaskType()))
+        {
+            //key was not found before, just add
+            container.Add(task.GetTaskType(), task.GetOffsetFromTarget());
+        }
+        else
+        {
+            //the same task has already occurred in this job. So instead add the 2 results & clamp
+            float newOffset = task.GetOffsetFromTarget() + container[task.GetTaskType()];
+            newOffset = Mathf.Clamp(newOffset, -1, 1);
+            container[task.GetTaskType()] = newOffset;
         }
     }
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7584844526480015907}
   - component: {fileID: 7584844526480015905}
   - component: {fileID: 7584844526480015934}
+  - component: {fileID: 1138957128511686154}
   m_Layer: 0
   m_Name: WorkManager
   m_TagString: Untagged
@@ -79,3 +80,17 @@ MonoBehaviour:
     m_Bits: 256
   deformHitAmount: 0.1
   ripplenessMinMax: {x: -0.5, y: 0.5}
+--- !u!114 &1138957128511686154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7584844526480015906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b808be3b3a862b41ae268dcb864fdfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sword: {fileID: 0}
+  deformSharpingAmount: 0.1
