@@ -43,13 +43,13 @@ public class Customer : MonoBehaviour
         //add lil scale effect on each 25% completed
         if(timeLeft % quarterMark >= -0.1f && timeLeft % quarterMark < 0.1f)
         {
-            Debug.Log("FEEDBACK YES");
+            //Debug.Log("FEEDBACK YES");
             clockImage.transform.localScale *= 1.05f;
             fl = 0.1f;
         }
         else /*if (clockImage.transform.localScale.x <= clockScale.x - 0.01f && clockImage.transform.localScale.x >= clockScale.x + 0.01f)*/
         {
-            Debug.Log("Scale timer back down");
+            //Debug.Log("Scale timer back down");
             clockImage.transform.localScale = Vector3.Lerp(clockImage.transform.localScale, clockScale, fl);
             fl += Time.deltaTime;
         }
