@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using NaughtyAttributes;
 
 public class Player : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class Player : MonoBehaviour
         public TaskManager TaskObject;
     }
 
-    [SerializeField] private List<TaskPair> taskManagerPairs;
+    [SerializeField] [ReorderableList] private List<TaskPair> taskManagerPairs;
 
     /// <summary>
     /// Params: Description, Time
