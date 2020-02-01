@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -441,6 +441,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8fa798e05458a148a811c8cbcc830ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraHooks:
+  - {fileID: 632315279}
+  - {fileID: 1861331122}
+  - {fileID: 566738481}
+  - {fileID: 221263106}
   isWorking: 0
 --- !u!4 &482423695
 Transform:
@@ -1043,6 +1048,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1264359020}
+  - component: {fileID: 1264359021}
   m_Layer: 0
   m_Name: Stall
   m_TagString: Untagged
