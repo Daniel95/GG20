@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using NaughtyAttributes;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PhaseWatcher : MonoBehaviour
 {
+    [ReorderableList]
     public List<GameObject> cameraHooks;
     [SerializeField]
     private GameObject mainCam = null;
