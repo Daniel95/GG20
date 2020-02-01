@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class TaskManagerBase : MonoBehaviour
 {
     public GameObject sword;
+    public Sword swordDetails = null;
     protected bool isActivated;
     public abstract float GetOffsetFromTarget();
     public abstract WorkManager.TaskType GetTaskType();
@@ -14,6 +15,7 @@ public abstract class TaskManagerBase : MonoBehaviour
     private void Awake()
     {
         sword = GameObject.FindGameObjectWithTag("Sword");
+        swordDetails = sword.GetComponent<Sword>();
     }
 
     public virtual void Activate()

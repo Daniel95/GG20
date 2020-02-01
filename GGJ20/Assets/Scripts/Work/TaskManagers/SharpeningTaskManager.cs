@@ -49,10 +49,9 @@ public class SharpeningTaskManager : TaskManagerBase
             deformer.MagnitudeScalar -= deformSharpingAmount * Time.deltaTime;
             deformer.MagnitudeScalar = Mathf.Max(deformer.MagnitudeScalar, 0.0f);
 
-            if(deformer.MagnitudeScalar <= 0.0f && sword.transform.localScale.z >= 0.0f)
-            {   
-                //TODO: get blade.
-                sword.transform.localScale -= new UnityEngine.Vector3(0, 0, deformSharpingAmount) * Time.deltaTime;
+            if(deformer.MagnitudeScalar <= 0.0f && swordDetails.blade.localScale.z >= 0.0f)
+            {
+                swordDetails.blade.localScale -= new UnityEngine.Vector3(0, 0, deformSharpingAmount) * Time.deltaTime;
             }
         }
     }
