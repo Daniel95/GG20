@@ -13,21 +13,21 @@ MonoBehaviour:
   m_Name: JobLibrary
   m_EditorClassIdentifier: 
   Jobs:
-  - Time: 30
+  - Time: 32
     CustomerName: Harold
     CustomerModel: {fileID: 1971335604615350813, guid: 976c9fa6803270049ae6a85cc5c9f094,
       type: 3}
     Description: I need my sword to be able to slash trough ice!
     Tasks:
     - {fileID: 11400000, guid: 4ce3ac1eca7117742b5ceabf3632a317, type: 2}
-  - Time: 35
+  - Time: 32
     CustomerName: Gert
     CustomerModel: {fileID: 1971335604615350813, guid: 976c9fa6803270049ae6a85cc5c9f094,
       type: 3}
     Description: My sword is so thin it keeps breaking!
     Tasks:
     - {fileID: 11400000, guid: 36e991de4969e474187a85ef1f700529, type: 2}
-  - Time: 10
+  - Time: 16
     CustomerName: Samson
     CustomerModel: {fileID: 1971335604615350813, guid: 976c9fa6803270049ae6a85cc5c9f094,
       type: 3}
@@ -42,7 +42,7 @@ MonoBehaviour:
     Tasks:
     - {fileID: 11400000, guid: a4c190f01e21a434c909d458770fd91b, type: 2}
     - {fileID: 11400000, guid: 4ce3ac1eca7117742b5ceabf3632a317, type: 2}
-  - Time: 45
+  - Time: 48
     CustomerName: Zero
     CustomerModel: {fileID: 1971335604615350813, guid: 976c9fa6803270049ae6a85cc5c9f094,
       type: 3}
@@ -51,7 +51,7 @@ MonoBehaviour:
     Tasks:
     - {fileID: 11400000, guid: 36e991de4969e474187a85ef1f700529, type: 2}
     - {fileID: 11400000, guid: 4ce3ac1eca7117742b5ceabf3632a317, type: 2}
-  - Time: 35
+  - Time: 32
     CustomerName: Holyshock
     CustomerModel: {fileID: 1971335604615350813, guid: 976c9fa6803270049ae6a85cc5c9f094,
       type: 3}
