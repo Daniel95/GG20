@@ -88,6 +88,7 @@ public class Player : MonoBehaviour
 
     public void StartJob()
     {
+        Debug.Log("Start the job, lazybum");
         job = WorkManager.Instance.ChooseJob();
 
         if (StartJobEvent != null)
