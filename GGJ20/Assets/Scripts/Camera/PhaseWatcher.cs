@@ -63,8 +63,5 @@ public class PhaseWatcher : MonoBehaviour
     {
         prevHookIndx = currHookIndx;
         currHookIndx = phaseIndex;
-
-        cameraHooks[prevHookIndx].GetComponentInParent<Task>().EndTask();
-        cameraHooks[currHookIndx].GetComponentInParent<Task>().StartTask();
     }
 }

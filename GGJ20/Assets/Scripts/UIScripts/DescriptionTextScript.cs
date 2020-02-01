@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimerScript : MonoBehaviour
+public class DescriptionTextScript : MonoBehaviour
 {
     private Text text;
+
     private void Start()
     {
-        
+        text = GetComponent<Text>();
     }
 
     private void OnEnable()
@@ -18,11 +19,13 @@ public class TimerScript : MonoBehaviour
 
     private void OnStartJob(string desc, int time)
     {
+        text.text = desc;
     }
 
     private void OnDisable()
     {
-        //text.text = "";
+        text.text = "";
         Player.StartJobEvent -= OnStartJob;
     }
+
 }
