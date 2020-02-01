@@ -1112,7 +1112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToFix: 20
-  patience: 1
+  patience: 2
   clockImage: {fileID: 1539465781}
 --- !u!1 &1191604836
 GameObject:
