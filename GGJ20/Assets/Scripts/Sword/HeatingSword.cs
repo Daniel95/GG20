@@ -10,8 +10,20 @@ public class HeatingSword : TaskObject
 
     [SerializeField] private Text resultText;
 
-    private int targetWidth;
-    private int currentWidth;
+    private int targetHeat;
+    private int currentHeat;
+
+    public void SetTargetHeat(int _targetHead)
+    {
+        targetHeat = _targetHead;
+    }
+
+    public override void Deactivate()
+    {
+        base.Deactivate();
+        targetHeat = 0;
+        currentHeat = 0;
+    }
 
     private void Update()
     {
@@ -19,7 +31,7 @@ public class HeatingSword : TaskObject
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            currentWidth++;
+            currentHeat++;
             float newXScale = transform.localScale.x + shapingXScaleIncrement;
             transform.localScale = new Vector3(newXScale, transform.localScale.y, transform.localScale.z);
         }
@@ -27,6 +39,6 @@ public class HeatingSword : TaskObject
 
     public override int GetOffsetFromTarget()
     {
-        return Mathf.Abs(targetWidth - currentWidth);
+        return Mathf.Abs(targetHeat - currentHeat);
     }
 }

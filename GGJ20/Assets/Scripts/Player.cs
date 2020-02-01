@@ -8,13 +8,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Serializable]
-    public struct TaskTypePrefab
+    public struct TaskTypeTaskObjectPair
     {
         public WorkManager.TaskType TaskType;
-        public GameObject Prefab;
+        public TaskObject TaskObject;
     }
 
-    [SerializeField] private List<TaskTypePrefab> taskTypePrefabs;
+    [SerializeField] private List<TaskTypeTaskObjectPair> taskTypePrefabs;
 
     /// <summary>
     /// Params: Description, Time
@@ -28,9 +28,6 @@ public class Player : MonoBehaviour
 
     private WorkManager.Job job;
     private int taskIndex = 0;
-
-    private WorkManager.TaskType taskType;
-    private TaskScriptableObject taskScriptableObject;
 
     public  WorkManager.Job StartJob()
     {
@@ -56,13 +53,14 @@ public class Player : MonoBehaviour
 
     private void StartTask(int taskIndex)
     {
-        taskScriptableObject = job.Tasks[taskIndex];
-        taskType = taskScriptableObject.GetTaskType();
+        TaskScriptableObject taskScriptableObject = job.Tasks[taskIndex];
+        WorkManager.TaskType taskType = taskScriptableObject.GetTaskType();
 
         OnStartTaskEvent(taskType);
 
-        TaskTypePrefab taskTypePrefab = taskTypePrefabs.Find(x => x.TaskType == taskType);
-        Instantiate(taskTypePrefab.Prefab);
+        TaskTypeTaskObjectPair taskTypeTaskObjectPair = taskTypePrefabs.Find(x => x.TaskType == taskType);
+        TaskObject taskObject = taskTypeTaskObjectPair.TaskObject;
+        taskObject.Activate();
 
         switch (taskType)
         {
@@ -74,6 +72,9 @@ public class Player : MonoBehaviour
 
                 break;
             case WorkManager.TaskType.Heating:
+                HeatingSword heatingSword = (HeatingSword) taskObject;
+                HeatingTaskScriptableObject heatingTaskScriptableObject = (HeatingTaskScriptableObject)taskScriptableObject;
+                heatingSword.SetTargetHeat(heatingTaskScriptableObject.TargetHeat);
 
                 break;
             default:
