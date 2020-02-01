@@ -1,10 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Deform;
 
 public class UnBumpTaskManager : TaskManagerBase
 {
+    [SerializeField]
+    private LayerMask layerMask = new LayerMask();
+    [SerializeField]
+    private float deformHitAmount = 0.1f;
+    [SerializeField]
+    private Vector2 ripplenessMinMax = new Vector2(-0.5f, 0.5f);
+
     private UnBumpTaskScriptableObject curTask = null;
+    private Dictionary<RippleDeformer, float> deformHitAmounts = new Dictionary<RippleDeformer, float>();
 
     public override int GetOffsetFromTarget()
     {
@@ -33,8 +42,21 @@ public class UnBumpTaskManager : TaskManagerBase
             return;
         }
 
-        //Hammer func.
-        //sword
+        //TODO: Hammer swing functionality.
+        
+        if(Input.GetMouseButtonUp(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 10.0f, layerMask))
+            {
+                if(hit.transform.TryGetComponent<RippleDeformer>(out RippleDeformer deformer))
+                {
+                    //Hit ripple.
+                    deformer.Amplitude -= deformHitAmount;
+                    deformer.Amplitude = Mathf.Clamp(deformer.Amplitude, ripplenessMinMax.x, ripplenessMinMax.y);
+                }
+            }
+        }
     }
 
     public override void SetTaskObject(TaskScriptableObject a_taskScriptableObject)
