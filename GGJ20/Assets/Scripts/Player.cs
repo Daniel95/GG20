@@ -63,8 +63,8 @@ public class Player : MonoBehaviour
 
     private void StartTask(int taskIndex)
     {
-        TaskScriptableObject taskScriptableObject = job.Tasks[taskIndex];
-        WorkManager.TaskType taskType = taskScriptableObject.GetTaskType();
+        TaskScriptableObject taskData = job.Tasks[taskIndex];
+        WorkManager.TaskType taskType = taskData.GetTaskType();
 
         if(StartTaskEvent != null)
             StartTaskEvent(taskType);
@@ -77,24 +77,28 @@ public class Player : MonoBehaviour
 
         TaskManagerBase taskManagerBase = taskManagers.Find(x => x.GetTaskType() == taskType);
         taskManagerBase.Activate();
+        taskManagerBase.SetTaskObject(taskData);
 
-        switch (taskType)
-        {
-            case WorkManager.TaskType.Shaping:
-                //GetComponent shaprening logic etc
+        //switch (taskType)
+        //{
+        //    case WorkManager.TaskType.Shaping:
+        //        //GetComponent shaprening logic etc
 
-                break;
-            case WorkManager.TaskType.Sharpening:
+        //        break;
+        //    case WorkManager.TaskType.Sharpening:
 
-                break;
-            case WorkManager.TaskType.Heating:
-                HeatingTaskManager heatingTaskMan = (HeatingTaskManager)taskManagerBase;
-                HeatingTaskScriptableObject heatingTaskScriptableObject = (HeatingTaskScriptableObject)taskScriptableObject;
-                heatingTaskMan.SetTargetHeat(heatingTaskScriptableObject.TargetHeat);
-
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        //        break;
+        //    case WorkManager.TaskType.Heating:
+        //        HeatingTaskManager heatingTaskMan = (HeatingTaskManager)taskManagerBase;
+        //        HeatingTaskScriptableObject heatingTaskScriptableObject = (HeatingTaskScriptableObject)taskScriptableObject;
+        //        heatingTaskMan.SetTargetHeat(heatingTaskScriptableObject.TargetHeat);
+        //        break;
+        //    case WorkManager.TaskType.UnBumping:
+        //        UnBumpTaskManager unBumpTaskManager = (UnBumpTaskManager)taskManagerBase;
+                
+        //        break;
+        //    default:
+        //        throw new ArgumentOutOfRangeException();
+        //}
     }
 }

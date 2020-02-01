@@ -6,9 +6,10 @@ using UnityEngine;
 public abstract class TaskManagerBase : MonoBehaviour
 {
     protected GameObject sword;
-    protected bool active;
+    protected bool isActivated;
     public abstract int GetOffsetFromTarget();
     public abstract WorkManager.TaskType GetTaskType();
+    public abstract void SetTaskObject(TaskScriptableObject a_taskScriptableObject);
 
     private void Awake()
     {
@@ -30,7 +31,7 @@ public abstract class TaskManagerBase : MonoBehaviour
 
     public virtual void Activate()
     {
-        active = true;
+        isActivated = true;
 
         Transform swordTeleportPoint = GetSwordTeleportPoint();
 
@@ -40,6 +41,7 @@ public abstract class TaskManagerBase : MonoBehaviour
 
     public virtual void Deactivate()
     {
-        active = false;
+        isActivated = false;
     }
+
 }
