@@ -24,6 +24,8 @@ public class AudioController : MonoBehaviour
 
     void Start()
     {
+        Player.StartJobEvent += StartMusic;
+        Player.StartTaskEvent += NextStage;
         initialized = false;
 
         for (int i = 0; i < numberOfLayers; i++)
@@ -51,7 +53,7 @@ public class AudioController : MonoBehaviour
 
         if (Input.GetKeyDown("e"))
         {
-            NextStage();
+            //NextStage();
         }
         else if (Input.GetKeyDown("q"))
         {
@@ -69,8 +71,9 @@ public class AudioController : MonoBehaviour
     /// Start the dynamic music based on the task timer ... the timer length needs to be a multiple of 8
     /// </summary>
     /// <param name="timerLength"> The length of time for which the music should play based on the task timer</param>
-    public void StartMusic(int timerLength)
+    public void StartMusic(WorkManager.Job job)
     {
+        float timerLength = job.Time;
         if (timerLength % halfMeasureLength != 0)
         {
             Debug.LogWarning("The timer length should be a multiple of " + halfMeasureLength + "!");
@@ -86,8 +89,9 @@ public class AudioController : MonoBehaviour
     /// <summary>
     /// Move the music to the next stage which results in more instruments being added
     /// </summary>
-    public void NextStage()
+    public void NextStage(WorkManager.TaskType type)
     {
+        //type;
         float currentTime = Time.realtimeSinceStartup - startTime;
         if (Mathf.FloorToInt(currentTime / halfMeasureLength) > currentLoop)
         {
