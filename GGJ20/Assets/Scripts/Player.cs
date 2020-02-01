@@ -80,15 +80,7 @@ public class Player : MonoBehaviour
         Transform counterCameraTransform = cameraHooks.Find(x => x.taskType == WorkManager.TaskType.None).transform;
         Transform counterSwordTransform = cameraHooks.Find(x => x.taskType == WorkManager.TaskType.None).transform;
 
-        if (cameraSlerpCoroutine == null)
-        {
-            cameraSlerpCoroutine = StartCoroutine(SlerpTransform(mainCam.transform, counterCameraTransform,() => cameraSlerpCoroutine = null));
-        }
-
-        if (cameraSlerpCoroutine == null)
-        {
-            swordSlerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, counterSwordTransform, () => swordSlerpCoroutine = null));
-        }
+        SlerpCameraAndSword(counterCameraTransform, counterSwordTransform);
     }
 
     public void StartJob()
@@ -147,18 +139,7 @@ public class Player : MonoBehaviour
         Transform currentCamTrans = GetCamPoint(currentType);
         Transform currentWeaponTrans = GetSwordTeleportPoint(currentType);
 
-        if (cameraSlerpCoroutine == null)
-        {
-            cameraSlerpCoroutine = StartCoroutine(SlerpTransform(mainCam.transform, currentCamTrans, () => cameraSlerpCoroutine = null));
-        }
-
-        if (cameraSlerpCoroutine == null)
-        {
-            swordSlerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, currentWeaponTrans, () => swordSlerpCoroutine = null));
-        }
-
-        StartCoroutine(SlerpTransform(mainCam.transform, currentCamTrans));
-        StartCoroutine(SlerpTransform(taskManagerBase.sword.transform, currentWeaponTrans));
+        SlerpCameraAndSword(currentCamTrans, currentWeaponTrans);
 
         taskManagerBase.SetTaskObject(taskData);
 
@@ -215,25 +196,42 @@ public class Player : MonoBehaviour
         return swordTeleportPoint.transform;
     }
 
+    private void SlerpCameraAndSword(Transform cameraTarget, Transform swordTarget)
+    {
+        if (cameraSlerpCoroutine != null || swordSlerpCoroutine != null)
+        {
+            return;
+        }
+
+        cameraSlerpCoroutine = StartCoroutine(SlerpTransform(mainCam.transform, cameraTarget, () => cameraSlerpCoroutine = null));
+        swordSlerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, swordTarget, () => swordSlerpCoroutine = null));
+    }
+
     private IEnumerator SlerpTransform(Transform transformToMove, 
         Transform targetTransform, 
         Action OnCompleted = null,
-        float minDistanceOffset = 0.1f, 
-        float minRotationOffset = 2.0f)
+        float minDistanceOffset = 0.2f, 
+        float minRotationOffset = 5.0f)
     {
-        bool reachedPosition = Vector3.Distance(transformToMove.transform.position, targetTransform.position) <= minDistanceOffset;
-        bool reachedRotation = Quaternion.Angle(transformToMove.transform.rotation, targetTransform.rotation) <= minRotationOffset;
-
-        while (!reachedPosition && !reachedRotation)
+        while (true)
         {
+            float positionOffset = Vector3.Distance(transformToMove.transform.position, targetTransform.position);
+            float angleOffset = Quaternion.Angle(transformToMove.transform.rotation, targetTransform.rotation);
+
+            bool reachedPosition = positionOffset <= minDistanceOffset;
+            bool reachedRotation = angleOffset <= minRotationOffset;
+
+            if (reachedPosition && reachedRotation)
+            {
+                break;
+            }
+ 
             transformToMove.transform.position = Vector3.Slerp(transformToMove.transform.position, targetTransform.position, fp);
             transformToMove.transform.rotation = Quaternion.Slerp(transformToMove.transform.rotation, targetTransform.rotation, fp);
             fp += Time.deltaTime;
 
             yield return null;
         }
-
-        print("DONE");
 
         if (OnCompleted != null)
         {
