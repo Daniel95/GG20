@@ -14,7 +14,8 @@ public class WorkManager : MonoBehaviour
         None = -1,
         Shaping,
         Sharpening,
-        Heating
+        Heating,
+        UnBumping
     }
 
     [Serializable]

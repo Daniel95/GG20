@@ -6,9 +6,10 @@ using UnityEngine;
 public abstract class TaskManagerBase : MonoBehaviour
 {
     protected GameObject sword;
-    protected bool active;
+    protected bool isActivated;
     public abstract int GetOffsetFromTarget();
     public abstract WorkManager.TaskType GetTaskType();
+    public abstract void SetTaskObject(TaskScriptableObject a_taskScriptableObject);
 
     private void Awake()
     {
@@ -31,9 +32,9 @@ public abstract class TaskManagerBase : MonoBehaviour
     public virtual void Activate()
     {
         Debug.Log("TELEPORT SWORD");
-        active = true;
         StartCoroutine(LerpWeapon());
         //Transform swordTeleportPoint = GetSwordTeleportPoint();
+        isActivated = true;
 
         //sword.transform.position = swordTeleportPoint.position;
         //sword.transform.rotation = swordTeleportPoint.rotation;
@@ -41,7 +42,7 @@ public abstract class TaskManagerBase : MonoBehaviour
 
     public virtual void Deactivate()
     {
-        active = false;
+        isActivated = false;
     }
 
 
@@ -60,4 +61,5 @@ public abstract class TaskManagerBase : MonoBehaviour
 
         yield return null;
     }
+
 }
