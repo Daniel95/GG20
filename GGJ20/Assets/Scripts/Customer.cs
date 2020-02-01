@@ -19,9 +19,11 @@ public class Customer : MonoBehaviour
 
     private bool waiting;
 
+    private Player player;
 
     private void Awake()
     {
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         fl = 0.1f;
         quarterMark = timeToFix * 0.25f;    //get 25% of time
         clockScale = clockImage.transform.localScale;
@@ -34,7 +36,8 @@ public class Customer : MonoBehaviour
         if (!waiting)
             return; // fix timer has not started yet
 
-
+        if(!player.isWorking)
+            player.StartJob();
 
         //Debug.Log(timeLeft);
         //decrement fillrate of the clockimage

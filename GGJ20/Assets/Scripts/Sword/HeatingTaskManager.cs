@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HeatingSword : TaskObject
+public class HeatingTaskManager : TaskManager
 {
     [SerializeField] private float shapingXScaleIncrement = 0.3f;
 
@@ -16,6 +16,7 @@ public class HeatingSword : TaskObject
     public void SetTargetHeat(int _targetHead)
     {
         targetHeat = _targetHead;
+        Debug.Log("I AM THIS HOT: " + _targetHead + " DEGREES KELVIN");
     }
 
     public override void Deactivate()
@@ -42,3 +43,10 @@ public class HeatingSword : TaskObject
         return Mathf.Abs(targetHeat - currentHeat);
     }
 }
+
+
+//Weapon
+
+    //heating func(temperature)
+    //Sharpning funk (sharpness)
+    //

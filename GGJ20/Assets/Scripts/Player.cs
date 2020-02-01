@@ -8,32 +8,36 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Serializable]
-    public struct TaskTypeTaskObjectPair
+    public struct TaskPair
     {
         public WorkManager.TaskType TaskType;
-        public TaskObject TaskObject;
+        public TaskManager TaskObject;
     }
 
-    [SerializeField] private List<TaskTypeTaskObjectPair> taskTypePrefabs;
+    [SerializeField] private List<TaskPair> taskManagerPairs;
 
     /// <summary>
     /// Params: Description, Time
     /// </summary>
-    public static Action<string, int> OnStartJobEvent;
+    public static Action<string, int>StartJobEvent;
     /// <summary>
     /// Params: WorkManager.TaskType
     /// </summary>
-    public static Action<WorkManager.TaskType> OnStartTaskEvent;
-    public static Action<HeatingTaskScriptableObject> Test;
+    public static Action<WorkManager.TaskType> StartTaskEvent;
 
     private WorkManager.Job job;
     private int taskIndex = 0;
 
+    [HideInInspector]
+    public bool isWorking;
+
     public  WorkManager.Job StartJob()
     {
-        WorkManager.Job job = WorkManager.Instance.ChooseJob();
+        isWorking = true;
+        job = WorkManager.Instance.ChooseJob();
 
-        OnStartJobEvent(job.Description, job.Time);
+        if (StartJobEvent != null)
+            StartJobEvent(job.Description, job.Time);
 
         print(job.Description);
         print(job.Time);
@@ -47,8 +51,15 @@ public class Player : MonoBehaviour
 
     public void NextTask()
     {
+        if(taskIndex >= job.Tasks.Count)
+        {
+            isWorking = false;
+            return;
+        }
+
         taskIndex++;
         StartTask(taskIndex);
+
     }
 
     private void StartTask(int taskIndex)
@@ -56,10 +67,17 @@ public class Player : MonoBehaviour
         TaskScriptableObject taskScriptableObject = job.Tasks[taskIndex];
         WorkManager.TaskType taskType = taskScriptableObject.GetTaskType();
 
-        OnStartTaskEvent(taskType);
+        if(StartTaskEvent != null)
+            StartTaskEvent(taskType);
 
-        TaskTypeTaskObjectPair taskTypeTaskObjectPair = taskTypePrefabs.Find(x => x.TaskType == taskType);
-        TaskObject taskObject = taskTypeTaskObjectPair.TaskObject;
+        if (!taskManagerPairs.Exists(x => x.TaskType == taskType))
+        {
+            Debug.LogError("VERY BAD");
+            return;
+        }
+
+        TaskPair taskTypeTaskObjectPair = taskManagerPairs.Find(x => x.TaskType == taskType);
+        TaskManager taskObject = taskTypeTaskObjectPair.TaskObject;
         taskObject.Activate();
 
         switch (taskType)
@@ -72,9 +90,9 @@ public class Player : MonoBehaviour
 
                 break;
             case WorkManager.TaskType.Heating:
-                HeatingSword heatingSword = (HeatingSword) taskObject;
+                HeatingTaskManager heatingTaskMan = (HeatingTaskManager) taskObject;
                 HeatingTaskScriptableObject heatingTaskScriptableObject = (HeatingTaskScriptableObject)taskScriptableObject;
-                heatingSword.SetTargetHeat(heatingTaskScriptableObject.TargetHeat);
+                heatingTaskMan.SetTargetHeat(heatingTaskScriptableObject.TargetHeat);
 
                 break;
             default:

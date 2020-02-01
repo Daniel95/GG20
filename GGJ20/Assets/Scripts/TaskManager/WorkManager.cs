@@ -45,8 +45,8 @@ public class WorkManager : MonoBehaviour
         int randomIndex = UnityEngine.Random.Range(0, jobLibrary.Jobs.Count);
         Job job = jobLibrary.Jobs[randomIndex];
 
-        Debug.Log(job.Description);
-        Debug.Log(job.Time);
+        //Debug.Log(job.Description);
+        //Debug.Log(job.Time);
 
         return job;
     }

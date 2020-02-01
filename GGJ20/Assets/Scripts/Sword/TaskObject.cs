@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class TaskObject : MonoBehaviour
+public abstract class TaskManager : MonoBehaviour
 {
     protected bool active;
     public abstract int GetOffsetFromTarget();
