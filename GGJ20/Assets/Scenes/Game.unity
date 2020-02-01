@@ -457,6 +457,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sword: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  deformHitAmount: 0.1
+  ripplenessMinMax: {x: -0.5, y: 0.5}
 --- !u!1 &482423693
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,9 +491,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8fa798e05458a148a811c8cbcc830ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponSpawnPos: {fileID: 23902453}
-  isWorking: 0
-  isAtCounter: 0
 --- !u!4 &482423695
 Transform:
   m_ObjectHideFlags: 0
@@ -930,14 +932,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1171173374}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10ba323e70cea6e448bfd12e12a23c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToFix: 20
   patience: 2
-  clockImage: {fileID: 1539465781}
 --- !u!1001 &1189148329
 PrefabInstance:
   m_ObjectHideFlags: 0

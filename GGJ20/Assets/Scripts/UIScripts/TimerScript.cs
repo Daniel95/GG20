@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class TimerScript : MonoBehaviour
 {
     private Image clockImage;
-    private float timeLimit;
-    private float timeLeft;
+    private float timeLimit = 1;
+    private float timeLeft = 1;
     private float fl = 0.1f;
     private float quarterMark = 0f;
     private Vector3 clockScale;
@@ -17,13 +17,16 @@ public class TimerScript : MonoBehaviour
         Player.StartJobEvent += OnStartJob;
         clockImage = GetComponent<Image>();
         clockScale = transform.localScale;
+        clockImage.fillAmount = 1;
     }
 
     private void Update()
     {
-        if(timeLeft > 0)
+        if(timeLeft >= 0)
         {
+            //Debug.Log("clock is ticking");
             clockImage.fillAmount = 1.0f / (timeLimit / timeLeft);
+            timeLeft -= Time.deltaTime;
         }
         else
         {
@@ -46,19 +49,20 @@ public class TimerScript : MonoBehaviour
 
     private void OnStartJob(WorkManager.Job job)
     {
-        timeLimit = time;
+        timeLimit = job.Time;
         timeLeft = timeLimit;
-        Debug.Log("Start the job");
+        quarterMark = timeLimit * 0.25f;    //get 25% of time
+        Debug.Log("Do it in " + job.Time + " seconds");
     }
 
-    private void OnEnable()
-    {
-        Player.StartJobEvent += OnStartJob;
-    }
+    //private void OnEnable()
+    //{
+    //    Player.StartJobEvent += OnStartJob;
+    //}
 
-    private void OnDisable()
-    {
-        //text.text = "";
-        Player.StartJobEvent -= OnStartJob;
-    }
+    //private void OnDisable()
+    //{
+    //    //text.text = "";
+    //    Player.StartJobEvent -= OnStartJob;
+    //}
 }
