@@ -8,12 +8,15 @@ using NaughtyAttributes;
 
 public class Player : MonoBehaviour
 {
-    [ReorderableList]
-    public List<GameObject> cameraHooks;
+    private List<CamPoint> cameraHooks;
+    private List<SwordTeleportPoint> swordTeleportPoints;
     private GameObject mainCam = null;
 
-    private int prevHookIndx = 0;
-    private int currHookIndx = 0;
+    private Transform currentCamTrans;
+    private Transform currentWeaponTrans;
+
+    //private int prevHookIndx = 0;
+    //private int currHookIndx = 0;
 
     float fp = 1;
 
@@ -36,61 +39,57 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        GetLerpPoints();
+
         //stuff for camera slerping
         mainCam = GameObject.FindWithTag("MainCamera");
-        currHookIndx = 0;
-        prevHookIndx = cameraHooks.Count;
+
+        //njeh
         if (cameraHooks.Count <= 0)
-        {
             Debug.LogError("define camera hooks, you buffoon");
-        }
-        mainCam.transform.position = cameraHooks[0].transform.position;
-        mainCam.transform.rotation = cameraHooks[0].transform.rotation;
+
+        //I am now a lamda master
+        currentCamTrans = cameraHooks.Find(x => x.GetComponent<CamPoint>().taskType == WorkManager.TaskType.None).transform;
+        mainCam.transform.position = currentCamTrans.position;
+        mainCam.transform.rotation = currentCamTrans.rotation;
+
+        currentWeaponTrans = transform; //temp
 
         taskManagers = FindObjectsOfType<TaskManagerBase>().ToList();
     }
 
     void Update()
     {
-        if (Vector3.Distance(mainCam.transform.position, cameraHooks[currHookIndx].transform.position) > 0.1f)
-        {
-            mainCam.transform.position = Vector3.Slerp(cameraHooks[prevHookIndx].transform.position, cameraHooks[currHookIndx].transform.position, fp);
-            fp += Time.deltaTime;
-        }
-
-        if (Quaternion.Angle(mainCam.transform.rotation, cameraHooks[currHookIndx].transform.rotation) > 2)
-        {
-            mainCam.transform.rotation = Quaternion.Slerp(cameraHooks[prevHookIndx].transform.rotation, cameraHooks[currHookIndx].transform.rotation, fp);
-            fp += Time.deltaTime;
-        }
+        SlerpCamera();
+        SlerpWeapon();
     }
 
-    public void NextTaskLocation()
-    {
-        if ((currHookIndx + 1) < cameraHooks.Count)
-        {
-            //safe
-            GoToPhase(currHookIndx + 1);
-        }
-        else
-        {
-            //wrap to first phase
-            GoToPhase(0);
-        }
-    }
+    //public void NextTaskLocation()
+    //{
+    //    if ((currHookIndx + 1) < cameraHooks.Count)
+    //    {
+    //        //safe
+    //        GoToPhase(currHookIndx + 1);
+    //    }
+    //    else
+    //    {
+    //        //wrap to first phase
+    //        GoToPhase(0);
+    //    }
+    //}
 
     /// <summary>
     /// Public for any freaky boys who want to call this elsewhere (can be used to force camera to a specific phase)
     /// </summary>
     /// <param name="phaseIndex"></param>
-    public void GoToPhase(int phaseIndex)
-    {
-        prevHookIndx = currHookIndx;
-        currHookIndx = phaseIndex;
-        fp = 0.1f;
-    }
+    //public void GoToPhase(int phaseIndex)
+    //{
+    //    prevHookIndx = currHookIndx;
+    //    currHookIndx = phaseIndex;
+    //    fp = 0.1f;
+    //}
 
-    public  WorkManager.Job StartJob()
+    public WorkManager.Job StartJob()
     {
         isWorking = true;
         job = WorkManager.Instance.ChooseJob();
@@ -123,6 +122,8 @@ public class Player : MonoBehaviour
 
     private void StartTask(int taskIndex)
     {
+        fp = 0.1f;  //reset slerp time
+
         TaskScriptableObject taskData = job.Tasks[taskIndex];
         WorkManager.TaskType taskType = taskData.GetTaskType();
 
@@ -137,6 +138,12 @@ public class Player : MonoBehaviour
 
         TaskManagerBase taskManagerBase = taskManagers.Find(x => x.GetTaskType() == taskType);
         taskManagerBase.Activate();
+
+        WorkManager.TaskType currentType =  taskManagerBase.GetTaskType();
+
+        currentCamTrans = GetCamPoint(currentType);
+        currentWeaponTrans = GetSwordTeleportPoint(currentType);
+
         taskManagerBase.SetTaskObject(taskData);
 
         //switch (taskType)
@@ -160,5 +167,65 @@ public class Player : MonoBehaviour
         //    default:
         //        throw new ArgumentOutOfRangeException();
         //}
+    }
+
+    private void GetLerpPoints()
+    {
+        swordTeleportPoints = FindObjectsOfType<SwordTeleportPoint>().ToList();
+        cameraHooks = FindObjectsOfType<CamPoint>().ToList();
+    }
+
+
+    public Transform GetCamPoint(WorkManager.TaskType taskType)
+    {
+        CamPoint currentCamPoint = cameraHooks.Find(x => x.taskType == taskType);
+
+        if (currentCamPoint == null)
+        {
+            Debug.LogError("Teleport point " + taskType + " does not exist!");
+        }
+
+        return currentCamPoint.transform;
+    }
+
+
+    public Transform GetSwordTeleportPoint(WorkManager.TaskType taskType)
+    {
+        SwordTeleportPoint swordTeleportPoint = swordTeleportPoints.Find(x => x.taskType == taskType);
+
+        if (swordTeleportPoint == null)
+        {
+            Debug.LogError("Teleport point " + taskType + " does not exist!");
+        }
+
+        return swordTeleportPoint.transform;
+    }
+
+    private void SlerpCamera()
+    {
+        if (Vector3.Distance(mainCam.transform.position, currentCamTrans.position) > 0.1f)
+        {
+            mainCam.transform.position = Vector3.Slerp(mainCam.transform.position, currentCamTrans.position, fp);
+            fp += Time.deltaTime;
+        }
+
+        if (Quaternion.Angle(mainCam.transform.rotation, currentCamTrans.rotation) > 2)
+        {
+            mainCam.transform.rotation = Quaternion.Slerp(mainCam.transform.rotation, currentCamTrans.rotation, fp);
+            fp += Time.deltaTime;
+        }
+    }
+
+    private void SlerpWeapon()
+    {
+        if (Vector3.Distance(mainCam.transform.position, currentWeaponTrans.position) > 0.1f)
+        {
+
+        }
+
+        if (Quaternion.Angle(mainCam.transform.rotation, currentWeaponTrans.rotation) > 2)
+        {
+
+        }
     }
 }

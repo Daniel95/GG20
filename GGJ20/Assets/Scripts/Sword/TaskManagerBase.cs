@@ -31,17 +31,31 @@ public abstract class TaskManagerBase : MonoBehaviour
 
     public virtual void Activate()
     {
+        Debug.Log("TELEPORT SWORD, not yet doing it because it breaks");
+        StartCoroutine(LerpWeapon());
         isActivated = true;
-
-        Transform swordTeleportPoint = GetSwordTeleportPoint();
-
-        sword.transform.position = swordTeleportPoint.position;
-        sword.transform.rotation = swordTeleportPoint.rotation;
     }
 
     public virtual void Deactivate()
     {
         isActivated = false;
+    }
+
+
+    IEnumerator LerpWeapon()
+    {
+        float fp = 1;
+        Transform swordTeleportPoint = GetSwordTeleportPoint();
+
+        while (Quaternion.Angle(sword.transform.rotation, swordTeleportPoint.rotation) > 2)
+        {
+            Debug.Log("Lerping sword");
+            sword.transform.position = Vector3.Slerp(sword.transform.position, swordTeleportPoint.transform.position, fp);
+            sword.transform.rotation = Quaternion.Slerp(sword.transform.rotation, swordTeleportPoint.transform.rotation, fp);
+            fp += Time.deltaTime;
+        }
+
+        yield return null;
     }
 
 }

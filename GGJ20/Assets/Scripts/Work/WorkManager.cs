@@ -11,6 +11,7 @@ public class WorkManager : MonoBehaviour
 {
     public enum TaskType
     {
+        None = -1,
         Shaping,
         Sharpening,
         Heating,

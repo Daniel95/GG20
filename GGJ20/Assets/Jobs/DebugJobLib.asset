@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Jobs:
   - Time: 69
-    Description: pump it you bitch!!
+    CustomerName: 
+    CustomerModel: {fileID: 0}
+    Description: if you read this you stink!
     Tasks:
     - {fileID: 11400000, guid: e609700c0d620b04997be43c8031bce6, type: 2}
