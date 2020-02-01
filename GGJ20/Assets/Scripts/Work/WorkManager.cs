@@ -15,7 +15,8 @@ public class WorkManager : MonoBehaviour
         Shaping,
         Sharpening,
         Heating,
-        UnBumping
+        UnBumping,
+        Cleaning
     }
 
     [Serializable]
