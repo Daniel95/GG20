@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     private WorkManager.Job job;
     private int taskIndex = 0;
     private WorkManager.TaskType currentTaskType = WorkManager.TaskType.None;
+    private TaskManagerBase taskManagerBase;
 
     private Coroutine cameraSlerpCoroutine;
     private Coroutine swordSlerpCoroutine;
@@ -106,8 +107,12 @@ public class Player : MonoBehaviour
 
     public bool NextTask()
     {
+        if (taskManagerBase != null)
+        {
+            taskManagerBase.Deactivate();
+        }
 
-        if(taskIndex >= job.Tasks.Count)
+        if (taskIndex >= job.Tasks.Count)
         {
             return false;
         }
@@ -134,39 +139,17 @@ public class Player : MonoBehaviour
             return;
         }
 
-        TaskManagerBase taskManagerBase = taskManagers.Find(x => x.GetTaskType() == currentTaskType);
+        taskManagerBase = taskManagers.Find(x => x.GetTaskType() == currentTaskType);
         taskManagerBase.Activate();
 
-        WorkManager.TaskType currentType =  taskManagerBase.GetTaskType();
+        Debug.Log(currentTaskType.ToString() + " " + taskManagerBase.ToString());
 
-        Transform currentCamTrans = GetCamPoint(currentType);
-        Transform currentWeaponTrans = GetSwordTeleportPoint(currentType);
+        Transform currentCamTrans = GetCamPoint(currentTaskType);
+        Transform currentWeaponTrans = GetSwordTeleportPoint(currentTaskType);
 
         SlerpCameraAndSword(currentCamTrans, currentWeaponTrans);
 
         taskManagerBase.SetTaskObject(taskData);
-
-        //switch (taskType)
-        //{
-        //    case WorkManager.TaskType.Shaping:
-        //        //GetComponent shaprening logic etc
-
-        //        break;
-        //    case WorkManager.TaskType.Sharpening:
-
-        //        break;
-        //    case WorkManager.TaskType.Heating:
-        //        HeatingTaskManager heatingTaskMan = (HeatingTaskManager)taskManagerBase;
-        //        HeatingTaskScriptableObject heatingTaskScriptableObject = (HeatingTaskScriptableObject)taskScriptableObject;
-        //        heatingTaskMan.SetTargetHeat(heatingTaskScriptableObject.TargetHeat);
-        //        break;
-        //    case WorkManager.TaskType.UnBumping:
-        //        UnBumpTaskManager unBumpTaskManager = (UnBumpTaskManager)taskManagerBase;
-                
-        //        break;
-        //    default:
-        //        throw new ArgumentOutOfRangeException();
-        //}
     }
 
     private void GetLerpPoints()

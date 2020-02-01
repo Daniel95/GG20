@@ -13,7 +13,6 @@ public class UnBumpTaskManager : TaskManagerBase
     private Vector2 ripplenessMinMax = new Vector2(-0.5f, 0.5f);
 
     private UnBumpTaskScriptableObject curTask = null;
-    private Dictionary<RippleDeformer, float> deformHitAmounts = new Dictionary<RippleDeformer, float>();
 
     public override int GetOffsetFromTarget()
     {
@@ -33,6 +32,15 @@ public class UnBumpTaskManager : TaskManagerBase
     public override void Deactivate()
     {
         base.Deactivate();
+
+        RippleDeformer[] rippleDeformers = sword.GetComponentsInChildren<RippleDeformer>();
+        foreach (RippleDeformer rd in rippleDeformers)
+        {
+            if (rd.TryGetComponent<Collider>(out Collider c))
+            {
+                c.enabled = false;
+            }
+        }
     }
 
     private void Update()
@@ -62,5 +70,14 @@ public class UnBumpTaskManager : TaskManagerBase
     public override void SetTaskObject(TaskScriptableObject a_taskScriptableObject)
     {
         curTask = Instantiate(a_taskScriptableObject) as UnBumpTaskScriptableObject;
+
+        RippleDeformer[] rippleDeformers = sword.GetComponentsInChildren<RippleDeformer>();
+        foreach (RippleDeformer rd in rippleDeformers)
+        {
+            if(rd.TryGetComponent<Collider>(out Collider c))
+            {
+                c.enabled = true;
+            }
+        }
     }
 }
