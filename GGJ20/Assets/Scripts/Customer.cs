@@ -36,8 +36,10 @@ public class Customer : MonoBehaviour
         if (!waiting)
             return; // fix timer has not started yet
 
-        if(!player.isWorking)
+        /*
+        if(!player.IsWorking())
             player.StartJob();
+         */
 
         //Debug.Log(timeLeft);
         //decrement fillrate of the clockimage

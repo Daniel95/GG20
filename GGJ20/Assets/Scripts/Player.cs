@@ -8,14 +8,10 @@ using NaughtyAttributes;
 
 public class Player : MonoBehaviour
 {
-    //[ReorderableList]
-    //public List<GameObject> cameraHooks;
     private List<CamPoint> cameraHooks;
     private List<SwordTeleportPoint> swordTeleportPoints;
     private GameObject mainCam = null;
-
-    private int prevHookIndx = 0;
-    private int currHookIndx = 0;
+    private GameObject sword = null;
 
     float fp = 1;
 
@@ -32,9 +28,13 @@ public class Player : MonoBehaviour
 
     private WorkManager.Job job;
     private int taskIndex = 0;
+    private WorkManager.TaskType currentTaskType = WorkManager.TaskType.None;
 
-    [HideInInspector]
-    public bool isWorking;
+    private Coroutine cameraSlerpCoroutine;
+    private Coroutine swordSlerpCoroutine;
+
+    public bool IsWorking() { return currentTaskType != WorkManager.TaskType.None; }
+    public bool IsAtCounter() { return currentTaskType == WorkManager.TaskType.None; }
 
     private void Awake()
     {
@@ -42,78 +42,57 @@ public class Player : MonoBehaviour
 
         //stuff for camera slerping
         mainCam = GameObject.FindWithTag("MainCamera");
-        currHookIndx = 0;
-        prevHookIndx = cameraHooks.Count;
-        if (cameraHooks.Count <= 0)
-        {
-            Debug.LogError("define camera hooks, you buffoon");
-        }
-        mainCam.transform.position = cameraHooks[0].transform.position;
-        mainCam.transform.rotation = cameraHooks[0].transform.rotation;
+        mainCam = GameObject.FindWithTag("MainCamera");
 
-        
+        //njeh
+        if (cameraHooks.Count <= 0)
+            Debug.LogError("define camera hooks, you buffoon");
+
+        //I am now a lamda master
+        Transform startCameraTransform = cameraHooks.Find(x => x.GetComponent<CamPoint>().taskType == WorkManager.TaskType.None).transform;
+        mainCam.transform.position = startCameraTransform.position;
+        mainCam.transform.rotation = startCameraTransform.rotation;
 
         taskManagers = FindObjectsOfType<TaskManagerBase>().ToList();
     }
 
     public void OnNextButton()
     {
-        if (isWorking)
+        if (IsWorking())
         {
-            if (NextTask())
-            {
+            bool startedTask = NextTask();
 
-            }
-            else
+            if (!startedTask)
             {
-                isWorking = false;
+                GoToCounter();
             }
         }
-    }
-
-    void Update()
-    {
-        if (Vector3.Distance(mainCam.transform.position, cameraHooks[currHookIndx].transform.position) > 0.1f)
+        else 
         {
-            mainCam.transform.position = Vector3.Slerp(cameraHooks[prevHookIndx].transform.position, cameraHooks[currHookIndx].transform.position, fp);
-            fp += Time.deltaTime;
-        }
-
-        if (Quaternion.Angle(mainCam.transform.rotation, cameraHooks[currHookIndx].transform.rotation) > 2)
-        {
-            mainCam.transform.rotation = Quaternion.Slerp(cameraHooks[prevHookIndx].transform.rotation, cameraHooks[currHookIndx].transform.rotation, fp);
-            fp += Time.deltaTime;
+            StartJob();
         }
     }
 
-    public void NextTaskLocation()
+    private void GoToCounter()
     {
-        if ((currHookIndx + 1) < cameraHooks.Count)
-        {
-            //safe
-            GoToPhase(currHookIndx + 1);
-        }
-        else
-        {
-            //wrap to first phase
-            GoToPhase(0);
-        }
-    }
+        currentTaskType = WorkManager.TaskType.None;
 
-    /// <summary>
-    /// Public for any freaky boys who want to call this elsewhere (can be used to force camera to a specific phase)
-    /// </summary>
-    /// <param name="phaseIndex"></param>
-    public void GoToPhase(int phaseIndex)
-    {
-        prevHookIndx = currHookIndx;
-        currHookIndx = phaseIndex;
-        fp = 0.1f;
+        Transform counterCameraTransform = cameraHooks.Find(x => x.taskType == WorkManager.TaskType.None).transform;
+        Transform counterSwordTransform = cameraHooks.Find(x => x.taskType == WorkManager.TaskType.None).transform;
+
+        if (cameraSlerpCoroutine == null)
+        {
+            cameraSlerpCoroutine = StartCoroutine(SlerpTransform(mainCam.transform, counterCameraTransform,() => cameraSlerpCoroutine = null));
+        }
+
+        if (cameraSlerpCoroutine == null)
+        {
+            swordSlerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, counterSwordTransform, () => swordSlerpCoroutine = null));
+        }
     }
 
     public void StartJob()
     {
-        isWorking = true;
         job = WorkManager.Instance.ChooseJob();
 
         if (StartJobEvent != null)
@@ -124,6 +103,8 @@ public class Player : MonoBehaviour
         print(job.Description);
         print(job.Time);
 
+        sword = GameObject.FindGameObjectWithTag("Sword");
+
         taskIndex = 0;
 
         StartTask(0);
@@ -131,39 +112,53 @@ public class Player : MonoBehaviour
 
     public bool NextTask()
     {
+        taskIndex++;
+
         if(taskIndex >= job.Tasks.Count)
         {
-            isWorking = false;
             return false;
         }
 
-        taskIndex++;
         StartTask(taskIndex);
         return true;
     }
 
     private void StartTask(int taskIndex)
     {
+        fp = 0.1f;  //reset slerp time
+
         TaskScriptableObject taskData = job.Tasks[taskIndex];
-        WorkManager.TaskType taskType = taskData.GetTaskType();
+        currentTaskType = taskData.GetTaskType();
 
         if(StartTaskEvent != null)
-            StartTaskEvent(taskType);
+            StartTaskEvent(currentTaskType);
 
-        if (!taskManagers.Exists(x => x.GetTaskType() == taskType))
+        if (!taskManagers.Exists(x => x.GetTaskType() == currentTaskType))
         {
             Debug.LogError("VERY BAD");
             return;
         }
 
-        TaskManagerBase taskManagerBase = taskManagers.Find(x => x.GetTaskType() == taskType);
+        TaskManagerBase taskManagerBase = taskManagers.Find(x => x.GetTaskType() == currentTaskType);
         taskManagerBase.Activate();
 
         WorkManager.TaskType currentType =  taskManagerBase.GetTaskType();
 
-        Transform youreTrans = GetCamPoint(currentType);
-        Transform urTrans = GetSwordTeleportPoint(currentType);
+        Transform currentCamTrans = GetCamPoint(currentType);
+        Transform currentWeaponTrans = GetSwordTeleportPoint(currentType);
 
+        if (cameraSlerpCoroutine == null)
+        {
+            cameraSlerpCoroutine = StartCoroutine(SlerpTransform(mainCam.transform, currentCamTrans, () => cameraSlerpCoroutine = null));
+        }
+
+        if (cameraSlerpCoroutine == null)
+        {
+            swordSlerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, currentWeaponTrans, () => swordSlerpCoroutine = null));
+        }
+
+        StartCoroutine(SlerpTransform(mainCam.transform, currentCamTrans));
+        StartCoroutine(SlerpTransform(taskManagerBase.sword.transform, currentWeaponTrans));
 
         taskManagerBase.SetTaskObject(taskData);
 
@@ -196,7 +191,6 @@ public class Player : MonoBehaviour
         cameraHooks = FindObjectsOfType<CamPoint>().ToList();
     }
 
-
     public Transform GetCamPoint(WorkManager.TaskType taskType)
     {
         CamPoint currentCamPoint = cameraHooks.Find(x => x.taskType == taskType);
@@ -209,7 +203,6 @@ public class Player : MonoBehaviour
         return currentCamPoint.transform;
     }
 
-
     public Transform GetSwordTeleportPoint(WorkManager.TaskType taskType)
     {
         SwordTeleportPoint swordTeleportPoint = swordTeleportPoints.Find(x => x.taskType == taskType);
@@ -220,5 +213,31 @@ public class Player : MonoBehaviour
         }
 
         return swordTeleportPoint.transform;
+    }
+
+    private IEnumerator SlerpTransform(Transform transformToMove, 
+        Transform targetTransform, 
+        Action OnCompleted = null,
+        float minDistanceOffset = 0.1f, 
+        float minRotationOffset = 2.0f)
+    {
+        bool reachedPosition = Vector3.Distance(transformToMove.transform.position, targetTransform.position) <= minDistanceOffset;
+        bool reachedRotation = Quaternion.Angle(transformToMove.transform.rotation, targetTransform.rotation) <= minRotationOffset;
+
+        while (!reachedPosition && !reachedRotation)
+        {
+            transformToMove.transform.position = Vector3.Slerp(transformToMove.transform.position, targetTransform.position, fp);
+            transformToMove.transform.rotation = Quaternion.Slerp(transformToMove.transform.rotation, targetTransform.rotation, fp);
+            fp += Time.deltaTime;
+
+            yield return null;
+        }
+
+        print("DONE");
+
+        if (OnCompleted != null)
+        {
+            OnCompleted();
+        }
     }
 }

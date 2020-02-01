@@ -35,7 +35,6 @@ public class UnBumpTaskManager : TaskManagerBase
 
         //Hammer func.
         //sword
-        Debug.Log("Test " + curTask.hits.ToString());
     }
 
     public override void SetTaskObject(TaskScriptableObject a_taskScriptableObject)
