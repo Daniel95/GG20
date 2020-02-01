@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sword: {fileID: 0}
   shapingXScaleIncrement: 0.3
-  resultText: {fileID: 0}
+  heatPoint: {fileID: 0}
 --- !u!114 &7584844526480015934
 MonoBehaviour:
   m_ObjectHideFlags: 0

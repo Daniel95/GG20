@@ -5,6 +5,7 @@ using UnityEngine;
 
 public abstract class TaskManagerBase : MonoBehaviour
 {
+    [HideInInspector]
     public GameObject sword;
     protected bool isActivated;
     public abstract int GetOffsetFromTarget();
