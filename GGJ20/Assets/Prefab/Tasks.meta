@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:GGJ20/Assets/Prefab/Tasks.meta
 guid: 59d1f401dcdb52741891bc0d8027349b
+=======
+guid: 590d76a976084434599bfc979dbde8d3
+>>>>>>> c6e36f24204f834f86fc315e3722cd4dc52cd27b:GGJ20/Assets/Jobs/Tasks/Sharpening.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

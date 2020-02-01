@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "ShapingTask", menuName = "ScriptableObjects/ShapingTask", order = 1)]
-public class ShapingTaskScriptableObject : ScriptableObject
+public abstract class TaskScriptableObject : ScriptableObject
 {
-    public int TargetWidth; 
+    public abstract WorkManager.TaskType GetTaskType();
 }

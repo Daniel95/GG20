@@ -6,17 +6,32 @@ using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class TaskManager : MonoBehaviour
+public class WorkManager : MonoBehaviour
 {
-    private static TaskManager instance;
+    public enum TaskType
+    {
+        Shaping,
+        Sharpening,
+        Heating
+    }
 
-    public static TaskManager Instance
+    [Serializable]
+    public struct Job
+    {
+        public int Time;
+        public string Description;
+        public List<TaskScriptableObject> Tasks;
+    }
+
+    private static WorkManager instance;
+
+    public static WorkManager Instance
     {
         get
         {
             if (instance == null)
             {
-                instance = GameObject.FindObjectOfType<TaskManager>();
+                instance = GameObject.FindObjectOfType<WorkManager>();
             }
 
             return instance;
@@ -34,14 +49,6 @@ public class TaskManager : MonoBehaviour
         Debug.Log(job.Time);
 
         return job;
-    }
-
-    [Serializable]
-    public struct Job
-    {
-        public int Time;
-        public string Description;
-        public List<ScriptableObject> Tasks;
     }
 
     /*
