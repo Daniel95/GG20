@@ -11,7 +11,7 @@ public class Sword : MonoBehaviour
     [SerializeField]
     private Text resultText;
 
-    //private TaskManager.ShapingTask shapingTask;
+    //private WorkManager.ShapingTask shapingTask;
 
     private int width;
 
@@ -19,7 +19,7 @@ public class Sword : MonoBehaviour
     void Start()
     {
         /*
-        TaskManager.CreateTask(out shapingTask);
+        WorkManager.CreateTask(out shapingTask);
 
         if (shapingTask.TargetWidth > 5)
         {
