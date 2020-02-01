@@ -137,10 +137,10 @@ public class Player : MonoBehaviour
         TaskManagerBase taskManagerBase = taskManagers.Find(x => x.GetTaskType() == currentTaskType);
         taskManagerBase.Activate();
 
-        WorkManager.TaskType currentType =  taskManagerBase.GetTaskType();
+        Debug.Log(currentTaskType.ToString() + " " + taskManagerBase.ToString());
 
-        Transform currentCamTrans = GetCamPoint(currentType);
-        Transform currentWeaponTrans = GetSwordTeleportPoint(currentType);
+        Transform currentCamTrans = GetCamPoint(currentTaskType);
+        Transform currentWeaponTrans = GetSwordTeleportPoint(currentTaskType);
 
         SlerpCameraAndSword(currentCamTrans, currentWeaponTrans);
 
