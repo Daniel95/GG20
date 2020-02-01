@@ -30,16 +30,34 @@ public abstract class TaskManagerBase : MonoBehaviour
 
     public virtual void Activate()
     {
+        Debug.Log("TELEPORT SWORD");
         active = true;
+        StartCoroutine(LerpWeapon());
+        //Transform swordTeleportPoint = GetSwordTeleportPoint();
 
-        Transform swordTeleportPoint = GetSwordTeleportPoint();
-
-        sword.transform.position = swordTeleportPoint.position;
-        sword.transform.rotation = swordTeleportPoint.rotation;
+        //sword.transform.position = swordTeleportPoint.position;
+        //sword.transform.rotation = swordTeleportPoint.rotation;
     }
 
     public virtual void Deactivate()
     {
         active = false;
+    }
+
+
+    IEnumerator LerpWeapon()
+    {
+        float fp = 1;
+        Transform swordTeleportPoint = GetSwordTeleportPoint();
+
+        while (Quaternion.Angle(sword.transform.rotation, swordTeleportPoint.rotation) < 2)
+        {
+            Debug.Log("Lerping sword");
+            sword.transform.position = Vector3.Slerp(sword.transform.position, swordTeleportPoint.transform.position, fp);
+            sword.transform.rotation = Quaternion.Slerp(sword.transform.rotation, swordTeleportPoint.transform.rotation, fp);
+            fp += Time.deltaTime;
+        }
+
+        yield return null;
     }
 }

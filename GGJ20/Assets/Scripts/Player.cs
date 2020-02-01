@@ -8,8 +8,10 @@ using NaughtyAttributes;
 
 public class Player : MonoBehaviour
 {
-    [ReorderableList]
-    public List<GameObject> cameraHooks;
+    //[ReorderableList]
+    //public List<GameObject> cameraHooks;
+    private List<CamPoint> cameraHooks;
+    private List<SwordTeleportPoint> swordTeleportPoints;
     private GameObject mainCam = null;
 
     private int prevHookIndx = 0;
@@ -36,6 +38,8 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        GetLerpPoints();
+
         //stuff for camera slerping
         mainCam = GameObject.FindWithTag("MainCamera");
         currHookIndx = 0;
@@ -46,6 +50,8 @@ public class Player : MonoBehaviour
         }
         mainCam.transform.position = cameraHooks[0].transform.position;
         mainCam.transform.rotation = cameraHooks[0].transform.rotation;
+
+        
 
         taskManagers = FindObjectsOfType<TaskManagerBase>().ToList();
     }
@@ -137,6 +143,12 @@ public class Player : MonoBehaviour
 
         TaskManagerBase taskManagerBase = taskManagers.Find(x => x.GetTaskType() == taskType);
         taskManagerBase.Activate();
+        WorkManager.TaskType currentType =  taskManagerBase.GetTaskType();
+
+        Transform youreTrans = GetCamPoint(currentType);
+        Transform urTrans = GetSwordTeleportPoint(currentType);
+
+
 
         switch (taskType)
         {
@@ -156,5 +168,37 @@ public class Player : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
+    }
+
+    private void GetLerpPoints()
+    {
+        swordTeleportPoints = FindObjectsOfType<SwordTeleportPoint>().ToList();
+        cameraHooks = FindObjectsOfType<CamPoint>().ToList();
+    }
+
+
+    public Transform GetCamPoint(WorkManager.TaskType taskType)
+    {
+        CamPoint currentCamPoint = cameraHooks.Find(x => x.taskType == taskType);
+
+        if (currentCamPoint == null)
+        {
+            Debug.LogError("Teleport point " + taskType + " does not exist!");
+        }
+
+        return currentCamPoint.transform;
+    }
+
+
+    public Transform GetSwordTeleportPoint(WorkManager.TaskType taskType)
+    {
+        SwordTeleportPoint swordTeleportPoint = swordTeleportPoints.Find(x => x.taskType == taskType);
+
+        if (swordTeleportPoint == null)
+        {
+            Debug.LogError("Teleport point " + taskType + " does not exist!");
+        }
+
+        return swordTeleportPoint.transform;
     }
 }
