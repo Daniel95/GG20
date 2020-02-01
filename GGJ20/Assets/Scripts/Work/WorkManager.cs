@@ -20,6 +20,8 @@ public class WorkManager : MonoBehaviour
     public struct Job
     {
         public int Time;
+        public string CustomerName;
+        public GameObject CustomerModel;
         public string Description;
         [ReorderableList]
         public List<TaskScriptableObject> Tasks;
