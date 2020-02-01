@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     /// Params: WorkManager.TaskType
     /// </summary>
     public static Action<WorkManager.TaskType> OnStartTaskEvent;
+    public static Action<HeatingTaskScriptableObject> Test;
 
     private WorkManager.Job job;
     private int taskIndex = 0;
