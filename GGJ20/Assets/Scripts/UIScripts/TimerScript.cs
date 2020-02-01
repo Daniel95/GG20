@@ -44,7 +44,7 @@ public class TimerScript : MonoBehaviour
         }
     }
 
-    private void OnStartJob(string desc, int time)
+    private void OnStartJob(WorkManager.Job job)
     {
         timeLimit = time;
         timeLeft = timeLimit;

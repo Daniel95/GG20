@@ -8,25 +8,19 @@ using NaughtyAttributes;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject weaponSpawnPos;
-    private GameObject weaponToFix;
     private List<CamPoint> cameraHooks;
     private List<SwordTeleportPoint> swordTeleportPoints;
     private GameObject mainCam = null;
+    private GameObject sword = null;
 
-    private Transform currentCamTrans;
-    private Transform currentWeaponTrans;
-
-    //for slerping
-    float fp = .01f;
+    float fp = 1;
 
     private List<TaskManagerBase> taskManagers;
 
     /// <summary>
     /// Params: Description, Time
     /// </summary>
-    public static Action<string, int>StartJobEvent;
+    public static Action<WorkManager.Job> StartJobEvent;
     /// <summary>
     /// Params: WorkManager.TaskType
     /// </summary>
@@ -34,9 +28,13 @@ public class Player : MonoBehaviour
 
     private WorkManager.Job job;
     private int taskIndex = 0;
+    private WorkManager.TaskType currentTaskType = WorkManager.TaskType.None;
 
-    [HideInInspector]
-    public bool isWorking;
+    private Coroutine cameraSlerpCoroutine;
+    private Coroutine swordSlerpCoroutine;
+
+    public bool IsWorking() { return currentTaskType != WorkManager.TaskType.None; }
+    public bool IsAtCounter() { return currentTaskType == WorkManager.TaskType.None; }
 
     private void Awake()
     {
@@ -44,93 +42,125 @@ public class Player : MonoBehaviour
 
         //stuff for camera slerping
         mainCam = GameObject.FindWithTag("MainCamera");
+        mainCam = GameObject.FindWithTag("MainCamera");
 
         //njeh
         if (cameraHooks.Count <= 0)
             Debug.LogError("define camera hooks, you buffoon");
 
         //I am now a lamda master
-        currentCamTrans = cameraHooks.Find(x => x.GetComponent<CamPoint>().taskType == WorkManager.TaskType.None).transform;
-        mainCam.transform.position = currentCamTrans.position;
-        mainCam.transform.rotation = currentCamTrans.rotation;
-
-        currentWeaponTrans = transform; //temp
+        Transform startCameraTransform = cameraHooks.Find(x => x.GetComponent<CamPoint>().taskType == WorkManager.TaskType.None).transform;
+        mainCam.transform.position = startCameraTransform.position;
+        mainCam.transform.rotation = startCameraTransform.rotation;
 
         taskManagers = FindObjectsOfType<TaskManagerBase>().ToList();
     }
 
-    void Update()
+    public void OnNextButton()
     {
-        SlerpCamera();
-        SlerpWeapon();
+        if (IsWorking())
+        {
+            bool startedTask = NextTask();
+
+            if (!startedTask)
+            {
+                GoToCounter();
+            }
+        }
+        else 
+        {
+            StartJob();
+        }
     }
 
-    public WorkManager.Job StartJob()
+    private void GoToCounter()
     {
-        isWorking = true;
+        currentTaskType = WorkManager.TaskType.None;
+
+        Transform counterCameraTransform = cameraHooks.Find(x => x.taskType == WorkManager.TaskType.None).transform;
+        Transform counterSwordTransform = cameraHooks.Find(x => x.taskType == WorkManager.TaskType.None).transform;
+
+        if (cameraSlerpCoroutine == null)
+        {
+            cameraSlerpCoroutine = StartCoroutine(SlerpTransform(mainCam.transform, counterCameraTransform,() => cameraSlerpCoroutine = null));
+        }
+
+        if (cameraSlerpCoroutine == null)
+        {
+            swordSlerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, counterSwordTransform, () => swordSlerpCoroutine = null));
+        }
+    }
+
+    public void StartJob()
+    {
         job = WorkManager.Instance.ChooseJob();
 
         if (StartJobEvent != null)
-            StartJobEvent(job.Description, job.Time);
-
-        //spawn just the right weapon for the job
-        weaponToFix = Instantiate(job.Weapon);
-        weaponToFix.transform.position = weaponSpawnPos.transform.position;
-        weaponToFix.transform.rotation = weaponSpawnPos.transform.rotation;
+        {
+            StartJobEvent(job);
+        }
 
         print(job.Description);
         print(job.Time);
 
+        sword = GameObject.FindGameObjectWithTag("Sword");
+
         taskIndex = 0;
 
         StartTask(0);
-
-        
-
-        return job;
     }
 
-    public void NextTask()
+    public bool NextTask()
     {
+        taskIndex++;
+
         if(taskIndex >= job.Tasks.Count)
         {
-            isWorking = false;
-            return;
+            return false;
         }
 
-        taskIndex++;
         StartTask(taskIndex);
-
+        return true;
     }
 
     private void StartTask(int taskIndex)
     {
-        fp = .01f;  //reset slerp time
+        fp = 0.1f;  //reset slerp time
 
         TaskScriptableObject taskData = job.Tasks[taskIndex];
-        WorkManager.TaskType taskType = taskData.GetTaskType();
+        currentTaskType = taskData.GetTaskType();
 
         if(StartTaskEvent != null)
-            StartTaskEvent(taskType);
+            StartTaskEvent(currentTaskType);
 
-        if (!taskManagers.Exists(x => x.GetTaskType() == taskType))
+        if (!taskManagers.Exists(x => x.GetTaskType() == currentTaskType))
         {
             Debug.LogError("VERY BAD");
             return;
         }
 
-        TaskManagerBase taskManagerBase = taskManagers.Find(x => x.GetTaskType() == taskType);
+        TaskManagerBase taskManagerBase = taskManagers.Find(x => x.GetTaskType() == currentTaskType);
         taskManagerBase.Activate();
 
         WorkManager.TaskType currentType =  taskManagerBase.GetTaskType();
 
-        currentCamTrans = GetCamPoint(currentType);
-        currentWeaponTrans = GetSwordTeleportPoint(currentType);
+        Transform currentCamTrans = GetCamPoint(currentType);
+        Transform currentWeaponTrans = GetSwordTeleportPoint(currentType);
+
+        if (cameraSlerpCoroutine == null)
+        {
+            cameraSlerpCoroutine = StartCoroutine(SlerpTransform(mainCam.transform, currentCamTrans, () => cameraSlerpCoroutine = null));
+        }
+
+        if (cameraSlerpCoroutine == null)
+        {
+            swordSlerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, currentWeaponTrans, () => swordSlerpCoroutine = null));
+        }
+
+        StartCoroutine(SlerpTransform(mainCam.transform, currentCamTrans));
+        StartCoroutine(SlerpTransform(taskManagerBase.sword.transform, currentWeaponTrans));
 
         taskManagerBase.SetTaskObject(taskData);
-
-
-        
 
         //switch (taskType)
         //{
@@ -161,7 +191,6 @@ public class Player : MonoBehaviour
         cameraHooks = FindObjectsOfType<CamPoint>().ToList();
     }
 
-
     public Transform GetCamPoint(WorkManager.TaskType taskType)
     {
         CamPoint currentCamPoint = cameraHooks.Find(x => x.taskType == taskType);
@@ -173,7 +202,6 @@ public class Player : MonoBehaviour
 
         return currentCamPoint.transform;
     }
-
 
     public Transform GetSwordTeleportPoint(WorkManager.TaskType taskType)
     {
@@ -187,30 +215,29 @@ public class Player : MonoBehaviour
         return swordTeleportPoint.transform;
     }
 
-    private void SlerpCamera()
+    private IEnumerator SlerpTransform(Transform transformToMove, 
+        Transform targetTransform, 
+        Action OnCompleted = null,
+        float minDistanceOffset = 0.1f, 
+        float minRotationOffset = 2.0f)
     {
-        if (Vector3.Distance(mainCam.transform.position, currentCamTrans.position) > 0.1f)
+        bool reachedPosition = Vector3.Distance(transformToMove.transform.position, targetTransform.position) <= minDistanceOffset;
+        bool reachedRotation = Quaternion.Angle(transformToMove.transform.rotation, targetTransform.rotation) <= minRotationOffset;
+
+        while (!reachedPosition && !reachedRotation)
         {
-            mainCam.transform.position = Vector3.Slerp(mainCam.transform.position, currentCamTrans.position, fp);
+            transformToMove.transform.position = Vector3.Slerp(transformToMove.transform.position, targetTransform.position, fp);
+            transformToMove.transform.rotation = Quaternion.Slerp(transformToMove.transform.rotation, targetTransform.rotation, fp);
+            fp += Time.deltaTime;
+
+            yield return null;
         }
 
-        if (Quaternion.Angle(mainCam.transform.rotation, currentCamTrans.rotation) > 2)
+        print("DONE");
+
+        if (OnCompleted != null)
         {
-            mainCam.transform.rotation = Quaternion.Slerp(mainCam.transform.rotation, currentCamTrans.rotation, fp);
-        }
-        fp += Time.deltaTime;
-    }
-
-    private void SlerpWeapon()
-    {
-        if (Vector3.Distance(mainCam.transform.position, currentWeaponTrans.position) > 0.1f)
-        {
-
-        }
-
-        if (Quaternion.Angle(mainCam.transform.rotation, currentWeaponTrans.rotation) > 2)
-        {
-
+            OnCompleted();
         }
     }
 }
