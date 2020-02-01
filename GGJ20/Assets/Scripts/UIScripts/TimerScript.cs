@@ -14,13 +14,20 @@ public class TimerScript : MonoBehaviour
 
     private void Start()
     {
+        Player.StartJobEvent += OnStartJob;
         clockImage = GetComponent<Image>();
+        clockScale = transform.localScale;
     }
+
     private void Update()
     {
         if(timeLeft > 0)
         {
             clockImage.fillAmount = 1.0f / (timeLimit / timeLeft);
+        }
+        else
+        {
+            return;
         }
 
         if (timeLeft % quarterMark >= -0.1f && timeLeft % quarterMark < 0.1f)
@@ -41,6 +48,7 @@ public class TimerScript : MonoBehaviour
     {
         timeLimit = time;
         timeLeft = timeLimit;
+        Debug.Log("Start the job");
     }
 
     private void OnEnable()
