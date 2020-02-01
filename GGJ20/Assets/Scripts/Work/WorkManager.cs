@@ -24,6 +24,7 @@ public class WorkManager : MonoBehaviour
         public int Time;
         public string CustomerName;
         public GameObject CustomerModel;
+        public GameObject Weapon;
         public string Description;
         [ReorderableList]
         public List<TaskScriptableObject> Tasks;

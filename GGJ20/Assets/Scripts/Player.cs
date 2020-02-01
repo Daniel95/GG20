@@ -8,6 +8,9 @@ using NaughtyAttributes;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject weaponSpawnPos;
+    private GameObject weaponToFix;
     private List<CamPoint> cameraHooks;
     private List<SwordTeleportPoint> swordTeleportPoints;
     private GameObject mainCam = null;
@@ -15,10 +18,8 @@ public class Player : MonoBehaviour
     private Transform currentCamTrans;
     private Transform currentWeaponTrans;
 
-    //private int prevHookIndx = 0;
-    //private int currHookIndx = 0;
-
-    float fp = 1;
+    //for slerping
+    float fp = .01f;
 
     private List<TaskManagerBase> taskManagers;
 
@@ -64,31 +65,6 @@ public class Player : MonoBehaviour
         SlerpWeapon();
     }
 
-    //public void NextTaskLocation()
-    //{
-    //    if ((currHookIndx + 1) < cameraHooks.Count)
-    //    {
-    //        //safe
-    //        GoToPhase(currHookIndx + 1);
-    //    }
-    //    else
-    //    {
-    //        //wrap to first phase
-    //        GoToPhase(0);
-    //    }
-    //}
-
-    /// <summary>
-    /// Public for any freaky boys who want to call this elsewhere (can be used to force camera to a specific phase)
-    /// </summary>
-    /// <param name="phaseIndex"></param>
-    //public void GoToPhase(int phaseIndex)
-    //{
-    //    prevHookIndx = currHookIndx;
-    //    currHookIndx = phaseIndex;
-    //    fp = 0.1f;
-    //}
-
     public WorkManager.Job StartJob()
     {
         isWorking = true;
@@ -97,12 +73,19 @@ public class Player : MonoBehaviour
         if (StartJobEvent != null)
             StartJobEvent(job.Description, job.Time);
 
+        //spawn just the right weapon for the job
+        weaponToFix = Instantiate(job.Weapon);
+        weaponToFix.transform.position = weaponSpawnPos.transform.position;
+        weaponToFix.transform.rotation = weaponSpawnPos.transform.rotation;
+
         print(job.Description);
         print(job.Time);
 
         taskIndex = 0;
 
         StartTask(0);
+
+        
 
         return job;
     }
@@ -122,7 +105,7 @@ public class Player : MonoBehaviour
 
     private void StartTask(int taskIndex)
     {
-        fp = 0.1f;  //reset slerp time
+        fp = .01f;  //reset slerp time
 
         TaskScriptableObject taskData = job.Tasks[taskIndex];
         WorkManager.TaskType taskType = taskData.GetTaskType();
@@ -145,6 +128,9 @@ public class Player : MonoBehaviour
         currentWeaponTrans = GetSwordTeleportPoint(currentType);
 
         taskManagerBase.SetTaskObject(taskData);
+
+
+        
 
         //switch (taskType)
         //{
@@ -206,14 +192,13 @@ public class Player : MonoBehaviour
         if (Vector3.Distance(mainCam.transform.position, currentCamTrans.position) > 0.1f)
         {
             mainCam.transform.position = Vector3.Slerp(mainCam.transform.position, currentCamTrans.position, fp);
-            fp += Time.deltaTime;
         }
 
         if (Quaternion.Angle(mainCam.transform.rotation, currentCamTrans.rotation) > 2)
         {
             mainCam.transform.rotation = Quaternion.Slerp(mainCam.transform.rotation, currentCamTrans.rotation, fp);
-            fp += Time.deltaTime;
         }
+        fp += Time.deltaTime;
     }
 
     private void SlerpWeapon()

@@ -50,7 +50,7 @@ public class Customer : MonoBehaviour
             clockImage.transform.localScale *= 1.05f;
             fl = 0.1f;
         }
-        else /*if (clockImage.transform.localScale.x <= clockScale.x - 0.01f && clockImage.transform.localScale.x >= clockScale.x + 0.01f)*/
+        else 
         {
             //Debug.Log("Scale timer back down");
             clockImage.transform.localScale = Vector3.Lerp(clockImage.transform.localScale, clockScale, fl);

@@ -16,6 +16,9 @@ MonoBehaviour:
   - Time: 69
     CustomerName: 
     CustomerModel: {fileID: 0}
+    Weapon: {fileID: 4410402899750998667, guid: bf0a225a9ff184f2789f3036faaa9150,
+      type: 3}
     Description: if you read this you stink!
     Tasks:
+    - {fileID: 11400000, guid: a1c291135e1c9124799a49fdbd4c8a28, type: 2}
     - {fileID: 11400000, guid: e609700c0d620b04997be43c8031bce6, type: 2}
