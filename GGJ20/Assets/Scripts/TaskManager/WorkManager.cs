@@ -5,6 +5,7 @@ using System.ComponentModel;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using NaughtyAttributes;
 
 public class WorkManager : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class WorkManager : MonoBehaviour
     {
         public int Time;
         public string Description;
+        [ReorderableList]
         public List<TaskScriptableObject> Tasks;
     }
 
