@@ -38,7 +38,7 @@ public class HeatingTaskManager : TaskManagerBase
         }
     }
 
-    public override int GetOffsetFromTarget()
+    public override float GetOffsetFromTarget()
     {
         return Mathf.Abs(targetHeat - currentHeat);
     }

@@ -7,7 +7,7 @@ public abstract class TaskManagerBase : MonoBehaviour
 {
     public GameObject sword;
     protected bool isActivated;
-    public abstract int GetOffsetFromTarget();
+    public abstract float GetOffsetFromTarget();
     public abstract WorkManager.TaskType GetTaskType();
     public abstract void SetTaskObject(TaskScriptableObject a_taskScriptableObject);
 
