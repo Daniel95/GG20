@@ -5,9 +5,9 @@ using UnityEngine;
 public class CleaningTaskManager : TaskManagerBase
 {
     private float targetCleanliness;
-    public override int GetOffsetFromTarget()
+    public override float GetOffsetFromTarget()
     {
-        throw new System.NotImplementedException();
+        return 0;   
     }
 
     public override WorkManager.TaskType GetTaskType()
