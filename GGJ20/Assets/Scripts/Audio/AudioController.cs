@@ -92,7 +92,7 @@ public class AudioController : MonoBehaviour
 
         currentStage++;
 
-        InitializeAudioSources(ChooseClipsToPlay(true), true);
+        //InitializeAudioSources(ChooseClipsToPlay(true), true);
     }
 
     /// <summary>
@@ -108,7 +108,7 @@ public class AudioController : MonoBehaviour
 
         currentStage = Mathf.Max(currentStage - 1, 0);
 
-        InitializeAudioSources(ChooseClipsToPlay(true), true);
+        //InitializeAudioSources(ChooseClipsToPlay(true), true);
     }
 
     private List<AudioList> ChooseClipsToPlay(bool startFromADifferentPosition)
