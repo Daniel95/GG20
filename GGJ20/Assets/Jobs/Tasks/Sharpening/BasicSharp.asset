@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0755a2bcfd3791d45a72718a0910634c, type: 3}
-  m_Name: WOWSOSHARP
+  m_Name: BasicSharp
   m_EditorClassIdentifier: 
-  TargetSharpness: 69
+  targetSharpness: 0.477
