@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public static Action<WorkManager.Job> StartJobEvent;
     public static Action<WorkManager.Job> GetJobEvent;
-    public static Action<int> NextCustomerEvent;
+    public static Action NextCustomerEvent;
     /// <summary>
     /// Params: Job
     /// </summary>
@@ -48,6 +48,8 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        //TimerScript.TimeExpiredEvent += GoToCounter;      //Doesnt quite work
+
         GetLerpPoints();
 
         //stuff for camera slerping
@@ -117,11 +119,6 @@ public class Player : MonoBehaviour
         }
         
         weaponResultOffsets.Clear();
-
-        //print(job.Description);
-        //print(job.Time);
-
-        //sword = GameObject.FindGameObjectWithTag("Sword");
 
         taskIndex = 0;
         bool startedTask = NextTask();
@@ -288,7 +285,7 @@ public class Player : MonoBehaviour
 
     public void RemoveSword()
     {
-        NextCustomerEvent?.Invoke(0);
+        NextCustomerEvent?.Invoke();
         Destroy(sword);
     }
 }
