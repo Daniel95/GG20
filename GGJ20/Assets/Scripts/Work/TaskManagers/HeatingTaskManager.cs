@@ -25,18 +25,20 @@ public class HeatingTaskManager : TaskManagerBase
     private bool heating;
     private bool heatMatters;
 
-    private void Start()
+    public void SetTargetHeat(int _targetHeat)
     {
+        targetHeat = _targetHeat;
+    }
+
+    public override void Activate()
+    {
+        base.Activate();
         List<SwordTeleportPoint> swordTeleportPoints = GameObject.FindObjectsOfType<SwordTeleportPoint>().ToList();
         nonHeatPoint = swordTeleportPoints.Find(x => x.taskType == WorkManager.TaskType.Heating).transform;
 
         swordMaterial = sword.GetComponent<Material>();
     }
 
-    public void SetTargetHeat(int _targetHeat)
-    {
-        targetHeat = _targetHeat;
-    }
 
     public override void Deactivate()
     {

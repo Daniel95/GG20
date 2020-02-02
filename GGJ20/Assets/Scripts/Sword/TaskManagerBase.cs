@@ -16,8 +16,8 @@ public abstract class TaskManagerBase : MonoBehaviour
 
     protected virtual void Awake()
     {
-        sword = GameObject.FindGameObjectWithTag("Sword");
-        swordDetails = sword.GetComponent<Sword>();
+        //sword = GameObject.FindGameObjectWithTag("Sword");
+        //swordDetails = sword.GetComponent<Sword>();
     }
 
     public virtual void Activate()
