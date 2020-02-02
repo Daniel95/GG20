@@ -10,14 +10,14 @@ public abstract class TaskManagerBase : MonoBehaviour
     [HideInInspector]
     public Sword swordDetails = null;
     protected bool isActivated;
-    public abstract float GetOffsetFromTarget();
+    public abstract float GetOffsetPercentage();
     public abstract WorkManager.TaskType GetTaskType();
     public abstract void SetTaskObject(TaskScriptableObject a_taskScriptableObject);
 
     protected virtual void Awake()
     {
-        sword = GameObject.FindGameObjectWithTag("Sword");
-        swordDetails = sword.GetComponent<Sword>();
+        //sword = GameObject.FindGameObjectWithTag("Sword");
+        //swordDetails = sword.GetComponent<Sword>();
     }
 
     public virtual void Activate()
