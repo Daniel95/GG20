@@ -14,8 +14,6 @@ public class Player : MonoBehaviour
     private GameObject sword = null;
     private Customer customer;
 
-    float fp = 1;
-
     private List<TaskManagerBase> taskManagers;
     private Dictionary<WorkManager.TaskType, float> weaponResultOffsets = new Dictionary<WorkManager.TaskType, float>();
 
@@ -144,8 +142,6 @@ public class Player : MonoBehaviour
 
     private void StartTask(int taskIndex)
     {
-        fp = 0.1f;  //reset slerp time
-
         TaskScriptableObject taskData = job.Tasks[taskIndex];
         currentTaskType = taskData.GetTaskType();
 
@@ -218,6 +214,8 @@ public class Player : MonoBehaviour
         float minDistanceOffset = 0.2f, 
         float minRotationOffset = 5.0f)
     {
+        float fp = 0;
+
         while (true)
         {
             float positionOffset = Vector3.Distance(transformToMove.transform.position, targetTransform.position);
