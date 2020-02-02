@@ -1563,6 +1563,46 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5408383990369162688, guid: 45e18a8f7e08dd64180de809db2e1876,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408383990369162688, guid: 45e18a8f7e08dd64180de809db2e1876,
+        type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408383990369162688, guid: 45e18a8f7e08dd64180de809db2e1876,
+        type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408383990776235358, guid: 45e18a8f7e08dd64180de809db2e1876,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408383991428206314, guid: 45e18a8f7e08dd64180de809db2e1876,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 153.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408383991428206314, guid: 45e18a8f7e08dd64180de809db2e1876,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 261.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408383991428206314, guid: 45e18a8f7e08dd64180de809db2e1876,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 64.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 5408383991428206314, guid: 45e18a8f7e08dd64180de809db2e1876,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 96.05
+      objectReference: {fileID: 0}
     - target: {fileID: 5408383991428206315, guid: 45e18a8f7e08dd64180de809db2e1876,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
