@@ -15,11 +15,13 @@ public class HeatingTaskManager : TaskManagerBase
     [SerializeField] private float maxHeat = 3;
     [SerializeField] private float timeForMaxHeat = 7;
     [SerializeField] private float moveTime = 1;
+    [SerializeField] private float meltSpeed = 0.15f;
 
     private Transform nonHeatPoint;
     private Material swordMaterial;
     private float targetHeat;
     private float currentHeat;
+    private float currentMelt = 0.0f;
 
     private bool heating;
     private bool heatMatters;
@@ -81,21 +83,21 @@ public class HeatingTaskManager : TaskManagerBase
 
             swordMaterial.SetFloat("_HeatAmount", heatProgress);
             swordMaterial.SetFloat("_HeatEmission", heatProgress * 10);
+
+            if(currentHeat >= maxHeat)
+            {
+                currentMelt += meltSpeed * Time.deltaTime;
+                currentMelt = Mathf.Clamp01(currentMelt);
+                swordMaterial.SetFloat("_Cutoff", currentMelt);
+            }
         }
     }
 
     public override float GetOffsetPercentage()
     {
-        if (heatMatters)
-        {
-            float progress = currentHeat / maxHeat;
-            float offset = Mathf.Min(Mathf.Abs(targetHeat - progress), 1);
-            return offset;
-        }
-        else
-        {
-            return 0;
-        }
+        float progress = currentHeat / maxHeat;
+        float offset = Mathf.Min(Mathf.Abs(targetHeat - progress), 1);
+        return offset;
     }
 
     public override WorkManager.TaskType GetTaskType()
