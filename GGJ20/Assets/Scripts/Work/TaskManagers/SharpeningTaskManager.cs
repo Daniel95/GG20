@@ -15,10 +15,8 @@ public class SharpeningTaskManager : TaskManagerBase
     [SerializeField]
     private Vector3 localOffset = new Vector3(0, 0.5f, 0);
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
-
         SwordTeleportPoint[] swordTeleportPoints = GameObject.FindObjectsOfType<SwordTeleportPoint>();
         foreach (SwordTeleportPoint p in swordTeleportPoints)
         {
