@@ -128,6 +128,12 @@ public class ShapingTaskManager : TaskManagerBase
 
     public override float GetOffsetPercentage()
     {
-        return 0;
+        float offset = 0;
+        CurveDisplaceDeformer[] deformers = sword.GetComponentsInChildren<CurveDisplaceDeformer>();
+        foreach (CurveDisplaceDeformer deformer in deformers)
+        {
+            offset += Mathf.Abs(deformer.Factor/5);
+        }
+        return Mathf.Abs(curTask.totalTargetBendiness - offset);
     }
 }

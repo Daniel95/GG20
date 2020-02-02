@@ -4,7 +4,7 @@
 public class ShapingTaskScriptableObject : TaskScriptableObject
 {
     [Range(0.0f, 1.0f)]
-    public int TargetBendiness;
+    public int totalTargetBendiness;
 
     public override WorkManager.TaskType GetTaskType()
     {
