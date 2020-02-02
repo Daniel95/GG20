@@ -5,7 +5,7 @@ using UnityEngine;
 public class CleaningTaskManager : TaskManagerBase
 {
     private float targetCleanliness;
-    public override float GetOffsetFromTarget()
+    public override float GetOffsetPercentage()
     {
         return 0;   
     }
