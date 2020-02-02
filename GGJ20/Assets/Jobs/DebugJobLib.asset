@@ -20,6 +20,10 @@ MonoBehaviour:
     Weapon: {fileID: 1752977810448385673, guid: 8f401f730f4589541b4e2ecdfb5212ff,
       type: 3}
     Description: if you read this you stink!
+    VeryGoodEnding: 'Super lekker '
+    GoodEnding: Redelijk lekker
+    BadEnding: Kut
+    VeryBadEnding: Super kut
     Tasks:
     - {fileID: 11400000, guid: 2823c90e7eec9a74fae8a32c4bbef3ec, type: 2}
     - {fileID: 11400000, guid: fb5a342b441c70546909737551628c58, type: 2}
@@ -32,6 +36,10 @@ MonoBehaviour:
     Weapon: {fileID: 1752977810448385673, guid: 8f401f730f4589541b4e2ecdfb5212ff,
       type: 3}
     Description: I HAVE LAMENTATIONS TO HEAR, MAKE IT SNAPPY
+    VeryGoodEnding: Uitermate lekker
+    GoodEnding: Aardig lekker
+    BadEnding: Best kut
+    VeryBadEnding: Echt super kut
     Tasks:
     - {fileID: 11400000, guid: 2823c90e7eec9a74fae8a32c4bbef3ec, type: 2}
     - {fileID: 11400000, guid: fb5a342b441c70546909737551628c58, type: 2}

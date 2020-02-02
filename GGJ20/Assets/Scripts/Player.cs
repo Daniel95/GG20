@@ -119,8 +119,8 @@ public class Player : MonoBehaviour
         
         weaponResultOffsets.Clear();
 
-        print(job.Description);
-        print(job.Time);
+        //print(job.Description);
+        //print(job.Time);
 
         //sword = GameObject.FindGameObjectWithTag("Sword");
 
