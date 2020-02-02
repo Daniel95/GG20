@@ -5,6 +5,7 @@ using UnityEngine;
 public class CleaningTaskManager : TaskManagerBase
 {
     private float targetCleanliness;
+
     private float currentCleanliness;
 
     private Vector3 previousMousePosition = Vector3.negativeInfinity;
@@ -40,7 +41,7 @@ public class CleaningTaskManager : TaskManagerBase
 
     private float mousePositionDelta;
 
-    public override float GetOffsetFromTarget()
+    public override float GetOffsetPercentage()
     {
         return 0;   
     }

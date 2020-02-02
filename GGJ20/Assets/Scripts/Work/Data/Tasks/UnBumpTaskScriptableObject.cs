@@ -6,7 +6,7 @@ using UnityEngine;
 public class UnBumpTaskScriptableObject : TaskScriptableObject
 {
     [Tooltip("0 is perfect everything else is bumpy! It's from all the ripple effects combined. (Amplitude)")]
-    [Range(-10.0f, 10.0f)]
+    [Range(0.0f, 1.0f)]
     public float totalTargetRippleness = 0.0f;
 
     public override WorkManager.TaskType GetTaskType()

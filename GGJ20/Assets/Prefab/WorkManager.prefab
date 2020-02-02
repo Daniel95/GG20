@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7584844526480015905}
   - component: {fileID: 7584844526480015934}
   - component: {fileID: 1138957128511686154}
+  - component: {fileID: 1038380478}
   m_Layer: 0
   m_Name: WorkManager
   m_TagString: Untagged
@@ -63,6 +64,10 @@ MonoBehaviour:
   swordDetails: {fileID: 0}
   shapingXScaleIncrement: 0.3
   heatPoint: {fileID: 0}
+  maxHeatColor: {r: 1, g: 0, b: 0, a: 0}
+  maxHeat: 3
+  timeForMaxHeat: 7
+  moveTime: 1
 --- !u!114 &7584844526480015934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,4 +101,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sword: {fileID: 0}
   swordDetails: {fileID: 0}
-  deformSharpingAmount: 1
+  deformSharpingAmount: 0.25
+  localOffset: {x: 0, y: 0.5, z: 0}
+--- !u!114 &1038380478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7584844526480015906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08fd7287e84827041a0824fcad94470f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sword: {fileID: 0}
+  swordDetails: {fileID: 0}

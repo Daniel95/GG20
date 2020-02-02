@@ -2,15 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Deform;
+using DG.Tweening;
 
 public class SharpeningTaskManager : TaskManagerBase
 {
     private SharpeningTaskScriptableObject curTask = null;
     private PerlinNoiseDeformer deformer = null;
     [SerializeField]
-    private float deformSharpingAmount = 0.01f;
+    private float deformSharpingAmount = 0.25f;
 
-    public override float GetOffsetFromTarget()
+    private Transform startTransform = null;
+    [SerializeField]
+    private Vector3 localOffset = new Vector3(0, 0.5f, 0);
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        SwordTeleportPoint[] swordTeleportPoints = GameObject.FindObjectsOfType<SwordTeleportPoint>();
+        foreach (SwordTeleportPoint p in swordTeleportPoints)
+        {
+            if(p.taskType == this.GetTaskType())
+            {
+                startTransform = p.transform;
+                break;
+            }
+        }
+    }
+
+    public override float GetOffsetPercentage()
     {
         return 0;
     }
@@ -44,8 +64,21 @@ public class SharpeningTaskManager : TaskManagerBase
             return;
         }
 
+        if(Input.GetMouseButtonDown(0))
+        {
+            //Go down.
+            sword.transform.DOLocalMove(startTransform.position - localOffset, 0.25f);
+        }
+
+        if(Input.GetMouseButtonUp(0))
+        {
+            //Go up.
+            sword.transform.DOLocalMove(startTransform.position, 0.25f);
+        }
+
         if (Input.GetMouseButton(0))
         {
+            //Deform logic.
             deformer.MagnitudeScalar -= deformSharpingAmount * Time.deltaTime;
             deformer.MagnitudeScalar = Mathf.Max(deformer.MagnitudeScalar, 0.0f);
 
