@@ -18,13 +18,6 @@ public class Customer : MonoBehaviour
         SpawnCustomerModel();
     }
 
-    private void Update()
-    {
-        //this.transform.DOMove()
-    }
-
-
-
     private void GiveJob()
     {
         Debug.Log("Start the job, lazybum");
