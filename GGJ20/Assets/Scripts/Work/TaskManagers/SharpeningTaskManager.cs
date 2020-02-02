@@ -14,6 +14,27 @@ public class SharpeningTaskManager : TaskManagerBase
     [SerializeField]
     private Vector3 localOffset = new Vector3(0, 0.5f, 0);
 
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip audioClip;
+
+
+    public override void Activate()
+    {
+        base.Activate();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = audioClip;
+    }
+
+    public override void Deactivate()
+    {
+        base.Deactivate();
+        audioSource.Stop();
+        audioSource.loop = false;
+        audioSource.clip = null;
+    }
+
     protected void Awake()
     {
         SwordTeleportPoint[] swordTeleportPoints = GameObject.FindObjectsOfType<SwordTeleportPoint>();
@@ -62,12 +83,16 @@ public class SharpeningTaskManager : TaskManagerBase
         {
             //Go down.
             sword.transform.DOLocalMove(startTransform.position - localOffset, 0.25f);
+            audioSource.Play();
+            audioSource.loop = true;
         }
 
         if(Input.GetMouseButtonUp(0))
         {
             //Go up.
             sword.transform.DOLocalMove(startTransform.position, 0.25f);
+            audioSource.Stop();
+            audioSource.loop = false;
         }
 
         if (Input.GetMouseButton(0))

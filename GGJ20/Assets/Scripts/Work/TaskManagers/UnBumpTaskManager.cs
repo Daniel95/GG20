@@ -14,6 +14,11 @@ public class UnBumpTaskManager : TaskManagerBase
 
     private UnBumpTaskScriptableObject curTask = null;
 
+    private RandomPitchPlayer pitchPlayer;
+
+    [SerializeField]
+    private AudioClip audioClip;
+
     public override float GetOffsetPercentage()
     {
         RippleDeformer[] rippleDeformers = sword.GetComponentsInChildren<RippleDeformer>();
@@ -43,6 +48,7 @@ public class UnBumpTaskManager : TaskManagerBase
     public override void Activate()
     {
         base.Activate();
+        pitchPlayer = GetComponent<RandomPitchPlayer>();
     }
 
     public override void Deactivate()
@@ -75,6 +81,7 @@ public class UnBumpTaskManager : TaskManagerBase
                 if(hit.transform.TryGetComponent<RippleDeformer>(out RippleDeformer deformer))
                 {
                     //Hit ripple.
+                    pitchPlayer.PlaySFX(audioClip, 0.9F, 1.1F);
                     deformer.Amplitude -= deformHitAmount;
                     deformer.Amplitude = Mathf.Clamp(deformer.Amplitude, ripplenessMinMax.x, ripplenessMinMax.y);
                 }
