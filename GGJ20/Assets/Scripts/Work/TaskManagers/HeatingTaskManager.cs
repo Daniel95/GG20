@@ -12,8 +12,11 @@ public class HeatingTaskManager : TaskManagerBase
     [SerializeField] private float shapingXScaleIncrement = 0.3f;
     [SerializeField] private Transform heatPoint;
     [SerializeField] private Color maxHeatColor;
+    [SerializeField] private float maxHeatMultiplier = 3;
+    [SerializeField] private float timeForMaxHeat = 7;
 
     private Transform nonHeatPoint;
+    private Material swordMaterial;
     private int targetHeat;
     private int currentHeat;
 
@@ -26,6 +29,8 @@ public class HeatingTaskManager : TaskManagerBase
     {
         List<SwordTeleportPoint> swordTeleportPoints = GameObject.FindObjectsOfType<SwordTeleportPoint>().ToList();
         nonHeatPoint = swordTeleportPoints.Find(x => x.taskType == WorkManager.TaskType.Heating).transform;
+
+        swordMaterial = sword.GetComponent<Material>();
     }
 
     public void SetTargetHeat(int _targetHeat)
@@ -44,6 +49,7 @@ public class HeatingTaskManager : TaskManagerBase
     {
         if(!isActivated) { return; }
 
+        /*
         if (Input.GetMouseButtonDown(0))
         {
             if (slerpCoroutine != null)
@@ -66,7 +72,10 @@ public class HeatingTaskManager : TaskManagerBase
         if (heating)
         {
             currentHeat++;
+
+            swordMaterial.color = Color.Lerp(swordMaterial.color, maxHeatColor, 1);
         }
+         */
     }
 
     public override float GetOffsetFromTarget()
@@ -118,6 +127,8 @@ public class HeatingTaskManager : TaskManagerBase
 
             yield return null;
         }
+
+        print("Done");
 
         if (OnCompleted != null)
         {
