@@ -32,6 +32,7 @@ public class Customer : MonoBehaviour
     {
         //a customer needs a job :)
         currentJob = WorkManager.Instance.ChooseJob();
+        player.RemoveSword();
 
         if (customerModel)
         {
@@ -74,7 +75,6 @@ public class Customer : MonoBehaviour
 
 
         StartCoroutine(EvaluationTime());
-        player.RemoveSword();
     }
 
     IEnumerator EvaluationTime()
