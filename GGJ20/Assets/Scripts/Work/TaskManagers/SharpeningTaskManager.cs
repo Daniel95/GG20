@@ -32,7 +32,14 @@ public class SharpeningTaskManager : TaskManagerBase
 
     public override float GetOffsetPercentage()
     {
-        return 0;
+        float magnitude = deformer.MagnitudeScalar * 4;
+        float invScale = 1 - swordDetails.blade.transform.localScale.z;
+
+        float offset = magnitude - invScale;
+
+        float offsetToTarget = Mathf.Max(Mathf.Abs(offset - curTask.targetSharpness));
+
+        return offsetToTarget;
     }
 
     public override WorkManager.TaskType GetTaskType()
@@ -64,7 +71,7 @@ public class SharpeningTaskManager : TaskManagerBase
             return;
         }
 
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             //Go down.
             sword.transform.DOLocalMove(startTransform.position - localOffset, 0.25f);
