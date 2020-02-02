@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TimerScript : MonoBehaviour
 {
+    public static Action TimeExpiredEvent;
     private Image clockImage;
     private float timeLimit = 1;
     private float timeLeft = 1;
@@ -36,6 +38,8 @@ public class TimerScript : MonoBehaviour
         }
         else
         {
+            //timer expired, force player back to counter
+            TimeExpiredEvent?.Invoke();
             return;
         }
 
