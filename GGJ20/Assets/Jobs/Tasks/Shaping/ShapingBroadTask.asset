@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b7b5104e682f874bb3d211cec7729c6, type: 3}
   m_Name: ShapingBroadTask
   m_EditorClassIdentifier: 
-  TargetWidth: 9
+  totalTargetBendiness: 1

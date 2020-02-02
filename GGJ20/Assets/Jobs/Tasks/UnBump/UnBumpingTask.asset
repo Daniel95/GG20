@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f7c048c932c4c54ab9e0f51290e85e9, type: 3}
   m_Name: UnBumpingTask
   m_EditorClassIdentifier: 
-  hits: 5
+  totalTargetRippleness: 1
