@@ -34,7 +34,7 @@ public class SharpeningTaskManager : TaskManagerBase
 
         float offset = magnitude - invScale;
 
-        float offsetToTarget = Mathf.Max(Mathf.Abs(offset - curTask.targetSharpness));
+        float offsetToTarget = 1 - Mathf.Max(Mathf.Abs(offset - curTask.targetSharpness));
 
         return offsetToTarget;
     }
