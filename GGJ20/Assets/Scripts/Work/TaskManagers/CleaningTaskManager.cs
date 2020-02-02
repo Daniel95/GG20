@@ -20,7 +20,6 @@ public class CleaningTaskManager : TaskManagerBase
 
     [Header("Particle settings")]
 
-    [SerializeField, Tooltip("The particle system that controlls the anmount of shine particles that will appear.")]
     private ParticleSystem shineParticleSystem;
 
 
@@ -78,12 +77,6 @@ public class CleaningTaskManager : TaskManagerBase
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        shineParticleSystem.emissionRate = 0;
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -104,5 +97,14 @@ public class CleaningTaskManager : TaskManagerBase
             }
             previousMousePosition = Input.mousePosition;
         }
+    }
+
+    public override void Activate()
+    {
+        base.Activate();
+        shineParticleSystem = swordDetails.shinyParticles;
+        shineParticleSystem.Play();
+        shineParticleSystem.emissionRate = 0;
+
     }
 }
