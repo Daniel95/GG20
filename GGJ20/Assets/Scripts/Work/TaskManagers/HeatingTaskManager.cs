@@ -59,13 +59,10 @@ public class HeatingTaskManager : TaskManagerBase
         if (heating)
         {
             currentHeat += Mathf.Min((Time.deltaTime * maxHeat) / timeForMaxHeat, maxHeat);
-
-
-
         }
     }
 
-    public override float GetOffsetPercentage()
+    public override float GetOffsetFromTarget()
     {
         if (heatMatters)
         {
