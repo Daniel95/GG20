@@ -63,7 +63,6 @@ public class CleaningTaskManager : TaskManagerBase
         currentCleanliness = 0;
         //shineParticleSystem.emissionRate = 0;
         previousMousePosition = Vector3.negativeInfinity;
-
     }
 
     private void RubDetected()
@@ -107,6 +106,5 @@ public class CleaningTaskManager : TaskManagerBase
         shineParticleSystem = swordDetails.shinyParticles;
         shineParticleSystem.Play();
         shineParticleSystem.emissionRate = 0;
-
     }
 }
