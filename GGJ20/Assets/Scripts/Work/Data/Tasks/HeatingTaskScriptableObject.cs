@@ -4,6 +4,8 @@
 public class HeatingTaskScriptableObject : TaskScriptableObject
 {
     public int TargetHeat;
+    public bool Any;
+
     public override WorkManager.TaskType GetTaskType()
     {
         return WorkManager.TaskType.Heating;

@@ -7,8 +7,11 @@ using UnityEngine.UI;
 
 public class HeatingTaskManager : TaskManagerBase
 {
+    public static float HeatMultiplier;
+
     [SerializeField] private float shapingXScaleIncrement = 0.3f;
     [SerializeField] private Transform heatPoint;
+    [SerializeField] private Color maxHeatColor;
 
     private Transform nonHeatPoint;
     private int targetHeat;
@@ -16,9 +19,10 @@ public class HeatingTaskManager : TaskManagerBase
 
     private Coroutine slerpCoroutine = null;
 
-    private bool down;
+    private bool heating;
+    private bool heatMatters;
 
-    private void Awake()
+    private void Start()
     {
         List<SwordTeleportPoint> swordTeleportPoints = GameObject.FindObjectsOfType<SwordTeleportPoint>().ToList();
         nonHeatPoint = swordTeleportPoints.Find(x => x.taskType == WorkManager.TaskType.Heating).transform;
@@ -40,36 +44,41 @@ public class HeatingTaskManager : TaskManagerBase
     {
         if(!isActivated) { return; }
 
-
-        if (Input.GetMouseButton(0) && !down)
+        if (Input.GetMouseButtonDown(0))
         {
-            down = true;
-
             if (slerpCoroutine != null)
             {
                 StopCoroutine(slerpCoroutine);
             }
 
-            slerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, heatPoint));
+            slerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, heatPoint, () => heating = true));
         }
-        else if(down)
+        else if(Input.GetMouseButtonUp(0))
         {
-            down = true;
+            if (slerpCoroutine != null)
+            {
+                StopCoroutine(slerpCoroutine);
+            }
 
-            slerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, nonHeatPoint));
+            slerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, nonHeatPoint, () => heating = false));
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (heating)
         {
             currentHeat++;
-            float newXScale = transform.localScale.x + shapingXScaleIncrement;
-            transform.localScale = new Vector3(newXScale, transform.localScale.y, transform.localScale.z);
         }
     }
 
     public override float GetOffsetFromTarget()
     {
-        return Mathf.Abs(targetHeat - currentHeat);
+        if (heatMatters)
+        {
+            return Mathf.Abs(targetHeat - currentHeat);
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public override WorkManager.TaskType GetTaskType()
