@@ -14,12 +14,6 @@ public abstract class TaskManagerBase : MonoBehaviour
     public abstract WorkManager.TaskType GetTaskType();
     public abstract void SetTaskObject(TaskScriptableObject a_taskScriptableObject);
 
-    protected virtual void Awake()
-    {
-        //sword = GameObject.FindGameObjectWithTag("Sword");
-        //swordDetails = sword.GetComponent<Sword>();
-    }
-
     public virtual void Activate()
     {
         isActivated = true;

@@ -52,7 +52,7 @@ public class DescriptionTextScript : MonoBehaviour
         //same story
     }
 
-    private void OnNextCustomer(int i)
+    private void OnNextCustomer()
     {
         text.text = "Next customer please";
     }
