@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private List<SwordTeleportPoint> swordTeleportPoints;
     private GameObject mainCam = null;
     private GameObject sword = null;
+    private Customer customer;
 
     private List<TaskManagerBase> taskManagers;
     private Dictionary<WorkManager.TaskType, float> weaponResultOffsets = new Dictionary<WorkManager.TaskType, float>();
@@ -20,6 +21,9 @@ public class Player : MonoBehaviour
     /// Params: Job
     /// </summary>
     public static Action<WorkManager.Job> StartJobEvent;
+
+    public static Action<WorkManager.Job> GetJobEvent;
+
     /// <summary>
     /// Params: Job
     /// </summary>
@@ -38,6 +42,7 @@ public class Player : MonoBehaviour
     private Coroutine swordSlerpCoroutine;
 
     private bool startedJob;
+    private bool gotJob;    //got job you pauper???
 
     public bool IsWorking() { return currentTaskType != WorkManager.TaskType.None; }
     public bool IsAtCounter() { return currentTaskType == WorkManager.TaskType.None; }
@@ -48,6 +53,7 @@ public class Player : MonoBehaviour
 
         //stuff for camera slerping
         mainCam = GameObject.FindWithTag("MainCamera");
+        customer = GameObject.FindWithTag("Customer").GetComponent<Customer>();
 
         //njeh
         if (cameraHooks.Count <= 0)
@@ -63,6 +69,12 @@ public class Player : MonoBehaviour
 
     public void OnNextButton()
     {
+        if(!gotJob)
+        {
+            Debug.Log("You dont have a job yet you eager little boy");
+            return;
+        }
+
         if (startedJob)
         {
             bool startedTask = NextTask();
@@ -89,17 +101,16 @@ public class Player : MonoBehaviour
 
         SlerpCameraAndSword(counterCameraTransform, counterSwordTransform);
 
-        //task type.getoffset
-
+        gotJob = false;
+        //Destroy(sword, 5f);
         EndJobEvent?.Invoke(weaponResultOffsets);   //wow
-
+        //sword = null;
     }
 
     public void StartJob()
     {
-
-        Debug.Log("Start the job, lazybum");
-        job = WorkManager.Instance.ChooseJob();
+        //Debug.Log("Start the job, lazybum");
+        //job = WorkManager.Instance.ChooseJob();
 
         if (StartJobEvent != null)
         {
@@ -108,12 +119,13 @@ public class Player : MonoBehaviour
         
         weaponResultOffsets.Clear();
 
-        print(job.Description);
-        print(job.Time);
+        //print(job.Description);
+        //print(job.Time);
 
-        sword = GameObject.FindGameObjectWithTag("Sword");
+        //sword = GameObject.FindGameObjectWithTag("Sword");
 
         taskIndex = 0;
+        bool startedTask = NextTask();
     }
 
     public bool NextTask()
@@ -151,6 +163,13 @@ public class Player : MonoBehaviour
         }
 
         taskManagerBase = taskManagers.Find(x => x.GetTaskType() == currentTaskType);
+
+        if (!taskManagerBase.sword)
+        {
+            taskManagerBase.sword = sword;
+            taskManagerBase.swordDetails= sword.GetComponent<Sword>();
+        }
+
         taskManagerBase.Activate();
 
         Debug.Log(currentTaskType.ToString() + " " + taskManagerBase.ToString());
@@ -243,14 +262,33 @@ public class Player : MonoBehaviour
         if (!container.ContainsKey(task.GetTaskType()))
         {
             //key was not found before, just add
-            container.Add(task.GetTaskType(), task.GetOffsetFromTarget());
+            container.Add(task.GetTaskType(), task.GetOffsetPercentage());
         }
         else
         {
             //the same task has already occurred in this job. So instead add the 2 results & clamp
-            float newOffset = task.GetOffsetFromTarget() + container[task.GetTaskType()];
+            float newOffset = task.GetOffsetPercentage() + container[task.GetTaskType()];
             newOffset = Mathf.Clamp(newOffset, -1, 1);
             container[task.GetTaskType()] = newOffset;
         }
+    }
+
+    public void ReceiveJob(WorkManager.Job j)
+    {
+        job = j;
+    }
+
+    public void SpawnWeapon(WorkManager.Job j)
+    {
+        sword = Instantiate(j.Weapon);
+        sword.transform.position = GetSwordTeleportPoint(WorkManager.TaskType.None).position;
+        sword.transform.rotation = GetSwordTeleportPoint(WorkManager.TaskType.None).rotation;
+        GetJobEvent?.Invoke(j);
+        gotJob = true;
+    }
+
+    public void RemoveSword()
+    {
+        Destroy(sword);
     }
 }

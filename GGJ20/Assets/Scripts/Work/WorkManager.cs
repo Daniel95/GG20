@@ -27,6 +27,12 @@ public class WorkManager : MonoBehaviour
         public GameObject CustomerModel;
         public GameObject Weapon;
         public string Description;
+
+        public string VeryGoodEnding;
+        public string GoodEnding;
+        public string BadEnding;
+        public string VeryBadEnding;
+
         [ReorderableList]
         public List<TaskScriptableObject> Tasks;
     }

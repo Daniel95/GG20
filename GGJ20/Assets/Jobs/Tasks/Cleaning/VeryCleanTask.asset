@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a0a94ac401d7d244a3b2e3e4f126c5a, type: 3}
   m_Name: VeryCleanTask
   m_EditorClassIdentifier: 
-  TargetCleanliness: 666
+  TargetCleanliness: 0.666
