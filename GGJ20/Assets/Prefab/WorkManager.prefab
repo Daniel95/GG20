@@ -64,7 +64,6 @@ MonoBehaviour:
   swordDetails: {fileID: 0}
   shapingXScaleIncrement: 0.3
   heatPoint: {fileID: 0}
-  maxHeatColor: {r: 1, g: 0, b: 0, a: 0}
   maxHeat: 3
   timeForMaxHeat: 7
   moveTime: 1
@@ -101,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sword: {fileID: 0}
   swordDetails: {fileID: 0}
-  deformSharpingAmount: 0.25
+  deformSharpingAmount: 0.1
   localOffset: {x: 0, y: 0.5, z: 0}
 --- !u!114 &1038380478
 MonoBehaviour:
@@ -117,3 +116,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sword: {fileID: 0}
   swordDetails: {fileID: 0}
+  pitchPlayer: {fileID: 0}
+  cleaningClip: {fileID: 0}
+  maxSpawnAnmount: 30
+  cleanlinessToParticleRate: 0.5
+  rubbingTreshold: 5
