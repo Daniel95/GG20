@@ -22,13 +22,15 @@ public class ShapingTaskManager : TaskManagerBase
 
     private ShapingTaskScriptableObject curTask = null;
     private Vector3 initialMouseLocation;
-    private int deformRotation = 1;
+    private int deformRotation = -1;
     private float swordInitialX;
     public GameObject teleportObject;
 
     private Vector2 swipeDetectionStartMousePosition = Vector2.negativeInfinity;
     private Vector2 mousePosDelta = Vector2.negativeInfinity;
     private bool isMovingSword = false;
+
+    private bool firstTime = true;
 
     [SerializeField]
     private float swipeTreshold = 50;
@@ -41,13 +43,22 @@ public class ShapingTaskManager : TaskManagerBase
     public override void Activate()
     {
         base.Activate();
-        deformRotation = 1;
+
+        deformRotation = -1;
+
+        if (firstTime)
+        {
+            deformRotation = 1;
+            firstTime = false;
+        }
+
         swordInitialX = teleportObject.transform.position.x;
         pitchPlayer = GetComponent<RandomPitchPlayer>();
     }
 
     public override void Deactivate()
     {
+
         base.Deactivate();
 
         /*CurveDisplaceDeformer[] curveDisplaceDeformers = sword.GetComponentsInChildren<CurveDisplaceDeformer>();
@@ -98,7 +109,7 @@ public class ShapingTaskManager : TaskManagerBase
 
             if (closestDeformer != null)
             {
-                closestDeformer.Factor -= deformHitAmount * deformRotation;
+                closestDeformer.Factor += deformHitAmount * deformRotation * (0.25f + sword.GetComponent<Sword>().currentHeat / 3);
             }
         }
 
@@ -161,7 +172,7 @@ public class ShapingTaskManager : TaskManagerBase
 
                 if (closestDeformer != null)
                 {
-                    closestDeformer.Factor += deformHitAmount * deformRotation;
+                    closestDeformer.Factor += deformHitAmount * deformRotation * (0.5f + sword.GetComponent<Sword>().currentHeat / 3);
                     pitchPlayer.PlaySFX(bendingClip, 0.9F, 1.1F);
                 }
             }

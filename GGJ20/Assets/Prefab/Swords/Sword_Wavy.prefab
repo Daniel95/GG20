@@ -343,7 +343,7 @@ MonoBehaviour:
   shinyParticles: {fileID: 2326917236828966884}
   blade: {fileID: 6713003136873399375}
   material: {fileID: 0}
-  cooldownSpeed: 0.075
+  cooldownSpeed: 0.06
   currentHeat: 0
   maxHeat: 3
 --- !u!136 &2161417228591468380

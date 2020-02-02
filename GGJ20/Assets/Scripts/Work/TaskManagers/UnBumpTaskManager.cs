@@ -19,6 +19,9 @@ public class UnBumpTaskManager : TaskManagerBase
     [SerializeField]
     private AudioClip audioClip;
 
+    [SerializeField]
+    private GameObject myParticles;
+
     public override float GetOffsetPercentage()
     {
         RippleDeformer[] rippleDeformers = sword.GetComponentsInChildren<RippleDeformer>();
@@ -84,6 +87,7 @@ public class UnBumpTaskManager : TaskManagerBase
                     pitchPlayer.PlaySFX(audioClip, 0.9F, 1.1F);
                     deformer.Amplitude -= deformHitAmount;
                     deformer.Amplitude = Mathf.Clamp(deformer.Amplitude, ripplenessMinMax.x, ripplenessMinMax.y);
+                    Instantiate(myParticles, hit.transform.position, Quaternion.identity);
                 }
             }
         }
