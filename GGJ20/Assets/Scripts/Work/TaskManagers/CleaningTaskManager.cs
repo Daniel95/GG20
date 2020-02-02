@@ -8,6 +8,8 @@ public class CleaningTaskManager : TaskManagerBase
 
     private float currentCleanliness;
 
+    private float maxCleanliness = 5f;
+
     private Vector3 previousMousePosition = Vector3.negativeInfinity;
 
 
@@ -42,7 +44,10 @@ public class CleaningTaskManager : TaskManagerBase
 
     public override float GetOffsetPercentage()
     {
-        return 0;   
+        float currentPercentage = 1.0f / (maxCleanliness / currentCleanliness);
+        float rawOffset = Mathf.Abs(targetCleanliness - currentPercentage); //target cleanliness is already between 0-1
+        Debug.Log("Target cleanliness Clean = " + targetCleanliness + ". Current cleanliness = " + currentPercentage + ". Offset = " + rawOffset);
+        return rawOffset;
     }
 
     public override WorkManager.TaskType GetTaskType()
@@ -74,7 +79,7 @@ public class CleaningTaskManager : TaskManagerBase
             { 
                 pitchPlayer.PlaySFX(cleaningClip, 0.7F, 0.9F);
             }
-            currentCleanliness++;
+            currentCleanliness += Time.deltaTime;
         }
     }
 
@@ -85,8 +90,8 @@ public class CleaningTaskManager : TaskManagerBase
         {
             return;
         }
-       
-        if(Input.GetMouseButton(0))
+
+        if (Input.GetMouseButton(0))
         {
             if(previousMousePosition!=Vector3.negativeInfinity)
             {

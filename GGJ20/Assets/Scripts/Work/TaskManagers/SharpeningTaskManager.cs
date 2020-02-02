@@ -32,6 +32,18 @@ public class SharpeningTaskManager : TaskManagerBase
 
     public override float GetOffsetPercentage()
     {
+        //float maxOffset = targetHeat;
+
+        //if (maxHeat - targetHeat > maxOffset)
+        //{
+        //    maxOffset = maxHeat - targetHeat;
+        //}
+
+        //float offset = currentHeat - targetHeat;
+        //float offsetPercentage = Mathf.Min(offset / maxOffset, 1);
+
+        //return offsetPercentage;
+
         return 0;
     }
 
