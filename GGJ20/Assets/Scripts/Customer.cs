@@ -56,7 +56,6 @@ public class Customer : MonoBehaviour
 
     private void EvaluateWeapon(WorkManager.Job job, Dictionary<WorkManager.TaskType, float> results)
     {
-
         float totalResults = results.Count;
 
         foreach (WorkManager.TaskType taskType in results.Keys)
@@ -84,7 +83,7 @@ public class Customer : MonoBehaviour
 
     IEnumerator EvaluationTime()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(4.5f);
 
         customerModel.transform.DOMove(new Vector3(customerModel.transform.position.x + 10, customerModel.transform.position.y, customerModel.transform.position.z), 2f).onComplete += SpawnCustomerModel;
     }

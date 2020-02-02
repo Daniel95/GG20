@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Task : MonoBehaviour
 {
-    private bool isStarted = false;
-
-
 
     /// <summary>
     /// Mark this task as in progress, start animation etc.
@@ -14,13 +11,11 @@ public class Task : MonoBehaviour
     public void StartTask()
     {
         Debug.Log("Starting task: " + gameObject.name);
-        isStarted = true;
     }
 
     public void EndTask()
     {
         Debug.Log("Ending task: " + gameObject.name);
-        isStarted = true;
     }
 
 }
