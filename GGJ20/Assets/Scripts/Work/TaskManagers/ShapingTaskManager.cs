@@ -18,10 +18,6 @@ public class ShapingTaskManager : TaskManagerBase
     private float swordInitialX;
     public GameObject teleportObject;
 
-    public override float GetOffsetFromTarget()
-    {
-        return 0;
-    }
 
     public override WorkManager.TaskType GetTaskType()
     {
@@ -128,5 +124,10 @@ public class ShapingTaskManager : TaskManagerBase
                 c.enabled = true;
             }
         }*/
+    }
+
+    public override float GetOffsetPercentage()
+    {
+        return 0;
     }
 }

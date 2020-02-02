@@ -4,10 +4,10 @@
 public class ShapingTaskScriptableObject : TaskScriptableObject
 {
     [Range(0.0f, 1.0f)]
-    public int TargetWidth;
+    public int TargetBendiness;
 
     public override WorkManager.TaskType GetTaskType()
     {
-        return WorkManager.TaskType.Sharpening;
+        return WorkManager.TaskType.Shaping;
     }
 }

@@ -13,35 +13,37 @@ MonoBehaviour:
   m_Name: DebugJobLib
   m_EditorClassIdentifier: 
   Jobs:
-  - Time: 69
+  - Time: 64
     CustomerName: Matt the Fearless
     CustomerModel: {fileID: 722104465870193998, guid: 88ce15b96c91ba640bed44bbf71ce420,
       type: 3}
     Weapon: {fileID: 1752977810448385673, guid: 8f401f730f4589541b4e2ecdfb5212ff,
       type: 3}
     Description: if you read this you stink!
-    VeryGoodEnding: 'Super lekker '
-    GoodEnding: Redelijk lekker
-    BadEnding: Kut
-    VeryBadEnding: Super kut
+    VeryGoodEnding: 
+    GoodEnding: 
+    BadEnding: 
+    VeryBadEnding: 
     Tasks:
-    - {fileID: 11400000, guid: 2823c90e7eec9a74fae8a32c4bbef3ec, type: 2}
     - {fileID: 11400000, guid: fb5a342b441c70546909737551628c58, type: 2}
+    - {fileID: 11400000, guid: 36e991de4969e474187a85ef1f700529, type: 2}
     - {fileID: 11400000, guid: e609700c0d620b04997be43c8031bce6, type: 2}
     - {fileID: 11400000, guid: c0b860bc68890ec48b5cc7ae9e51205c, type: 2}
-  - Time: 20
+    - {fileID: 11400000, guid: 2823c90e7eec9a74fae8a32c4bbef3ec, type: 2}
+  - Time: 24
     CustomerName: Peter the Seductive
     CustomerModel: {fileID: 722104465870193998, guid: 7640f3f473ad6ab4ab3d48f2f2c06c2b,
       type: 3}
     Weapon: {fileID: 1752977810448385673, guid: 8f401f730f4589541b4e2ecdfb5212ff,
       type: 3}
     Description: I HAVE LAMENTATIONS TO HEAR, MAKE IT SNAPPY
-    VeryGoodEnding: Uitermate lekker
-    GoodEnding: Aardig lekker
-    BadEnding: Best kut
-    VeryBadEnding: Echt super kut
+    VeryGoodEnding: 
+    GoodEnding: 
+    BadEnding: 
+    VeryBadEnding: 
     Tasks:
-    - {fileID: 11400000, guid: 2823c90e7eec9a74fae8a32c4bbef3ec, type: 2}
     - {fileID: 11400000, guid: fb5a342b441c70546909737551628c58, type: 2}
+    - {fileID: 11400000, guid: 36e991de4969e474187a85ef1f700529, type: 2}
     - {fileID: 11400000, guid: e609700c0d620b04997be43c8031bce6, type: 2}
     - {fileID: 11400000, guid: c0b860bc68890ec48b5cc7ae9e51205c, type: 2}
+    - {fileID: 11400000, guid: 2823c90e7eec9a74fae8a32c4bbef3ec, type: 2}

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7584844526480015934}
   - component: {fileID: 1138957128511686154}
   - component: {fileID: 1038380478}
+  - component: {fileID: 5667598716085134110}
   m_Layer: 0
   m_Name: WorkManager
   m_TagString: Untagged
@@ -121,3 +122,23 @@ MonoBehaviour:
   maxSpawnAnmount: 30
   cleanlinessToParticleRate: 0.5
   rubbingTreshold: 5
+--- !u!114 &5667598716085134110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7584844526480015906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae6aea95f4a51204ea7a9b18d3249c08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sword: {fileID: 0}
+  swordDetails: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  deformHitAmount: 0.1
+  bendinessMinMax: {x: -0.5, y: 0.5}
+  teleportObject: {fileID: 0}
