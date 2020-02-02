@@ -17,6 +17,10 @@ public class Customer : MonoBehaviour
     //has chance to decrease when player gets graded 6 or less (these are champions youre serving afterall)
     [SerializeField]
     private int customerCounter = 10;
+    private int maxCustomers;
+
+    [SerializeField]
+    private Image gameoverScreen;
 
     [SerializeField]
     private Image customerDeathPopup;
@@ -24,10 +28,12 @@ public class Customer : MonoBehaviour
 
     private void Awake()
     {
+        maxCustomers = customerCounter;
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         
         Player.EndJobEvent += EvaluateWeapon;
         SpawnCustomerModel();
+        customerCount.text = customerCounter + "/" + maxCustomers +" Customers";
     }
 
     private void GiveJob()
@@ -100,15 +106,26 @@ public class Customer : MonoBehaviour
             //when you get a 6, customer has 1/3 chance to die
             //chance to die gets higher as grade gets lower because of less 1s in the list
 
-            killInt = UnityEngine.Random.Range(0, probability.Count);
+            //killInt = probability[UnityEngine.Random.Range(0, probability.Count)];
+            killInt = 1;
             customerCounter -= killInt;
 
             //probably display some text for this
-            customerDeathPopup.rectTransform.DOAnchorPosY(-85f, 1f).onComplete += CustomerDeathPopupBehaviour;
+            if(killInt > 0)
+            {
+                customerDeathPopup.rectTransform.DOAnchorPosY(-85f, 1f).onComplete += CustomerDeathPopupBehaviour;
+            }
+
+            if(customerCounter <= 0)
+            {
+                gameoverScreen.rectTransform.DOScale(Vector3.one, 1f);
+                return;
+            }
         }
 
 
-        customerCount.text = customerCounter + "/10 Customers";
+        customerCount.text = customerCounter + "/" + maxCustomers + " Customers";
+
         string message = (int)grade + "/10";
 
         string ending = GetEnding(score) + " " + message;
