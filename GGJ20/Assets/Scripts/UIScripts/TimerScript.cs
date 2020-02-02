@@ -68,6 +68,8 @@ public class TimerScript : MonoBehaviour
 
     private void OnJobFinish(string s)
     {
+        working = false;
+
         timeLeft = 0;
     }
 

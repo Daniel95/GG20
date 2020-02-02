@@ -23,7 +23,6 @@ public class CleaningTaskManager : TaskManagerBase
 
     private ParticleSystem shineParticleSystem;
 
-
     private float currentSpawningAnmount;
 
     [SerializeField, Tooltip("The maximum anmount of particles that can appear. Should be about equal to the 'max particles' variable in the particle system.")]
