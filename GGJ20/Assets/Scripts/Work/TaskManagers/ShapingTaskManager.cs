@@ -33,6 +33,9 @@ public class ShapingTaskManager : TaskManagerBase
     [SerializeField]
     private float swipeTreshold = 50;
 
+    [SerializeField]
+    private GameObject particleSystem;
+
     public override WorkManager.TaskType GetTaskType()
     {
         return WorkManager.TaskType.Shaping;
@@ -89,6 +92,7 @@ public class ShapingTaskManager : TaskManagerBase
             foreach (CurveDisplaceDeformer deformer in deformers)
             {
                 float distance = Mathf.Abs(deformer.gameObject.transform.position.x - swordInitialX);
+
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
@@ -157,8 +161,8 @@ public class ShapingTaskManager : TaskManagerBase
                         closestDistance = distance;
                         closestDeformer = deformer;
                     }
+                    Instantiate(particleSystem, deformer.transform.position,Quaternion.identity);
                 }
-
                 if (closestDeformer != null)
                 {
                     closestDeformer.Factor += deformHitAmount * deformRotation;
