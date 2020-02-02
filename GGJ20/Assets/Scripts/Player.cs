@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private List<SwordTeleportPoint> swordTeleportPoints;
     private GameObject mainCam = null;
     private GameObject sword = null;
+    private Customer customer;
 
     float fp = 1;
 
@@ -50,6 +51,7 @@ public class Player : MonoBehaviour
 
         //stuff for camera slerping
         mainCam = GameObject.FindWithTag("MainCamera");
+        customer = GameObject.FindWithTag("Customer").GetComponent<Customer>();
 
         //njeh
         if (cameraHooks.Count <= 0)
@@ -100,8 +102,8 @@ public class Player : MonoBehaviour
     public void StartJob()
     {
 
-        Debug.Log("Start the job, lazybum");
-        job = WorkManager.Instance.ChooseJob();
+        //Debug.Log("Start the job, lazybum");
+        //job = WorkManager.Instance.ChooseJob();
 
         if (StartJobEvent != null)
         {
@@ -114,6 +116,8 @@ public class Player : MonoBehaviour
         print(job.Time);
 
         sword = GameObject.FindGameObjectWithTag("Sword");
+
+        
 
         taskIndex = 0;
     }
@@ -254,5 +258,17 @@ public class Player : MonoBehaviour
             newOffset = Mathf.Clamp(newOffset, -1, 1);
             container[task.GetTaskType()] = newOffset;
         }
+    }
+
+    public void ReceiveJob(WorkManager.Job j)
+    {
+        job = j;
+    }
+
+    private void SpawnWeapon(WorkManager.Job job)
+    {
+        sword = Instantiate(job.Weapon);
+        sword.transform.position = GetSwordTeleportPoint(WorkManager.TaskType.None).position;
+        sword.transform.rotation = GetSwordTeleportPoint(WorkManager.TaskType.None).rotation;
     }
 }
