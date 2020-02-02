@@ -19,6 +19,7 @@ public class DescriptionTextScript : MonoBehaviour
         Player.EndJobEvent += OnEndJob;
         Player.StartJobEvent += OnStartJob;
         Player.StartTaskEvent += OnNextTask;
+        Player.NextCustomerEvent += OnNextCustomer;
         Customer.ResultTextMadeEvent += PrintResults;
     }
 
@@ -26,7 +27,6 @@ public class DescriptionTextScript : MonoBehaviour
     {
         Debug.Log("Display job desc");
         text.text = job.Description;
-        Player.GetJobEvent -= OnDisplayJob;
     }
 
     private void PrintResults(string s)
@@ -49,6 +49,11 @@ public class DescriptionTextScript : MonoBehaviour
     private void OnNextTask(WorkManager.TaskType task)
     {
         //same story
+    }
+
+    private void OnNextCustomer(int i)
+    {
+        text.text = "Next customer please";
     }
 
     private void OnDisable()

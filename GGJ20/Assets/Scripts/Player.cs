@@ -21,9 +21,8 @@ public class Player : MonoBehaviour
     /// Params: Job
     /// </summary>
     public static Action<WorkManager.Job> StartJobEvent;
-
     public static Action<WorkManager.Job> GetJobEvent;
-
+    public static Action<int> NextCustomerEvent;
     /// <summary>
     /// Params: Job
     /// </summary>
@@ -289,6 +288,7 @@ public class Player : MonoBehaviour
 
     public void RemoveSword()
     {
+        NextCustomerEvent?.Invoke(0);
         Destroy(sword);
     }
 }
