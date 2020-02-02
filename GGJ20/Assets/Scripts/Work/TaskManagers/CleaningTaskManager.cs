@@ -13,7 +13,6 @@ public class CleaningTaskManager : TaskManagerBase
     private Vector3 previousMousePosition = Vector3.negativeInfinity;
 
 
-    [SerializeField]
     private RandomPitchPlayer pitchPlayer;
 
     [SerializeField]
@@ -111,5 +110,6 @@ public class CleaningTaskManager : TaskManagerBase
         shineParticleSystem = swordDetails.shinyParticles;
         shineParticleSystem.Play();
         shineParticleSystem.emissionRate = 0;
+        pitchPlayer = GetComponent<RandomPitchPlayer>();
     }
 }
