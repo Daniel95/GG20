@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Deform;
 using DG.Tweening;
-
 public class SharpeningTaskManager : TaskManagerBase
 {
     private SharpeningTaskScriptableObject curTask = null;
@@ -43,16 +42,6 @@ public class SharpeningTaskManager : TaskManagerBase
     public override WorkManager.TaskType GetTaskType()
     {
         return WorkManager.TaskType.Sharpening;
-    }
-
-    public override void Activate()
-    {
-        base.Activate();
-    }
-
-    public override void Deactivate()
-    {
-        base.Deactivate();
     }
 
     public override void SetTaskObject(TaskScriptableObject a_taskScriptableObject)
