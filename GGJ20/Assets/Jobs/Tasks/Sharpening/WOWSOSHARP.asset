@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0755a2bcfd3791d45a72718a0910634c, type: 3}
   m_Name: WOWSOSHARP
   m_EditorClassIdentifier: 
-  targetSharpness: 0.477
+  targetSharpness: 1

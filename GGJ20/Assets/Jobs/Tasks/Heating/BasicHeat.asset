@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a0a94ac401d7d244a3b2e3e4f126c5a, type: 3}
-  m_Name: VeryCleanTask
+  m_Script: {fileID: 11500000, guid: dd2b14fbc41909f4fa26d8875801973d, type: 3}
+  m_Name: BasicHeat
   m_EditorClassIdentifier: 
-  TargetCleanliness: 0.666
+  targetHeatPercentage: 0
+  HeatMatters: 0

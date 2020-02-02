@@ -97,16 +97,9 @@ public class HeatingTaskManager : TaskManagerBase
 
     public override float GetOffsetPercentage()
     {
-        if (heatMatters)
-        {
-            float progress = currentHeat / maxHeat;
-            float offset = Mathf.Min(Mathf.Abs(targetHeat - progress), 1);
-            return offset;
-        }
-        else
-        {
-            return 0;
-        }
+        float progress = currentHeat / maxHeat;
+        float offset = Mathf.Min(Mathf.Abs(targetHeat - progress), 1);
+        return offset;
     }
 
     public override WorkManager.TaskType GetTaskType()

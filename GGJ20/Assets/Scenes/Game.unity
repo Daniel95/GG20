@@ -2847,11 +2847,6 @@ PrefabInstance:
       propertyPath: rubbingTreshold
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 1138957128511686154, guid: ff434601cd73ac540a6b1ce6b18ecea3,
-        type: 3}
-      propertyPath: audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: f710e072a36056f4abea280c2b8ffb98, type: 3}
     - target: {fileID: 5667598716085134110, guid: ff434601cd73ac540a6b1ce6b18ecea3,
         type: 3}
       propertyPath: teleportObject
@@ -2962,10 +2957,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorkManager
       objectReference: {fileID: 0}
-    - target: {fileID: 7584844526480015934, guid: ff434601cd73ac540a6b1ce6b18ecea3,
+    - target: {fileID: 7584844526480015907, guid: ff434601cd73ac540a6b1ce6b18ecea3,
         type: 3}
-      propertyPath: audioClip
+      propertyPath: jobLibrary
       value: 
-      objectReference: {fileID: 8300000, guid: b8b0a0f5ed1bcd2428e74634fd7dfd49, type: 3}
+      objectReference: {fileID: 11400000, guid: 45b85da9329c3da4ab58d3367520dbf3,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff434601cd73ac540a6b1ce6b18ecea3, type: 3}
