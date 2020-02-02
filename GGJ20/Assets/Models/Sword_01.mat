@@ -53,21 +53,22 @@ Material:
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
-    - _Cutoff: 0.5
+    - _Cutoff: 0
+    - _CutoffNoiseSize: 10
     - _DstBlend: 0
     - _EmissionMultiplier: 2.86
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _HeatAmount: 0.4
+    - _HeatAmount: 0
     - _HeatEmission: 1
     - _Metallic: 0
-    - _Metalness: 0.843
+    - _Metalness: 0.8
     - _OcclusionStrength: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.622
+    - _Smoothness: 0.6
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
