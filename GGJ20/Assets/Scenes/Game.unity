@@ -2847,6 +2847,11 @@ PrefabInstance:
       propertyPath: rubbingTreshold
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1138957128511686154, guid: ff434601cd73ac540a6b1ce6b18ecea3,
+        type: 3}
+      propertyPath: audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: f710e072a36056f4abea280c2b8ffb98, type: 3}
     - target: {fileID: 5667598716085134110, guid: ff434601cd73ac540a6b1ce6b18ecea3,
         type: 3}
       propertyPath: teleportObject
