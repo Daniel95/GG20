@@ -12,6 +12,14 @@ public class ShapingTaskManager : TaskManagerBase
     [SerializeField]
     private Vector2 bendinessMinMax = new Vector2(-0.5f, 0.5f);
 
+    private RandomPitchPlayer pitchPlayer;
+
+    [SerializeField]
+    private AudioClip bendingClip;
+
+    [SerializeField]
+    private AudioClip switchingClip;
+
     private ShapingTaskScriptableObject curTask = null;
     private Vector3 initialMouseLocation;
     private int deformRotation = 1;
@@ -21,6 +29,9 @@ public class ShapingTaskManager : TaskManagerBase
     private Vector2 swipeDetectionStartMousePosition = Vector2.negativeInfinity;
     private Vector2 mousePosDelta = Vector2.negativeInfinity;
     private bool isMovingSword = false;
+
+    [SerializeField]
+    private float swipeTreshold = 50;
 
     public override WorkManager.TaskType GetTaskType()
     {
@@ -32,6 +43,7 @@ public class ShapingTaskManager : TaskManagerBase
         base.Activate();
         deformRotation = 1;
         swordInitialX = teleportObject.transform.position.x;
+        pitchPlayer = GetComponent<RandomPitchPlayer>();
     }
 
     public override void Deactivate()
@@ -126,12 +138,13 @@ public class ShapingTaskManager : TaskManagerBase
         else if(Input.GetMouseButtonUp(0)&&!isMovingSword)
         {
             mousePosDelta = new Vector2(Mathf.Abs(swipeDetectionStartMousePosition.x - Input.mousePosition.x),Mathf.Abs(swipeDetectionStartMousePosition.y - Input.mousePosition.y));
-            if(mousePosDelta.y>50)
+            if(mousePosDelta.y>swipeTreshold)
             {
                 sword.transform.Rotate(new Vector3(180, 0, 0));
                 deformRotation *= -1;
+                pitchPlayer.PlaySFX(switchingClip, 0.9F, 1.1F);
             }
-            else if(mousePosDelta.x<40)
+            else if(mousePosDelta.x<swipeTreshold)
             {
                 float closestDistance = 1000000;
                 CurveDisplaceDeformer closestDeformer = null;
@@ -149,6 +162,7 @@ public class ShapingTaskManager : TaskManagerBase
                 if (closestDeformer != null)
                 {
                     closestDeformer.Factor += deformHitAmount * deformRotation;
+                    pitchPlayer.PlaySFX(bendingClip, 0.9F, 1.1F);
                 }
             }
         }

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -2857,6 +2857,16 @@ PrefabInstance:
       propertyPath: layerMask.m_Bits
       value: 512
       objectReference: {fileID: 0}
+    - target: {fileID: 5667598716085134110, guid: ff434601cd73ac540a6b1ce6b18ecea3,
+        type: 3}
+      propertyPath: bendingClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6be1773e446fcae4e97d8662e90d0a0f, type: 3}
+    - target: {fileID: 5667598716085134110, guid: ff434601cd73ac540a6b1ce6b18ecea3,
+        type: 3}
+      propertyPath: switchingClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 62b1975c0c9f62b45961262e80ebbc90, type: 3}
     - target: {fileID: 7584844526480015904, guid: ff434601cd73ac540a6b1ce6b18ecea3,
         type: 3}
       propertyPath: m_LocalPosition.x
