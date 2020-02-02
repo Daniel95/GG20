@@ -68,7 +68,7 @@ public class HeatingTaskManager : TaskManagerBase
         }
     }
 
-    public override float GetOffsetFromTarget()
+    public override float GetOffsetPercentage()
     {
         if (heatMatters)
         {
