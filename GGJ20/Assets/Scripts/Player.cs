@@ -70,7 +70,12 @@ public class Player : MonoBehaviour
 
     public void OnNextButton()
     {
-        if(!gotJob)
+        if (cameraSlerpCoroutine != null || swordSlerpCoroutine != null)
+        {
+            return;
+        }
+
+        if (!gotJob)
         {
             Debug.Log("You dont have a job yet you eager little boy");
             return;
@@ -137,7 +142,6 @@ public class Player : MonoBehaviour
         {
             return false;
         }
-
 
         StartTask(taskIndex);
         taskIndex++;
@@ -220,8 +224,8 @@ public class Player : MonoBehaviour
     private IEnumerator SlerpTransform(Transform transformToMove, 
         Transform targetTransform, 
         Action OnCompleted = null,
-        float minDistanceOffset = 0.2f, 
-        float minRotationOffset = 5.0f)
+        float minDistanceOffset = 0.05f, 
+        float minRotationOffset = 2.0f)
     {
         float fp = 0;
 
@@ -256,6 +260,8 @@ public class Player : MonoBehaviour
         if (!container.ContainsKey(task.GetTaskType()))
         {
             //key was not found before, just add
+            Debug.Log("OFFSET: " + task.GetOffsetPercentage());
+
             container.Add(task.GetTaskType(), task.GetOffsetPercentage());
         }
         else

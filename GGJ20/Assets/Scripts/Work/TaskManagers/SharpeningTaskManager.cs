@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Deform;
 using DG.Tweening;
-
 public class SharpeningTaskManager : TaskManagerBase
 {
     private SharpeningTaskScriptableObject curTask = null;
@@ -14,6 +13,27 @@ public class SharpeningTaskManager : TaskManagerBase
     private Transform startTransform = null;
     [SerializeField]
     private Vector3 localOffset = new Vector3(0, 0.5f, 0);
+
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip audioClip;
+
+
+    public override void Activate()
+    {
+        base.Activate();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = audioClip;
+    }
+
+    public override void Deactivate()
+    {
+        base.Deactivate();
+        audioSource.Stop();
+        audioSource.loop = false;
+        audioSource.clip = null;
+    }
 
     protected void Awake()
     {
@@ -35,7 +55,7 @@ public class SharpeningTaskManager : TaskManagerBase
 
         float offset = magnitude - invScale;
 
-        float offsetToTarget = Mathf.Max(Mathf.Abs(offset - curTask.targetSharpness));
+        float offsetToTarget = 1 - Mathf.Max(Mathf.Abs(offset - curTask.targetSharpness));
 
         return offsetToTarget;
     }
@@ -43,16 +63,6 @@ public class SharpeningTaskManager : TaskManagerBase
     public override WorkManager.TaskType GetTaskType()
     {
         return WorkManager.TaskType.Sharpening;
-    }
-
-    public override void Activate()
-    {
-        base.Activate();
-    }
-
-    public override void Deactivate()
-    {
-        base.Deactivate();
     }
 
     public override void SetTaskObject(TaskScriptableObject a_taskScriptableObject)
@@ -73,12 +83,16 @@ public class SharpeningTaskManager : TaskManagerBase
         {
             //Go down.
             sword.transform.DOLocalMove(startTransform.position - localOffset, 0.25f);
+            audioSource.Play();
+            audioSource.loop = true;
         }
 
         if(Input.GetMouseButtonUp(0))
         {
             //Go up.
             sword.transform.DOLocalMove(startTransform.position, 0.25f);
+            audioSource.Stop();
+            audioSource.loop = false;
         }
 
         if (Input.GetMouseButton(0))
