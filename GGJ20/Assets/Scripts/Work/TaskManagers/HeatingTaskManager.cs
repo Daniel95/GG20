@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,15 +13,14 @@ public class HeatingTaskManager : TaskManagerBase
     [SerializeField] private float shapingXScaleIncrement = 0.3f;
     [SerializeField] private Transform heatPoint;
     [SerializeField] private Color maxHeatColor;
-    [SerializeField] private float maxHeatMultiplier = 3;
+    [SerializeField] private float maxHeat = 3;
     [SerializeField] private float timeForMaxHeat = 7;
+    [SerializeField] private float moveTime = 1;
 
     private Transform nonHeatPoint;
     private Material swordMaterial;
-    private int targetHeat;
-    private int currentHeat;
-
-    private Coroutine slerpCoroutine = null;
+    private float targetHeat;
+    private float currentHeat;
 
     private bool heating;
     private bool heatMatters;
@@ -39,7 +39,6 @@ public class HeatingTaskManager : TaskManagerBase
         swordMaterial = sword.GetComponent<Material>();
     }
 
-
     public override void Deactivate()
     {
         base.Deactivate();
@@ -51,40 +50,39 @@ public class HeatingTaskManager : TaskManagerBase
     {
         if(!isActivated) { return; }
 
-        /*
         if (Input.GetMouseButtonDown(0))
         {
-            if (slerpCoroutine != null)
-            {
-                StopCoroutine(slerpCoroutine);
-            }
-
-            slerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, heatPoint, () => heating = true));
+            sword.transform.DOMove(heatPoint.position, moveTime).OnComplete(() => heating = true);
         }
         else if(Input.GetMouseButtonUp(0))
         {
-            if (slerpCoroutine != null)
-            {
-                StopCoroutine(slerpCoroutine);
-            }
+            heating = false;
+            sword.transform.DOMove(nonHeatPoint.position, moveTime);
 
-            slerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, nonHeatPoint, () => heating = false));
+
         }
 
         if (heating)
         {
-            currentHeat++;
-
-            swordMaterial.color = Color.Lerp(swordMaterial.color, maxHeatColor, 1);
+            currentHeat += Mathf.Min((Time.deltaTime * maxHeat) / timeForMaxHeat, maxHeat);
         }
-         */
     }
 
-    public override float GetOffsetFromTarget()
+    public override float GetOffsetPercentage()
     {
         if (heatMatters)
         {
-            return Mathf.Abs(targetHeat - currentHeat);
+            float maxOffset = targetHeat;
+
+            if (maxHeat - targetHeat > maxOffset)
+            {
+                maxOffset = maxHeat - targetHeat;
+            }
+
+            float offset = currentHeat - targetHeat;
+            float offsetPercentage = Mathf.Min(offset / maxOffset, 1);
+
+            return offsetPercentage;
         }
         else
         {
@@ -100,41 +98,6 @@ public class HeatingTaskManager : TaskManagerBase
     public override void SetTaskObject(TaskScriptableObject a_taskScriptableObject)
     {
         var task = a_taskScriptableObject as HeatingTaskScriptableObject;
-        targetHeat = task.TargetHeat;
-    }
-    private IEnumerator SlerpTransform(Transform transformToMove,
-        Transform targetTransform,
-        Action OnCompleted = null,
-        float minDistanceOffset = 0.2f,
-        float minRotationOffset = 5.0f)
-    {
-        float fp = 0;
-
-        while (true)
-        {
-            float positionOffset = Vector3.Distance(transformToMove.transform.position, targetTransform.position);
-            float angleOffset = Quaternion.Angle(transformToMove.transform.rotation, targetTransform.rotation);
-
-            bool reachedPosition = positionOffset <= minDistanceOffset;
-            bool reachedRotation = angleOffset <= minRotationOffset;
-
-            if (reachedPosition && reachedRotation)
-            {
-                break;
-            }
-
-            transformToMove.transform.position = Vector3.Slerp(transformToMove.transform.position, targetTransform.position, fp);
-            transformToMove.transform.rotation = Quaternion.Slerp(transformToMove.transform.rotation, targetTransform.rotation, fp);
-            fp += Time.deltaTime;
-
-            yield return null;
-        }
-
-        print("Done");
-
-        if (OnCompleted != null)
-        {
-            OnCompleted();
-        }
+        targetHeat = task.targetHeatPercentage * maxHeat;
     }
 }

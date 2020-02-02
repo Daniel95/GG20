@@ -14,7 +14,7 @@ public class UnBumpTaskManager : TaskManagerBase
 
     private UnBumpTaskScriptableObject curTask = null;
 
-    public override float GetOffsetFromTarget()
+    public override float GetOffsetPercentage()
     {
         return 0;
     }
