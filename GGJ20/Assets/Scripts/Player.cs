@@ -168,8 +168,6 @@ public class Player : MonoBehaviour
 
         taskManagerBase.Activate();
 
-        Debug.Log(currentTaskType.ToString() + " " + taskManagerBase.ToString());
-
         Transform currentCamTrans = GetCamPoint(currentTaskType);
         Transform currentWeaponTrans = GetSwordTeleportPoint(currentTaskType);
 
