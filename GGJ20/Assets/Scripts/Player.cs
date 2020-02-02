@@ -243,12 +243,12 @@ public class Player : MonoBehaviour
         if (!container.ContainsKey(task.GetTaskType()))
         {
             //key was not found before, just add
-            container.Add(task.GetTaskType(), task.GetOffsetFromTarget());
+            container.Add(task.GetTaskType(), task.GetOffsetPercentage());
         }
         else
         {
             //the same task has already occurred in this job. So instead add the 2 results & clamp
-            float newOffset = task.GetOffsetFromTarget() + container[task.GetTaskType()];
+            float newOffset = task.GetOffsetPercentage() + container[task.GetTaskType()];
             newOffset = Mathf.Clamp(newOffset, -1, 1);
             container[task.GetTaskType()] = newOffset;
         }
