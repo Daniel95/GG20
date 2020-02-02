@@ -7,6 +7,7 @@ public abstract class TaskManagerBase : MonoBehaviour
 {
     [HideInInspector]
     public GameObject sword;
+    [HideInInspector]
     public Sword swordDetails = null;
     protected bool isActivated;
     public abstract float GetOffsetFromTarget();
