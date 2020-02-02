@@ -260,6 +260,8 @@ public class Player : MonoBehaviour
         if (!container.ContainsKey(task.GetTaskType()))
         {
             //key was not found before, just add
+            Debug.Log("OFFSET: " + task.GetOffsetPercentage());
+
             container.Add(task.GetTaskType(), task.GetOffsetPercentage());
         }
         else

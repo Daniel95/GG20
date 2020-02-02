@@ -5,7 +5,6 @@ public class HeatingTaskScriptableObject : TaskScriptableObject
 {
     [Range(0.0f, 1.0f)] 
     public float targetHeatPercentage;
-    public bool HeatMatters;
 
     public override WorkManager.TaskType GetTaskType()
     {
