@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1023,7 +1023,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2947,6 +2947,11 @@ PrefabInstance:
       propertyPath: maxHeatColor.b
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7584844526480015905, guid: ff434601cd73ac540a6b1ce6b18ecea3,
+        type: 3}
+      propertyPath: audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d7fca02742ef63346805168709c8fac6, type: 3}
     - target: {fileID: 7584844526480015906, guid: ff434601cd73ac540a6b1ce6b18ecea3,
         type: 3}
       propertyPath: m_Name
