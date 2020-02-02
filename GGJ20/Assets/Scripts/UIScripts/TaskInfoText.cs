@@ -40,26 +40,26 @@ public class TaskInfoText : MonoBehaviour
             case WorkManager.TaskType.None:
                 break;
             case WorkManager.TaskType.Shaping:
-                text.text = "SOMETHING SOMETHING";
-
+                text.text = "Align and hit";
+                //move down to turn over
                 break;
             case WorkManager.TaskType.Sharpening:
-                text.text = "SOMETHING Sharpening";
+                text.text = "Hold to sharpen";
 
 
                 break;
             case WorkManager.TaskType.Heating:
-                text.text = "SOMETHING Heating";
+                text.text = "Move it in the Forge";
 
 
                 break;
             case WorkManager.TaskType.UnBumping:
-                text.text = "SOMETHING UnBumping";
+                text.text = "Press Sword to unbump";
 
 
                 break;
             case WorkManager.TaskType.Cleaning:
-                text.text = "SOMETHING Cleaning";
+                text.text = "Rub to clean";
 
                 break;
             default:

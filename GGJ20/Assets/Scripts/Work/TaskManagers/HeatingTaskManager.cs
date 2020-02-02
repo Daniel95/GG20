@@ -8,23 +8,16 @@ using UnityEngine.UI;
 
 public class HeatingTaskManager : TaskManagerBase
 {
-    public static float HeatMultiplier;
-
-    [SerializeField] private float shapingXScaleIncrement = 0.3f;
     [SerializeField] private Transform heatPoint;
-    [SerializeField] private float maxHeat = 3;
     [SerializeField] private float timeForMaxHeat = 7;
     [SerializeField] private float moveTime = 1;
     [SerializeField] private float meltSpeed = 0.15f;
+    [SerializeField, Range(0, 1)] private float meltMax = 0.75f;
 
     private Transform nonHeatPoint;
-    private Material swordMaterial;
     private float targetHeat;
-    private float currentHeat;
     private float currentMelt = 0.0f;
-
     private bool heating;
-    private bool heatMatters;
 
     private AudioSource audioSource;
 
@@ -43,7 +36,6 @@ public class HeatingTaskManager : TaskManagerBase
         nonHeatPoint = swordTeleportPoints.Find(x => x.taskType == WorkManager.TaskType.Heating).transform;
         audioSource = GetComponent<AudioSource>();
         audioSource.clip = audioClip;
-        swordMaterial = swordDetails.blade.GetComponentInChildren<MeshRenderer>().material;
     }
 
     public override void Deactivate()
@@ -53,7 +45,7 @@ public class HeatingTaskManager : TaskManagerBase
         audioSource.loop = false;
         audioSource.clip = null;
         targetHeat = 0;
-        currentHeat = 0;
+        currentMelt = 0.0f;
     }
 
     private void Update()
@@ -77,25 +69,20 @@ public class HeatingTaskManager : TaskManagerBase
 
         if (heating)
         {
-            currentHeat += Mathf.Min((Time.deltaTime * maxHeat) / timeForMaxHeat, maxHeat);
+            swordDetails.currentHeat += Mathf.Min((Time.deltaTime * swordDetails.maxHeat) / timeForMaxHeat, swordDetails.maxHeat);
 
-            float heatProgress = currentHeat / maxHeat;
-
-            swordMaterial.SetFloat("_HeatAmount", heatProgress);
-            swordMaterial.SetFloat("_HeatEmission", heatProgress * 10);
-
-            if(currentHeat >= maxHeat)
+            if(swordDetails.currentHeat >= swordDetails.maxHeat)
             {
                 currentMelt += meltSpeed * Time.deltaTime;
-                currentMelt = Mathf.Clamp01(currentMelt);
-                swordMaterial.SetFloat("_Cutoff", currentMelt);
+                currentMelt = Mathf.Clamp(currentMelt, 0.0f, meltMax);
+                swordDetails.material.SetFloat("_Cutoff", currentMelt);
             }
         }
     }
 
     public override float GetOffsetPercentage()
     {
-        float progress = currentHeat / maxHeat;
+        float progress = swordDetails.currentHeat / swordDetails.maxHeat;
         float offset = Mathf.Min(Mathf.Abs(targetHeat - progress), 1);
         return offset;
     }
