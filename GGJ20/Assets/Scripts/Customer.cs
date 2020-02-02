@@ -54,37 +54,42 @@ public class Customer : MonoBehaviour
         player.SpawnWeapon(currentJob);
     }
 
-    private void EvaluateWeapon(Dictionary<WorkManager.TaskType, float> collection)
+    private void EvaluateWeapon(WorkManager.Job job, Dictionary<WorkManager.TaskType, float> results)
     {
-        int i = 0;
-        float f = 0;
-        Debug.Log("Job compete!");
-        foreach(KeyValuePair<WorkManager.TaskType, float> kv in collection)
+
+        float totalResults = results.Count;
+
+        foreach (WorkManager.TaskType taskType in results.Keys)
         {
-            f += kv.Value;
-            //Debug.Log("Task: " + kv.Key + " offset: " + kv.Value);
-            i++;
+            print(taskType);
         }
 
-        f = f / i;
-        f = 1.0f / (i / f);
+        foreach (float offset in results.Values)
+        {
+            print(offset);
+            totalResults -= offset;
+        }
 
-        Debug.Log("AAAAAAAA " + f);
+        float score = totalResults / results.Count;
 
-        FindEnding(f);
+        float grade = score * 10;
 
+        string message = (int)grade + "/10";
 
+        string ending = GetEnding(score) + " " + message;
+
+        ResultTextMadeEvent?.Invoke(ending);
         StartCoroutine(EvaluationTime());
     }
 
     IEnumerator EvaluationTime()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(10f);
 
         customerModel.transform.DOMove(new Vector3(customerModel.transform.position.x + 10, customerModel.transform.position.y, customerModel.transform.position.z), 2f).onComplete += SpawnCustomerModel;
     }
 
-    private void FindEnding(float score)
+    private string GetEnding(float score)
     {
         string s = "wtf no score text?";
         if(score >= 0.75f && score <= 1f)
@@ -108,6 +113,6 @@ public class Customer : MonoBehaviour
             s = currentJob.VeryBadEnding;
         }
 
-        ResultTextMadeEvent?.Invoke(s);
+        return s;
     }
 }

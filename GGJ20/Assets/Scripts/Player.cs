@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Params: Job
     /// </summary>
-    public static Action<Dictionary<WorkManager.TaskType, float>> EndJobEvent;
+    public static Action<WorkManager.Job, Dictionary<WorkManager.TaskType, float>> EndJobEvent;
     /// <summary>
     /// Params: WorkManager.TaskType
     /// </summary>
@@ -102,7 +102,7 @@ public class Player : MonoBehaviour
 
         gotJob = false;
         //Destroy(sword, 5f);
-        EndJobEvent?.Invoke(weaponResultOffsets);   //wow
+        EndJobEvent?.Invoke(job, weaponResultOffsets);   //wow
         //sword = null;
     }
 

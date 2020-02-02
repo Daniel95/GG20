@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Text))]
 public class DescriptionTextScript : MonoBehaviour
 {
     private Text text;
@@ -36,9 +37,8 @@ public class DescriptionTextScript : MonoBehaviour
         text.text = s;
     }
 
-    private void OnEndJob(Dictionary<WorkManager.TaskType, float> results)
+    private void OnEndJob(WorkManager.Job job, Dictionary<WorkManager.TaskType, float> results)
     {
-        //text.text = "";
     }
 
     private void OnStartJob(WorkManager.Job job)
@@ -48,6 +48,7 @@ public class DescriptionTextScript : MonoBehaviour
 
     private void OnNextTask(WorkManager.TaskType task)
     {
+        text.text = "";
         //same story
     }
 
