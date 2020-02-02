@@ -16,6 +16,7 @@ public class HeatingTaskManager : TaskManagerBase
     [SerializeField] private float timeForMaxHeat = 7;
     [SerializeField] private float moveTime = 1;
     [SerializeField] private float meltSpeed = 0.15f;
+    [SerializeField, Range(0, 1)] private float meltMax = 0.75f;
 
     private Transform nonHeatPoint;
     private Material swordMaterial;
@@ -54,6 +55,7 @@ public class HeatingTaskManager : TaskManagerBase
         audioSource.clip = null;
         targetHeat = 0;
         currentHeat = 0;
+        currentMelt = 0.0f;
     }
 
     private void Update()
@@ -87,7 +89,7 @@ public class HeatingTaskManager : TaskManagerBase
             if(currentHeat >= maxHeat)
             {
                 currentMelt += meltSpeed * Time.deltaTime;
-                currentMelt = Mathf.Clamp01(currentMelt);
+                currentMelt = Mathf.Clamp(currentMelt, 0.0f, meltMax);
                 swordMaterial.SetFloat("_Cutoff", currentMelt);
             }
         }
