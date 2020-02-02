@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
+    public ParticleSystem shinyParticles;
     public Transform blade = null;
 }

@@ -8,6 +8,8 @@ public class CleaningTaskManager : TaskManagerBase
 
     private float currentCleanliness;
 
+    private float maxCleanliness = 5f;
+
     private Vector3 previousMousePosition = Vector3.negativeInfinity;
 
 
@@ -20,7 +22,6 @@ public class CleaningTaskManager : TaskManagerBase
 
     [Header("Particle settings")]
 
-    [SerializeField, Tooltip("The particle system that controlls the anmount of shine particles that will appear.")]
     private ParticleSystem shineParticleSystem;
 
 
@@ -43,7 +44,10 @@ public class CleaningTaskManager : TaskManagerBase
 
     public override float GetOffsetPercentage()
     {
-        return 0;   
+        float currentPercentage = 1.0f / (maxCleanliness / currentCleanliness);
+        float rawOffset = Mathf.Abs(targetCleanliness - currentPercentage); //target cleanliness is already between 0-1
+        Debug.Log("Target cleanliness Clean = " + targetCleanliness + ". Current cleanliness = " + currentPercentage + ". Offset = " + rawOffset);
+        return rawOffset;
     }
 
     public override WorkManager.TaskType GetTaskType()
@@ -62,9 +66,8 @@ public class CleaningTaskManager : TaskManagerBase
         base.Deactivate();
         targetCleanliness = 0;
         currentCleanliness = 0;
-        shineParticleSystem.emissionRate = 0;
+        //shineParticleSystem.emissionRate = 0;
         previousMousePosition = Vector3.negativeInfinity;
-
     }
 
     private void RubDetected()
@@ -73,15 +76,11 @@ public class CleaningTaskManager : TaskManagerBase
         {
             shineParticleSystem.emissionRate += cleanlinessToParticleRate * Time.deltaTime;
             if(Random.Range(0,100)>97)
-            pitchPlayer.PlaySFX(cleaningClip, 0.7F, 0.9F);
-            currentCleanliness++;
+            { 
+                pitchPlayer.PlaySFX(cleaningClip, 0.7F, 0.9F);
+            }
+            currentCleanliness += Time.deltaTime;
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        shineParticleSystem.emissionRate = 0;
     }
 
     // Update is called once per frame
@@ -91,8 +90,8 @@ public class CleaningTaskManager : TaskManagerBase
         {
             return;
         }
-       
-        if(Input.GetMouseButton(0))
+
+        if (Input.GetMouseButton(0))
         {
             if(previousMousePosition!=Vector3.negativeInfinity)
             {
@@ -104,5 +103,13 @@ public class CleaningTaskManager : TaskManagerBase
             }
             previousMousePosition = Input.mousePosition;
         }
+    }
+
+    public override void Activate()
+    {
+        base.Activate();
+        shineParticleSystem = swordDetails.shinyParticles;
+        shineParticleSystem.Play();
+        shineParticleSystem.emissionRate = 0;
     }
 }

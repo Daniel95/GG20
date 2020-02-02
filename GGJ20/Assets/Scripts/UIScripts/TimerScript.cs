@@ -17,6 +17,7 @@ public class TimerScript : MonoBehaviour
     {
         working = false;
         Player.StartJobEvent += OnStartJob;
+        Customer.ResultTextMadeEvent += OnJobFinish;
         clockImage = GetComponent<Image>();
         clockScale = transform.localScale;
         clockImage.fillAmount = 1;
@@ -57,8 +58,13 @@ public class TimerScript : MonoBehaviour
         timeLimit = job.Time;
         timeLeft = timeLimit;
         quarterMark = timeLimit * 0.25f;    //get 25% of time
-        Debug.Log("Do it in " + job.Time + " seconds");
+        //Debug.Log("Do it in " + job.Time + " seconds");
         working = true;
+    }
+
+    private void OnJobFinish(string s)
+    {
+        timeLeft = 0;
     }
 
     //private void OnEnable()

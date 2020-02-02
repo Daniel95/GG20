@@ -16,6 +16,22 @@ public class UnBumpTaskManager : TaskManagerBase
 
     public override float GetOffsetPercentage()
     {
+        RippleDeformer[] rippleDeformers = sword.GetComponentsInChildren<RippleDeformer>();
+
+        if(rippleDeformers != null)
+        {
+            float ta = 0;
+
+            foreach (RippleDeformer rd in rippleDeformers)
+            {
+                ta += Mathf.Abs(rd.Amplitude);
+            }
+
+            ta /= rippleDeformers.Length;
+
+            return Mathf.Abs(curTask.totalTargetRippleness - ta);
+        }
+
         return 0;
     }
 
@@ -51,7 +67,6 @@ public class UnBumpTaskManager : TaskManagerBase
         }
 
         //TODO: Hammer swing functionality.
-        
         if(Input.GetMouseButtonUp(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

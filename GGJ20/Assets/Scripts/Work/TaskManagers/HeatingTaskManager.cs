@@ -12,7 +12,6 @@ public class HeatingTaskManager : TaskManagerBase
 
     [SerializeField] private float shapingXScaleIncrement = 0.3f;
     [SerializeField] private Transform heatPoint;
-    [SerializeField] private Color maxHeatColor;
     [SerializeField] private float maxHeat = 3;
     [SerializeField] private float timeForMaxHeat = 7;
     [SerializeField] private float moveTime = 1;
@@ -36,7 +35,7 @@ public class HeatingTaskManager : TaskManagerBase
         List<SwordTeleportPoint> swordTeleportPoints = GameObject.FindObjectsOfType<SwordTeleportPoint>().ToList();
         nonHeatPoint = swordTeleportPoints.Find(x => x.taskType == WorkManager.TaskType.Heating).transform;
 
-        swordMaterial = sword.GetComponent<Material>();
+        swordMaterial = swordDetails.blade.GetComponentInChildren<MeshRenderer>().material;
     }
 
     public override void Deactivate()
@@ -65,6 +64,11 @@ public class HeatingTaskManager : TaskManagerBase
         if (heating)
         {
             currentHeat += Mathf.Min((Time.deltaTime * maxHeat) / timeForMaxHeat, maxHeat);
+
+            float heatProgress = currentHeat / maxHeat;
+
+            swordMaterial.SetFloat("_HeatAmount", heatProgress);
+            swordMaterial.SetFloat("_HeatEmission", heatProgress * 10);
         }
     }
 
@@ -72,17 +76,9 @@ public class HeatingTaskManager : TaskManagerBase
     {
         if (heatMatters)
         {
-            float maxOffset = targetHeat;
-
-            if (maxHeat - targetHeat > maxOffset)
-            {
-                maxOffset = maxHeat - targetHeat;
-            }
-
-            float offset = currentHeat - targetHeat;
-            float offsetPercentage = Mathf.Min(offset / maxOffset, 1);
-
-            return offsetPercentage;
+            float progress = currentHeat / maxHeat;
+            float offset = Mathf.Min(Mathf.Abs(targetHeat - progress), 1);
+            return offset;
         }
         else
         {
@@ -98,6 +94,6 @@ public class HeatingTaskManager : TaskManagerBase
     public override void SetTaskObject(TaskScriptableObject a_taskScriptableObject)
     {
         var task = a_taskScriptableObject as HeatingTaskScriptableObject;
-        targetHeat = task.targetHeatPercentage * maxHeat;
+        targetHeat = task.targetHeatPercentage;
     }
 }
