@@ -24,6 +24,11 @@ public class HeatingTaskManager : TaskManagerBase
     private bool heating;
     private bool heatMatters;
 
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip audioClip;
+
     public void SetTargetHeat(int _targetHeat)
     {
         targetHeat = _targetHeat;
@@ -34,13 +39,17 @@ public class HeatingTaskManager : TaskManagerBase
         base.Activate();
         List<SwordTeleportPoint> swordTeleportPoints = GameObject.FindObjectsOfType<SwordTeleportPoint>().ToList();
         nonHeatPoint = swordTeleportPoints.Find(x => x.taskType == WorkManager.TaskType.Heating).transform;
-
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = audioClip;
         swordMaterial = swordDetails.blade.GetComponentInChildren<MeshRenderer>().material;
     }
 
     public override void Deactivate()
     {
         base.Deactivate();
+        audioSource.Stop();
+        audioSource.loop = false;
+        audioSource.clip = null;
         targetHeat = 0;
         currentHeat = 0;
     }
@@ -52,12 +61,15 @@ public class HeatingTaskManager : TaskManagerBase
         if (Input.GetMouseButtonDown(0))
         {
             sword.transform.DOMove(heatPoint.position, moveTime).OnComplete(() => heating = true);
+            audioSource.Play();
+            audioSource.loop = true;
         }
         else if(Input.GetMouseButtonUp(0))
         {
             heating = false;
             sword.transform.DOMove(nonHeatPoint.position, moveTime);
-
+            audioSource.Stop();
+            audioSource.loop = false;
 
         }
 
