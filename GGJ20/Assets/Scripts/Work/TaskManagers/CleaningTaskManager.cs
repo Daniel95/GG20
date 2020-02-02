@@ -72,7 +72,9 @@ public class CleaningTaskManager : TaskManagerBase
         {
             shineParticleSystem.emissionRate += cleanlinessToParticleRate * Time.deltaTime;
             if(Random.Range(0,100)>97)
-            pitchPlayer.PlaySFX(cleaningClip, 0.7F, 0.9F);
+            { 
+                pitchPlayer.PlaySFX(cleaningClip, 0.7F, 0.9F);
+            }
             currentCleanliness++;
         }
     }
