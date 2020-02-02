@@ -61,7 +61,7 @@ public class CleaningTaskManager : TaskManagerBase
         base.Deactivate();
         targetCleanliness = 0;
         currentCleanliness = 0;
-        shineParticleSystem.emissionRate = 0;
+        //shineParticleSystem.emissionRate = 0;
         previousMousePosition = Vector3.negativeInfinity;
 
     }
