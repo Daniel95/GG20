@@ -7,7 +7,7 @@ public class AudioController : MonoBehaviour
 {
 
     public float timer = 78;
-    public float halfMeasureLength = 8;
+    public float measureLength = 16;
     public int numberOfLayers = 4;
     public float defaultVolume = 0.75f;
 
@@ -24,9 +24,8 @@ public class AudioController : MonoBehaviour
 
     void Start()
     {
-        Player.StartJobEvent += StartMusic;
-        Player.StartTaskEvent += NextStage;
-        initialized = false;
+        Player.StartJobEvent += NextStage;
+        StartMusic();
 
         for (int i = 0; i < numberOfLayers; i++)
         {
@@ -44,12 +43,12 @@ public class AudioController : MonoBehaviour
 
         float currentTime = Time.realtimeSinceStartup - startTime;
 
-        if (currentTime >= timer)
+        /*if (currentTime >= timer)
         {
             initialized = false;
             //Debug.Log("Loop " + (currentLoop + 1) + ": finished (" + Mathf.FloorToInt(currentTime) + "s)");
             return;
-        }
+        }*/
 
         if (Input.GetKeyDown("e"))
         {
@@ -59,7 +58,7 @@ public class AudioController : MonoBehaviour
         {
             PreviousStage();
         }
-        else if (Mathf.FloorToInt(currentTime / halfMeasureLength) > currentLoop)
+        else if (Mathf.FloorToInt(currentTime / measureLength) > currentLoop)
         {
             currentLoop++;
             InitializeAudioSources(ChooseClipsToPlay(false), false);
@@ -71,15 +70,8 @@ public class AudioController : MonoBehaviour
     /// Start the dynamic music based on the task timer ... the timer length needs to be a multiple of 8
     /// </summary>
     /// <param name="timerLength"> The length of time for which the music should play based on the task timer</param>
-    public void StartMusic(WorkManager.Job job)
+    public void StartMusic()
     {
-        float timerLength = job.Time;
-        if (timerLength % halfMeasureLength != 0)
-        {
-            Debug.LogWarning("The timer length should be a multiple of " + halfMeasureLength + "!");
-        }
-        timer = timerLength - (timerLength % halfMeasureLength);
-
         startTime = Time.realtimeSinceStartup;
         currentLoop = -1;
         initialized = true;
@@ -89,11 +81,11 @@ public class AudioController : MonoBehaviour
     /// <summary>
     /// Move the music to the next stage which results in more instruments being added
     /// </summary>
-    public void NextStage(WorkManager.TaskType type)
+    public void NextStage(WorkManager.Job job)
     {
         //type;
         float currentTime = Time.realtimeSinceStartup - startTime;
-        if (Mathf.FloorToInt(currentTime / halfMeasureLength) > currentLoop)
+        if (Mathf.FloorToInt(currentTime / measureLength) > currentLoop)
         {
             currentLoop++;
         }
@@ -109,7 +101,7 @@ public class AudioController : MonoBehaviour
     public void PreviousStage()
     {
         float currentTime = Time.realtimeSinceStartup - startTime;
-        if (Mathf.FloorToInt(currentTime / halfMeasureLength) > currentLoop)
+        if (Mathf.FloorToInt(currentTime / measureLength) > currentLoop)
         {
             currentLoop++;
         }
@@ -123,7 +115,7 @@ public class AudioController : MonoBehaviour
     {
         float currentTime = Time.realtimeSinceStartup - startTime;
 
-        if (currentTime > timer - halfMeasureLength * 2)
+        /*if (currentTime > timer - halfMeasureLength * 2)
         {
             if (currentTime < timer - halfMeasureLength || startFromADifferentPosition)
             {
@@ -132,12 +124,16 @@ public class AudioController : MonoBehaviour
             }
         }
         else if (currentLoop % 2 == 0 || startFromADifferentPosition)
-        {
-            //Debug.Log("Loop " + currentLoop.ToString() + ": play normal (" + Mathf.FloorToInt(currentTime) + "s)");
-            return audioClipsNormal;
-        }
+        {*/
+        //Debug.Log("Loop " + currentLoop.ToString() + ": play normal (" + Mathf.FloorToInt(currentTime) + "s)");
 
-        return null;
+        if (currentLoop % 3 == 1)
+        {
+            return audioClipsFinal;
+        }
+        
+        return audioClipsNormal;
+       // }
     }
 
     private void InitializeAudioSources(List<AudioList> audioList, bool startFromADifferentPosition)
@@ -162,7 +158,7 @@ public class AudioController : MonoBehaviour
 
             if (startFromADifferentPosition)
             {
-                audioSources[i].time = Time.realtimeSinceStartup - startTime - (currentLoop - currentLoop % 2) * halfMeasureLength;
+                audioSources[i].time = Time.realtimeSinceStartup - startTime - currentLoop * measureLength;
             }
             else
             {
