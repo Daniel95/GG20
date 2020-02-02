@@ -40,7 +40,7 @@ public class TaskInfoText : MonoBehaviour
             case WorkManager.TaskType.None:
                 break;
             case WorkManager.TaskType.Shaping:
-                text.text = "Press bottom of screen";
+                text.text = "Align and hit";
                 //move down to turn over
                 break;
             case WorkManager.TaskType.Sharpening:

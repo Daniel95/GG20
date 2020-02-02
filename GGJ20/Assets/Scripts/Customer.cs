@@ -11,7 +11,15 @@ public class Customer : MonoBehaviour
     private WorkManager.Job currentJob;
     private GameObject customerModel = null;
 
+    [SerializeField]
+    private Text customerCount;
 
+    //has chance to decrease when player gets graded 6 or less (these are champions youre serving afterall)
+    [SerializeField]
+    private int customerCounter = 10;
+
+    [SerializeField]
+    private Image customerDeathPopup;
     public static Action<string> ResultTextMadeEvent;
 
     private void Awake()
@@ -73,6 +81,34 @@ public class Customer : MonoBehaviour
 
         float grade = score * 10;
 
+        int killInt;
+
+        if((int)grade <= 6)
+        {
+            //Add the grade amount of 1s to the list
+            List<int> probability = new List<int>();
+            for (int i = 0; i < (int)grade; i++)
+            {
+                probability.Add(1);
+            }
+            //Add 3 zeroes to the list
+            for (int i = 0; i < 3; i++)
+            {
+                probability.Add(0);
+            }
+
+            //when you get a 6, customer has 1/3 chance to die
+            //chance to die gets higher as grade gets lower because of less 1s in the list
+
+            killInt = UnityEngine.Random.Range(0, probability.Count);
+            customerCounter -= killInt;
+
+            //probably display some text for this
+            customerDeathPopup.rectTransform.DOAnchorPosY(-85f, 1f).onComplete += CustomerDeathPopupBehaviour;
+        }
+
+
+        customerCount.text = customerCounter + "/10 Customers";
         string message = (int)grade + "/10";
 
         string ending = GetEnding(score) + " " + message;
@@ -113,5 +149,17 @@ public class Customer : MonoBehaviour
         }
 
         return s;
+    }
+
+    private void CustomerDeathPopupBehaviour()
+    {
+        StartCoroutine(HidePopupAfterWait());
+    }
+
+    IEnumerator HidePopupAfterWait()
+    {
+        yield return new WaitForSeconds(5f);
+        customerDeathPopup.rectTransform.DOAnchorPosY(100f, 1f);
+
     }
 }
