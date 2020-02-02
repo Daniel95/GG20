@@ -76,17 +76,9 @@ public class HeatingTaskManager : TaskManagerBase
     {
         if (heatMatters)
         {
-            float maxOffset = targetHeat;
-
-            if (maxHeat - targetHeat > maxOffset)
-            {
-                maxOffset = maxHeat - targetHeat;
-            }
-
-            float offset = currentHeat - targetHeat;
-            float offsetPercentage = Mathf.Min(offset / maxOffset, 1);
-
-            return offsetPercentage;
+            float progress = currentHeat / maxHeat;
+            float offset = Mathf.Min(Mathf.Abs(targetHeat - progress), 1);
+            return offset;
         }
         else
         {
@@ -102,6 +94,6 @@ public class HeatingTaskManager : TaskManagerBase
     public override void SetTaskObject(TaskScriptableObject a_taskScriptableObject)
     {
         var task = a_taskScriptableObject as HeatingTaskScriptableObject;
-        targetHeat = task.targetHeatPercentage * maxHeat;
+        targetHeat = task.targetHeatPercentage;
     }
 }
