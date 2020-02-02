@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd2b14fbc41909f4fa26d8875801973d, type: 3}
   m_Name: FuckingHotTask
   m_EditorClassIdentifier: 
-  TargetHeat: 20
+  targetHeatPercentage: 0.483
+  HeatMatters: 0
