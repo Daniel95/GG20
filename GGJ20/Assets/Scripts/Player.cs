@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using NaughtyAttributes;
 
@@ -37,11 +38,16 @@ public class Player : MonoBehaviour
     private WorkManager.TaskType currentTaskType = WorkManager.TaskType.None;
     private TaskManagerBase taskManagerBase;
 
-    private Coroutine cameraSlerpCoroutine;
-    private Coroutine swordSlerpCoroutine;
+    private bool cameraIsMoving;
+    private bool cameraIsRotating;
+    private bool swordIsMoving;
+    private bool swordIsRotating;
 
     private bool startedJob;
     private bool gotJob;    //got job you pauper???
+    public bool CameraIsSlerping() { return cameraIsMoving || cameraIsRotating; }
+    public bool SwordIsSlerping() { return swordIsMoving || swordIsRotating; }
+    public bool IsSlerping() { return SwordIsSlerping() || CameraIsSlerping(); }
 
     public bool IsWorking() { return currentTaskType != WorkManager.TaskType.None; }
     public bool IsAtCounter() { return currentTaskType == WorkManager.TaskType.None; }
@@ -68,9 +74,36 @@ public class Player : MonoBehaviour
         taskManagers = FindObjectsOfType<TaskManagerBase>().ToList();
     }
 
+    private void OnEnable()
+    {
+        TimerScript.TimeExpiredEvent += OnTimeExpired;
+    }
+
+    private void OnDisable()
+    {
+        TimerScript.TimeExpiredEvent -= OnTimeExpired;
+    }
+
+    private void OnTimeExpired()
+    {
+        if (IsSlerping())
+        {
+            //sword.transform.DOKill();
+            //mainCam.transform.DOKill();
+        }
+
+        if (taskManagerBase != null)
+        {
+            StoreTaskOffset(taskManagerBase, weaponResultOffsets);
+            taskManagerBase.Deactivate();
+        }
+
+        GoToCounter();
+    }
+
     public void OnNextButton()
     {
-        if (cameraSlerpCoroutine != null || swordSlerpCoroutine != null)
+        if (IsSlerping())
         {
             return;
         }
@@ -108,15 +141,24 @@ public class Player : MonoBehaviour
         SlerpCameraAndSword(counterCameraTransform, counterSwordTransform);
 
         gotJob = false;
+        startedJob = false;
         //Destroy(sword, 5f);
         EndJobEvent?.Invoke(job, weaponResultOffsets);   //wow
+
+
         //sword = null;
     }
 
     public void StartJob()
     {
+        //sword.transform.DOKill();
+        // mainCam.transform.DOKill();
+
         //Debug.Log("Start the job, lazybum");
         //job = WorkManager.Instance.ChooseJob();
+
+        taskManagerBase = null;
+
 
         if (StartJobEvent != null)
         {
@@ -210,20 +252,27 @@ public class Player : MonoBehaviour
         return swordTeleportPoint.transform;
     }
 
-    private void SlerpCameraAndSword(Transform cameraTarget, Transform swordTarget)
+    private void SlerpCameraAndSword(Transform cameraTarget, Transform swordTarget, float duration = 1)
     {
-        if (cameraSlerpCoroutine != null || swordSlerpCoroutine != null)
+        if (IsSlerping())
         {
-            return;
+            //mainCam.transform.DOKill();
+            //sword.transform.DOKill();
         }
 
-        cameraSlerpCoroutine = StartCoroutine(SlerpTransform(mainCam.transform, cameraTarget, () => cameraSlerpCoroutine = null));
-        swordSlerpCoroutine = StartCoroutine(SlerpTransform(sword.transform, swordTarget, () => swordSlerpCoroutine = null));
+        swordIsMoving = swordIsRotating = cameraIsMoving = cameraIsRotating = true;
+
+        sword.transform.DOMove(swordTarget.position, duration).onComplete +=  () => swordIsMoving = false;
+        sword.transform.DORotateQuaternion(swordTarget.rotation, duration).onComplete +=  () => swordIsRotating = false;
+
+        mainCam.transform.DOMove(cameraTarget.position, duration).onComplete += () => cameraIsMoving = false;
+        mainCam.transform.DORotateQuaternion(cameraTarget.rotation, duration).onComplete += () => cameraIsRotating = false;
     }
 
     private IEnumerator SlerpTransform(Transform transformToMove, 
         Transform targetTransform, 
         Action OnCompleted = null,
+        float speed = 1,
         float minDistanceOffset = 0.05f, 
         float minRotationOffset = 2.0f)
     {
@@ -244,7 +293,7 @@ public class Player : MonoBehaviour
  
             transformToMove.transform.position = Vector3.Slerp(transformToMove.transform.position, targetTransform.position, fp);
             transformToMove.transform.rotation = Quaternion.Slerp(transformToMove.transform.rotation, targetTransform.rotation, fp);
-            fp += Time.deltaTime;
+            fp += Time.deltaTime * speed;
 
             yield return null;
         }
