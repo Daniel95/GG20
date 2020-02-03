@@ -267,6 +267,7 @@ public class Player : MonoBehaviour
 
         mainCam.transform.DOMove(cameraTarget.position, duration).onComplete += () => cameraIsMoving = false;
         mainCam.transform.DORotateQuaternion(cameraTarget.rotation, duration).onComplete += () => cameraIsRotating = false;
+        //mainCam.transform.DOLookAt(swordTarget.position, duration).onComplete += () => cameraIsRotating = false;
     }
 
     private IEnumerator SlerpTransform(Transform transformToMove, 
